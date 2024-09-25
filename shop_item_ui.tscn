@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://b8mhurhw77wkb"]
+
+[ext_resource type="Script" path="res://shop_item.gd" id="1_m108j"]
+[ext_resource type="PackedScene" uid="uid://d0r0gk3l0ag1u" path="res://card_base.tscn" id="2_w2k31"]
+
+[node name="Card" type="VBoxContainer"]
+custom_minimum_size = Vector2(50, 60)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1102.0
+offset_bottom = -561.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_m108j")
+
+[node name="CardBase" parent="." instance=ExtResource("2_w2k31")]
+layout_mode = 2
+
+[node name="Price" type="Label" parent="."]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "100P"
+
+[node name="Price2" type="Label" parent="."]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "100G"
