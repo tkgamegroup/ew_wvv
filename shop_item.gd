@@ -8,6 +8,13 @@ var cost_production : int = 0
 var cost_gold : int = 0
 var display_name : String = ""
 
+func setup_territory_item():
+	cost_production = 50
+	cost_gold = 100
+	display_name = "领地"
+	get_node("CardBase/Name").text = display_name
+	$Price.text = "%dP" % cost_production
+
 func setup_building_item(_key : String):
 	var info = Building.get_info(_key)
 	cost_production = info.cost_production

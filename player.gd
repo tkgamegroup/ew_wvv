@@ -2,16 +2,20 @@ const Tile = preload("res://tile.gd")
 
 signal territory_changed
 signal building_changed
+signal vision_changed
 
 var id : int
 var coord : Vector2i
 var territories : Dictionary
 var buildings : Dictionary
 var color : Color
+var vision : Dictionary
+
 var production : int = 100
-signal production_changed
 var gold : int = 0
+signal production_changed
 signal gold_changed
+
 var avaliable_constructions : Array
 
 var unused_territories : int = 0
@@ -38,6 +42,10 @@ func add_territory(coord : Vector2i):
 			tile.player = id
 			territories[coord] = 1
 			territory_changed.emit(id)
+			vision[coord] = 1
+			for t in Game.get_surrounding_tiles(tile):
+				vision[t.coord] = 1
+			vision_changed.emit()
 			return true
 	return false
 

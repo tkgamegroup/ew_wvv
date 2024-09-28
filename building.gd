@@ -1,5 +1,3 @@
-extends Object
-
 class_name Building
 
 static var config : ConfigFile = null

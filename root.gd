@@ -9,35 +9,39 @@ const CardBasePrefab = preload("res://card_base.tscn")
 const CardPrefab = preload("res://card_ui.tscn")
 const ShopItemPrefab = preload("res://shop_item_ui.tscn")
 
-var tilemap : Tilemap
-var tilemap_overlay : TilemapOverlay
-var camera : Camera
-var ui_root : CanvasLayer
-var state_text : Label
-var tips_text : Label
-var state_button : Button
-var resource_panel : Control
-var production_text : Label
+@onready var tilemap_water = $TileMapLayerWater
+@onready var tilemap_dirt = $TileMapLayerDirt
+@onready var tilemap = $TileMapLayerMain
+@onready var tilemap_object = $TileMapLayerObject
+@onready var tilemap_overlay = $TileMapOverlay
+@onready var camera = $Camera2D
+@onready var ui_root = $CanvasLayer
+@onready var state_text = $CanvasLayer/PanelContainer/VBoxContainer/Label
+@onready var tips_text = $CanvasLayer/PanelContainer/VBoxContainer/Label2
+@onready var state_button = $CanvasLayer/RightBottomConer/HBoxContainer/StateButton
+@onready var resource_panel = $CanvasLayer/ResourcePanel
+@onready var production_text = $CanvasLayer/ResourcePanel/Label
+@onready var hand = $CanvasLayer/HandContainer/Hand
+@onready var dragging_dummy = $CanvasLayer/DragCard
+@onready var shop_ui = $CanvasLayer/Shop
+@onready var shop_list = $CanvasLayer/Shop/VBoxContainer/GridContainer
+@onready var troop_ui = $CanvasLayer/TroopContainer/Troop
+@onready var troop_list = $CanvasLayer/TroopContainer/Troop/VBoxContainer/HBoxContainer/HBoxContainer
+@onready var troop_side_text = $CanvasLayer/TroopContainer/Troop/SideText
+@onready var troop_target_button = $CanvasLayer/TroopContainer/Troop/VBoxContainer/HBoxContainer/TargetButton
+@onready var troop_comfire_button = $CanvasLayer/TroopContainer/Troop/VBoxContainer/HBoxContainer/ComfireButton
+@onready var attack_troop_mark = $AttackTroop
+@onready var defend_troop_mark = $DefendTroop
+@onready var battle_ui = $CanvasLayer/Battle
+@onready var battle_list1 = $CanvasLayer/Battle/Control/Side1
+@onready var battle_list2 = $CanvasLayer/Battle/Control/Side2
+@onready var tooltip = $CanvasLayer/ToolTip
+@onready var tooltip_text = $CanvasLayer/ToolTip/VBoxContainer/Text
+@onready var no_units_tip = $CanvasLayer/NoUnitsTip
 var production_text_tween : Tween = null
-var hand : HBoxContainer
 var dragging_card : Card = null
 var drag_offset : Vector2
-var dragging_dummy : Control
 var dragging_dummy_tween : Tween = null
-var shop_ui : Control
-var shop_list : GridContainer
-var troop_ui : Control
-var troop_list : HBoxContainer
-var troop_side_text : Label
-var troop_target_button : CheckButton
-var troop_comfire_button : Button
-var attack_troop_mark : Polygon2D
-var defend_troop_mark : Polygon2D
-var battle_ui : Control
-var battle_list1 : Control
-var battle_list2 : Control
-var tooltip : Control
-var tooltip_text : Label
 var tooltip_using = false
 
 var select_tile_callback : Callable
@@ -58,9 +62,7 @@ func alert(text: String, callback : Callable):
 	return dialog
 
 func update_tilemap():
-	for x in Game.cx:
-		for y in Game.cy:
-			tilemap.set_cell(Vector2i(x, y), 0, Vector2i(0, 0))
+	pass
 			
 func add_production(v : int, pos : Vector2):
 	var text_temp = Label.new()
@@ -174,6 +176,9 @@ func create_hand_card():
 	)
 	return card
 	
+func create_shop_item():
+	pass
+	
 var state_animation : Tween = null
 var state_animation_player : Player
 var state_animation_pos : Vector2
@@ -239,7 +244,7 @@ func on_state_changed():
 	if Game.state == Game.StatePrepare:
 		state_text.text = "准备阶段"
 		state_button.text = "开始战斗"
-		tips_text.text = " 1、拖拽领地卡到临近的空地块上以扩充领地\n 2、拖拽建筑卡到领地上来添加此建筑\n 3、从商店使用生产力或金币来购买建筑卡或领地卡"
+		tips_text.text = " 1、拖拽领地卡到临近的空地块上以扩充领地\n 2、拖拽建筑卡到领地上来添加建筑\n 3、从商店使用生产力或金币来购买建筑卡或领地卡"
 		
 		shop_ui.hide()
 		troop_ui.hide()
@@ -291,6 +296,7 @@ func on_state_changed():
 		
 		shop_ui.hide()
 		troop_ui.hide()
+		no_units_tip.hide()
 		state_animation.tween_callback(func():
 			troop_ui.show()
 			
@@ -311,9 +317,7 @@ func on_battle_player_changed():
 		troop_ui.show()
 	elif Game.battle_attacker == -1 :
 		troop_ui.hide()
-		var dialog = alert("没有可用的单位，战斗结束", func():
-			Game.change_state(Game.StatePrepare)
-		)
+		no_units_tip.show()
 	else:
 		troop_ui.hide()
 	tilemap_overlay.queue_redraw()
@@ -509,7 +513,6 @@ func on_troop_comfire() -> void:
 			alert("行军距离不够", Callable())
 		else:
 			troop_side_text.text = ""
-			troop_target_button.disabled = true
 			for n in troop_list.get_children():
 				troop_list.remove_child(n)
 				n.queue_free()
@@ -555,10 +558,84 @@ func on_state_button() -> void:
 	if Game.state == Game.StatePrepare:
 		Game.change_state(Game.StateBattle)
 	elif Game.state == Game.StateBattle:
+		no_units_tip.hide()
 		if Game.is_battle_round_ended():
 			Game.change_state(Game.StatePrepare)
 		else:
 			alert("还有未使用的单位", Callable())
+	
+func init_tiles():
+	var water_tiles = {}
+	var grass_tiles = {}
+	var forest_tiles = {}
+	for x in Game.cx:
+		for y in Game.cy:
+			var c = Vector2i(x, y)
+			var tile = Game.map[c] as Tile
+			if tile.terrain == Tile.TerrainWater:
+				water_tiles[c] = 1
+			elif tile.terrain == Tile.TerrainPlain:
+				grass_tiles[c] = 1
+			elif tile.terrain == Tile.TerrainForest:
+				grass_tiles[c] = 1
+				forest_tiles[c] = 1
+	if !water_tiles.is_empty():
+		tilemap_water.set_cells_terrain_connect(water_tiles.keys(), 0, 0, false)
+		var bank_tiles = {}
+		for c in water_tiles:
+			var t = Game.map[c]
+			for _t in Game.get_surrounding_tiles(t):
+				var k = _t.coord
+				if !bank_tiles.has(k) && !water_tiles.has(k):
+					bank_tiles[k] = 1
+		if !bank_tiles.is_empty():
+			tilemap_dirt.set_cells_terrain_connect(bank_tiles.keys(), 0, 0, false)
+	if !grass_tiles.is_empty():
+		tilemap.set_cells_terrain_connect(grass_tiles.keys(), 0, 0, false)
+	if !forest_tiles.is_empty():
+		tilemap_object.set_cells_terrain_connect(forest_tiles.keys(), 0, 0, false)
+	
+	for x in range(-1, Game.cx + 1):
+		for y in range(-1, Game.cy + 1):
+			var c = Vector2i(x, y)
+			if x >= 0 && x < Game.cx && y >= 0 && y < Game.cy:
+				var tile = Game.map[c] as Tile
+				tile.tilemap_atlas_ids.append(tilemap_water.get_cell_source_id(c))
+				tile.tilemap_atlas_ids.append(tilemap_dirt.get_cell_source_id(c))
+				tile.tilemap_atlas_ids.append(tilemap.get_cell_source_id(c))
+				tile.tilemap_atlas_ids.append(tilemap_object.get_cell_source_id(c))
+				tile.tilemap_atlas_coords.append(tilemap_water.get_cell_atlas_coords(c))
+				tile.tilemap_atlas_coords.append(tilemap_dirt.get_cell_atlas_coords(c))
+				tile.tilemap_atlas_coords.append(tilemap.get_cell_atlas_coords(c))
+				tile.tilemap_atlas_coords.append(tilemap_object.get_cell_atlas_coords(c))
+			tilemap_water.set_cell(c, -1)
+			tilemap_dirt.set_cell(c, -1)
+			tilemap.set_cell(c, -1)
+			tilemap_object.set_cell(c, -1)
+			
+	update_tiles()
+
+var updated_tiles = {}
+
+func update_tiles():
+	var main_player = Game.players[0] as Player
+	for x in Game.cx:
+		for y in Game.cy:
+			var c = Vector2i(x, y)
+			var tile = Game.map[c] as Tile
+			if !updated_tiles.has(c) && main_player.vision.has(c):
+				tilemap_water.set_cell(c, tile.tilemap_atlas_ids[0], tile.tilemap_atlas_coords[0])
+				tilemap_dirt.set_cell(c, tile.tilemap_atlas_ids[1], tile.tilemap_atlas_coords[1])
+				tilemap.set_cell(c, tile.tilemap_atlas_ids[2], tile.tilemap_atlas_coords[2])
+				tilemap_object.set_cell(c, tile.tilemap_atlas_ids[3], tile.tilemap_atlas_coords[3])
+				updated_tiles[c] = 1
+				
+func update_buildings(id : int):
+	var player = Game.players[id] as Player
+	for c in player.buildings:
+		var building = player.buildings[c]
+		tilemap_object.set_cell(c, 1000, Vector2i(0, 0))
+	pass
 
 func overlay_drawer(node : Node2D):
 	if Game.battle_attacker != -1:
@@ -595,33 +672,8 @@ func overlay_drawer(node : Node2D):
 					node.draw_line(p3, p3 + head2.rotated(-0.4), defender_player.color, 6)
 
 func _ready() -> void:
-	tilemap = $TileMapLayer
-	tilemap_overlay = $TileMapOverlay
-	camera = $Camera2D
-	ui_root = $CanvasLayer
-	state_text = $CanvasLayer/PanelContainer/VBoxContainer/Label
-	tips_text = $CanvasLayer/PanelContainer/VBoxContainer/Label2
-	state_button = $CanvasLayer/MarginContainer/HBoxContainer/StateButton
-	resource_panel = $CanvasLayer/ResourcePanel
-	production_text = $CanvasLayer/ResourcePanel/Label
-	hand = $CanvasLayer/MarginContainer2/Hand
-	dragging_dummy = $CanvasLayer/DragCard
-	shop_ui = $CanvasLayer/Shop
-	shop_list = $CanvasLayer/Shop/VBoxContainer/GridContainer
-	troop_ui = $CanvasLayer/MarginContainer3/Troop
-	troop_list = $CanvasLayer/MarginContainer3/Troop/VBoxContainer/HBoxContainer/HBoxContainer
-	troop_side_text = $CanvasLayer/MarginContainer3/Troop/SideText
-	troop_target_button = $CanvasLayer/MarginContainer3/Troop/VBoxContainer/HBoxContainer/TargetButton
-	troop_comfire_button = $CanvasLayer/MarginContainer3/Troop/VBoxContainer/HBoxContainer/ComfireButton
-	attack_troop_mark = $AttackTroop
-	defend_troop_mark = $DefendTroop
-	battle_ui = $CanvasLayer/Battle
-	battle_list1 = $CanvasLayer/Battle/Control/Side1
-	battle_list2 = $CanvasLayer/Battle/Control/Side2
-	tooltip = $CanvasLayer/ToolTip
-	tooltip_text = $CanvasLayer/ToolTip/VBoxContainer/Text
-	
-	update_tilemap()
+	init_tiles()
+			
 	tilemap.tile_hovered.connect(func(coord : Vector2i):
 		if select_tile_callback.is_valid():
 			select_tile_callback.call(coord, true)
@@ -631,22 +683,25 @@ func _ready() -> void:
 				tooltip.hide()
 			else:
 				var t = Game.map[coord] as Tile
-				if t.player == -1:
-					var text = "平原"
-					var dic = {}
-					for u in t.neutral_units:
-						if dic.has(u):
-							dic[u] += 1
-						else:
-							dic[u] = 1
-					for k in dic:
-						var info = Unit.get_info(k)
-						text += "\n%s x%d" % [info.display_name, dic[k]]
-					text += "\n%dP" % t.production_resource
-					tooltip_text.text = text
+				var text : String
+				if t.terrain == Tile.TerrainPlain:
+					text = "草原"
 				else:
+					text = "水"
+				var dic = {}
+				for u in t.neutral_units:
+					if dic.has(u):
+						dic[u] += 1
+					else:
+						dic[u] = 1
+				for k in dic:
+					var info = Unit.get_info(k)
+					text += "\n%s x%d" % [info.display_name, dic[k]]
+				text += "\n%dP" % t.production_resource
+				if t.player != -1:
 					var player = Game.players[t.player] as Player
-					tooltip_text.text = "%d 的领地" % player.id
+					text += "\n%d 的领地" % player.id
+				tooltip_text.text = text
 				tooltip.show()
 		tooltip_using = false
 	)
@@ -654,8 +709,18 @@ func _ready() -> void:
 	
 	tilemap_overlay.drawer = overlay_drawer
 	
+	for id in Game.players:
+		var player = Game.players[id] as Player
+		player.territory_changed.connect(tilemap_overlay.update_border)
+		player.building_changed.connect(func(id):
+			update_buildings(id)
+			queue_redraw()
+		)
+		tilemap_overlay.update_border(id)
+	
 	var main_player = Game.players[0] as Player
 	main_player.on_state_callback = Callable(on_state_animation)
+	main_player.vision_changed.connect(update_tiles)
 		
 	for n in hand.get_children():
 		hand.remove_child(n)

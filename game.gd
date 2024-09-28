@@ -9,12 +9,12 @@ enum
 	StateBattle
 }
 
-const cx = 21
+const cx = 20
 const cy = 10
 
 var map : Dictionary
-var vision : Dictionary
 var players : Dictionary
+var techs : Dictionary
 var state : int = 0
 signal state_changed
 signal attack_commited
@@ -29,9 +29,10 @@ signal battle_player_changed
 func add_player(id : int):
 	var cands = []
 	for c in map:
-		var t = map[c] as Tile
-		if t.player == -1 && t.neutral_units.is_empty():
-			cands.append(t)
+		if c.x > 3 && c.x < Game.cx - 4 && c.y > 3 && c.y < Game.cy - 4:
+			var t = map[c] as Tile
+			if t.player == -1 && t.terrain == Tile.TerrainPlain && t.neutral_units.is_empty():
+				cands.append(t)
 	var coord = cands.pick_random().coord
 	
 	var player = Player.new(id)
@@ -327,10 +328,19 @@ func battle_calc():
 func _ready() -> void:
 	seed(Time.get_ticks_msec())
 	
+	techs = Technology.load()
+	
 	for x in cx:
 		for y in cy:
 			var c = Vector2i(x, y)
 			var t = Tile.new(c)
+			if randf() > 0.3:
+				if randf() > 0.3:
+					t.terrain = Tile.TerrainPlain
+				else:
+					t.terrain = Tile.TerrainForest
+			else:
+				t.terrain = Tile.TerrainWater
 			if randf() < 0.3:
 				for i in randi_range(0, 5):
 					t.neutral_units.append("bear")

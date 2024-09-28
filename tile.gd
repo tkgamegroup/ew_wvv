@@ -1,3 +1,13 @@
+enum
+{
+	TerrainPlain,
+	TerrainForest,
+	TerrainWater
+}
+
+var terrain : int
+var tilemap_atlas_ids : Array
+var tilemap_atlas_coords : Array
 var tile_lt : Vector2i
 var tile_t : Vector2i
 var tile_rt : Vector2i
