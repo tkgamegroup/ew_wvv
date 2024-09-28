@@ -5,8 +5,15 @@ const Player = preload("res://player.gd")
 
 enum
 {
-	StatePrepare,
-	StateBattle
+	ConstructState,
+	BattleState
+}
+
+enum
+{
+	ProductionResource,
+	GoldResource,
+	ScienceResource
 }
 
 const cx = 20
@@ -126,11 +133,11 @@ func find_path_on_map(start : Vector2i, end : Vector2i):
 	
 func change_state(new_state : int) :
 	state = new_state
-	if state == StatePrepare:
+	if state == ConstructState:
 		for id in players:
 			var player = players[id] as Player
 			player.on_state()
-	elif state == StateBattle:
+	elif state == BattleState:
 		for id in players:
 			var player = players[id] as Player
 			player.on_state()

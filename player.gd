@@ -13,8 +13,10 @@ var vision : Dictionary
 
 var production : int = 100
 var gold : int = 0
+var science : int = 0
 signal production_changed
 signal gold_changed
+signal science_changed
 
 var avaliable_constructions : Array
 
@@ -34,6 +36,7 @@ func _init(_id : int) -> void:
 	
 	avaliable_constructions.append("lumber_mill")
 	avaliable_constructions.append("barracks")
+	avaliable_constructions.append("academy")
 	
 func add_territory(coord : Vector2i):
 	var tile = Game.map[coord] as Tile
@@ -63,9 +66,25 @@ func add_building(coord : Vector2i, name : String):
 	return false
 	
 func add_production(v : int):
+	if v == 0:
+		return
 	var old_value = production
 	production += v
 	production_changed.emit(old_value, production)
+	
+func add_gold(v : int):
+	if v == 0:
+		return
+	var old_value = gold
+	gold += v
+	gold_changed.emit(old_value, gold)
+	
+func add_science(v : int):
+	if v == 0:
+		return
+	var old_value = science
+	science += v
+	science_changed.emit(old_value, science)
 	
 func calc_troop_mobility():
 	if troop_units.is_empty():
@@ -97,34 +116,58 @@ func on_state():
 	for c in buildings:
 		var building = buildings[c]
 		if building.type == Building.City:
-			if Game.state != Game.StatePrepare:
+			if Game.state != Game.ConstructState:
 				continue
 			if on_state_callback.is_valid():
 				on_state_callback.call("next_building", c)
+			var processed = false
 			if on_state_callback.is_valid():
-				on_state_callback.call("territory", 2)
-			else:
+				if on_state_callback.call("territory", 2):
+					processed = true
+			if !processed:
 				unused_territories += 2
 		elif building.type == Building.ProductionBuilding:
-			if Game.state != Game.StatePrepare:
+			if Game.state != Game.ConstructState:
 				continue
 			if on_state_callback.is_valid():
 				on_state_callback.call("next_building", c)
-			if on_state_callback.is_valid():
-				on_state_callback.call("production", building.ext["production"])
-			else:
-				production += building.ext["production"]
+			var production = building.ext["production"]
+			var gold_production = building.ext["gold_production"]
+			var science_production = building.ext["science_production"]
+			if production > 0:
+				var processed = false
+				if on_state_callback.is_valid():
+					if on_state_callback.call("production", production):
+						processed = true
+				if !processed:
+					self.production += production
+			if gold_production > 0:
+				var processed = false
+				if on_state_callback.is_valid():
+					if on_state_callback.call("gold_production", gold_production):
+						processed = true
+				if !processed:
+					gold += gold_production
+			if science_production > 0:
+				var processed = false
+				if on_state_callback.is_valid():
+					if on_state_callback.call("science_production", science_production):
+						processed = true
+				if !processed:
+					science += science_production
 		elif building.type == Building.BarracksBuilding:
-			if Game.state != Game.StateBattle:
+			if Game.state != Game.BattleState:
 				continue
 			if on_state_callback.is_valid():
 				on_state_callback.call("next_building", c)
+			var processed = false
 			if on_state_callback.is_valid():
 				var data = {}
 				data.unit_name = building.ext["produce_unit_name"]
 				data.unit_count = building.ext["produce_unit_count"]
-				on_state_callback.call("unit", data)
-			else:
+				if on_state_callback.call("unit", data):
+					processed = true
+			if !processed:
 				for i in building.ext["produce_unit_count"]:
 					units.append(building.ext["produce_unit_name"])
 	if on_state_callback.is_valid():

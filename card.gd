@@ -26,6 +26,7 @@ var type : int
 var target_type : int
 var display_name : String
 var description : String
+var icon : String
 
 static var config : ConfigFile = null
 
@@ -38,6 +39,7 @@ static func get_info(key : String):
 	ret.target_type = config.get_value(key, "target_type")
 	ret.display_name = config.get_value(key, "display_name")
 	ret.description = config.get_value(key, "description")
+	ret.icon = config.get_value(key, "icon")
 	return ret
 
 func setup(_name : String):
@@ -50,7 +52,9 @@ func setup(_name : String):
 	target_type = info.target_type
 	display_name = info.display_name
 	description = info.description
+	icon = info.icon
 	get_node("CardBase/Name").text = display_name
+	get_node("CardBase/TextureRect").texture = load(icon)
 	
 func copy(oth : Card):
 	card_name = oth.card_name
@@ -58,7 +62,9 @@ func copy(oth : Card):
 	target_type = oth.target_type
 	display_name = oth.display_name
 	description = oth.description
+	icon = oth.icon
 	get_node("CardBase/Name").text = display_name
+	get_node("CardBase/TextureRect").texture = load(icon)
 	
 func setup_building_card(_name : String):
 	card_name = _name + "_building"
@@ -66,7 +72,9 @@ func setup_building_card(_name : String):
 	target_type = TargetTile
 	var info = Building.get_info(_name)
 	display_name = info.display_name
+	icon = info.icon
 	get_node("CardBase/Name").text = display_name
+	get_node("CardBase/TextureRect").texture = load(icon)
 	
 func setup_unit_card(_name : String):
 	card_name = _name + "_unit"
@@ -74,7 +82,9 @@ func setup_unit_card(_name : String):
 	target_type = TargetTroop
 	var info = Unit.get_info(_name)
 	display_name = info.display_name
+	icon = info.icon
 	get_node("CardBase/Name").text = display_name
+	get_node("CardBase/TextureRect").texture = load(icon)
 
 func activate_on_tile(tile_coord : Vector2i) -> bool :
 	var main_player = Game.players[0] as Player
@@ -95,8 +105,10 @@ func activate_on_tile(tile_coord : Vector2i) -> bool :
 	elif type == BuildingCard:
 		if main_player.territories.has(tile_coord):
 			var tile = Game.map[tile_coord] as Tile
-			if tile.building == "":
-				if main_player.add_building(tile_coord, card_name.substr(0, card_name.length() - 9)):
+			var name = card_name.substr(0, card_name.length() - 9)
+			var info = Building.get_info(name)
+			if tile.building == "" && info.need_terrain.find(tile.terrain) != -1:
+				if main_player.add_building(tile_coord, name):
 					return true
 	return false
 

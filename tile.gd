@@ -18,6 +18,8 @@ var building : String = ""
 var player : int = -1
 var neutral_units : Array
 var production_resource : int = 0
+var gold_resource : int = 0
+var science_resource : int = 0
 
 var coord : Vector2i
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://bs1rpkum5d02r"]
+[gd_scene load_steps=56 format=3 uid="uid://bs1rpkum5d02r"]
 
 [ext_resource type="Script" path="res://root.gd" id="1_640q5"]
 [ext_resource type="Texture2D" uid="uid://dbl28m7en1mcc" path="res://tiles/bank.png" id="4_7wog6"]
@@ -6,16 +6,22 @@
 [ext_resource type="Texture2D" uid="uid://b3od7ol7pu73y" path="res://tiles/pine/pine2.png" id="6_sp1jv"]
 [ext_resource type="Texture2D" uid="uid://dueru4vb1pshi" path="res://tiles/pine/pine3.png" id="7_4k7gj"]
 [ext_resource type="Texture2D" uid="uid://licnv0m5nrv3" path="res://tiles/pine/pine-tile.png" id="8_a8jms"]
+[ext_resource type="Texture2D" uid="uid://bae5ph7l5j7ad" path="res://tiles/building/town_hall.png" id="9_0c5id"]
 [ext_resource type="Texture2D" uid="uid://d1o1gcf0bmf5o" path="res://tiles/pine/pine.png" id="9_nrnpe"]
 [ext_resource type="Texture2D" uid="uid://tyk148w5h3bd" path="res://tiles/building/lumber_mill.png" id="9_sc0sq"]
 [ext_resource type="Texture2D" uid="uid://dbqo4h0k6u7kr" path="res://tiles/pine/pine4.png" id="10_g4xdr"]
 [ext_resource type="Texture2D" uid="uid://clkl1ywwuv6l4" path="res://tiles/pine/pine-small2.png" id="11_2lycn"]
+[ext_resource type="Texture2D" uid="uid://y7scrfb281cl" path="res://tiles/building/barracks.png" id="11_bbrdv"]
+[ext_resource type="Texture2D" uid="uid://cbmid25rujtcj" path="res://tiles/building/academy.png" id="12_a0gw1"]
 [ext_resource type="Texture2D" uid="uid://dwv0oc4upuysn" path="res://tiles/pine/pine-small.png" id="12_miumm"]
 [ext_resource type="Texture2D" uid="uid://bbnhubq1mkubw" path="res://tiles/pine/pine-sparse2.png" id="13_3r6pn"]
 [ext_resource type="Texture2D" uid="uid://cjde5w3ubkovl" path="res://tiles/pine/pine-sparse3.png" id="14_fhkq1"]
 [ext_resource type="Texture2D" uid="uid://bhmamalv2wdkw" path="res://tiles/pine/pine-sparse4.png" id="15_gyhfu"]
 [ext_resource type="Texture2D" uid="uid://drg7y7bsgi3u1" path="res://tiles/pine/pine-sparse-small.png" id="16_ds4sq"]
 [ext_resource type="Texture2D" uid="uid://dhtdykitibkee" path="res://tiles/pine/pine-sparse.png" id="17_05g2u"]
+[ext_resource type="Texture2D" uid="uid://yi5p8yirwy43" path="res://icons/production.png" id="23_i85pf"]
+[ext_resource type="Texture2D" uid="uid://gm50qpnho5ei" path="res://icons/gold.png" id="24_m6jih"]
+[ext_resource type="Texture2D" uid="uid://drgc8ty7lh6on" path="res://icons/science.png" id="25_kxr5m"]
 [ext_resource type="Script" path="res://camera.gd" id="167_gjjxa"]
 [ext_resource type="Script" path="res://tilemap.gd" id="167_rj17h"]
 [ext_resource type="Script" path="res://tilemap_overlay.gd" id="170_j5vcd"]
@@ -896,8 +902,23 @@ texture_region_size = Vector2i(72, 72)
 0:0/0/terrains_peering_bit/top_right_side = 0
 0:0/0/terrains_peering_bit/top_right_corner = 0
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6teky"]
+texture = ExtResource("9_0c5id")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pa5u7"]
 texture = ExtResource("9_sc0sq")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_vtls1"]
+texture = ExtResource("11_bbrdv")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_w2b4k"]
+texture = ExtResource("12_a0gw1")
 texture_region_size = Vector2i(72, 72)
 0:0/0 = 0
 
@@ -992,7 +1013,10 @@ sources/8 = SubResource("TileSetAtlasSource_sloiq")
 sources/9 = SubResource("TileSetAtlasSource_66pab")
 sources/10 = SubResource("TileSetAtlasSource_osupp")
 sources/11 = SubResource("TileSetAtlasSource_kvp2f")
-sources/1000 = SubResource("TileSetAtlasSource_pa5u7")
+sources/1001 = SubResource("TileSetAtlasSource_pa5u7")
+sources/1000 = SubResource("TileSetAtlasSource_6teky")
+sources/1002 = SubResource("TileSetAtlasSource_vtls1")
+sources/1003 = SubResource("TileSetAtlasSource_w2b4k")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_75akk"]
 bg_color = Color(0.6, 0.6, 0.6, 0.443137)
@@ -1072,17 +1096,47 @@ offset_left = -64.0
 offset_bottom = 23.0
 grow_horizontal = 0
 
-[node name="Label" type="Label" parent="CanvasLayer/ResourcePanel"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/ResourcePanel"]
 layout_mode = 2
-text = "1000P"
+theme_override_constants/separation = 0
 
-[node name="Label2" type="Label" parent="CanvasLayer/ResourcePanel"]
+[node name="Production" type="Label" parent="CanvasLayer/ResourcePanel/HBoxContainer"]
 layout_mode = 2
-text = "0G"
+text = "100"
 
-[node name="Label3" type="Label" parent="CanvasLayer/ResourcePanel"]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/ResourcePanel/HBoxContainer"]
+custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
-text = "0S"
+texture = ExtResource("23_i85pf")
+expand_mode = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/ResourcePanel"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Gold" type="Label" parent="CanvasLayer/ResourcePanel/HBoxContainer2"]
+layout_mode = 2
+text = "0"
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/ResourcePanel/HBoxContainer2"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+texture = ExtResource("24_m6jih")
+expand_mode = 1
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="CanvasLayer/ResourcePanel"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Science" type="Label" parent="CanvasLayer/ResourcePanel/HBoxContainer3"]
+layout_mode = 2
+text = "0"
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/ResourcePanel/HBoxContainer3"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+texture = ExtResource("25_kxr5m")
+expand_mode = 1
 
 [node name="RightBottomConer" type="MarginContainer" parent="CanvasLayer"]
 anchors_preset = 3
@@ -1394,7 +1448,7 @@ offset_bottom = 40.0
 layout_mode = 2
 
 [node name="Text" type="Label" parent="CanvasLayer/ToolTip/VBoxContainer"]
-custom_minimum_size = Vector2(100, 0)
+custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
 autowrap_mode = 2
 

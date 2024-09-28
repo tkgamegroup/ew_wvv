@@ -6,7 +6,8 @@ signal clicked
 
 var cost_production : int = 0
 var cost_gold : int = 0
-var display_name : String = ""
+var display_name : String
+var icon : String
 
 func setup_territory_item():
 	cost_production = 50
@@ -20,7 +21,9 @@ func setup_building_item(_key : String):
 	cost_production = info.cost_production
 	cost_gold = info.cost_gold
 	display_name = info.display_name
+	icon = info.icon
 	get_node("CardBase/Name").text = display_name
+	get_node("CardBase/TextureRect").texture = load(icon)
 	$Price.text = "%dP" % cost_production
 
 func _gui_input(event: InputEvent):
