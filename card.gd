@@ -7,6 +7,7 @@ const Tile = preload("res://tile.gd")
 
 enum
 {
+	NormalCard,
 	TerritoryCard,
 	BuildingCard,
 	UnitCard
@@ -27,6 +28,8 @@ var target_type : int
 var display_name : String
 var description : String
 var icon : String
+var cost_resource_type : int = Game.NoneResource
+var cost_resource : int = 0
 
 static var config : ConfigFile = null
 
@@ -40,51 +43,59 @@ static func get_info(key : String):
 	ret.display_name = config.get_value(key, "display_name")
 	ret.description = config.get_value(key, "description")
 	ret.icon = config.get_value(key, "icon")
+	ret.cost_resource_type = config.get_value(key, "cost_resource_type", 0)
+	ret.cost_resource = config.get_value(key, "cost_resource", 0)
 	return ret
 
+static func setup_from_data(dst : Control, data : Dictionary):
+	if is_instance_of(dst, Card):
+		dst.card_name = data.card_name
+		dst.type = data.type
+		dst.target_type = data.target_type
+		dst.display_name = data.display_name
+		if data.has("description"):
+			dst.description = data.description
+		dst.icon = data.icon
+		if data.has("cost_resource"):
+			dst.cost_resource_type = data.cost_resource_type
+			dst.cost_resource = data.cost_resource
+	dst.find_child("Name").text = data.display_name
+	dst.find_child("TextureRect").texture = load(data.icon)
+	if data.has("cost_resource"):
+		if data.cost_resource_type != Game.NoneResource:
+			dst.find_child("Cost").visible = true
+			dst.find_child("CostText").text = "%d" % data.cost_resource
+			var icon_path = ""
+			if data.cost_resource_type == Game.FoodResource:
+				icon_path = "res://icons/food.png"
+			dst.find_child("CostIcon").texture = load(icon_path)
+
 func setup(_name : String):
-	card_name = _name
 	var info = get_info(_name)
-	if !config:
-		config = ConfigFile.new()
-		config.load("res://cards.ini")
-	type = info.type
-	target_type = info.target_type
-	display_name = info.display_name
-	description = info.description
-	icon = info.icon
-	get_node("CardBase/Name").text = display_name
-	get_node("CardBase/TextureRect").texture = load(icon)
-	
-func copy(oth : Card):
-	card_name = oth.card_name
-	type = oth.type
-	target_type = oth.target_type
-	display_name = oth.display_name
-	description = oth.description
-	icon = oth.icon
-	get_node("CardBase/Name").text = display_name
-	get_node("CardBase/TextureRect").texture = load(icon)
+	info.card_name = _name
+	setup_from_data(self, info)
 	
 func setup_building_card(_name : String):
-	card_name = _name + "_building"
-	type = BuildingCard
-	target_type = TargetTile
+	var data = {}
+	data.card_name = _name + "_building"
+	data.type = BuildingCard
+	data.target_type = TargetTile
 	var info = Building.get_info(_name)
-	display_name = info.display_name
-	icon = info.icon
-	get_node("CardBase/Name").text = display_name
-	get_node("CardBase/TextureRect").texture = load(icon)
+	data.display_name = info.display_name + "(卡)"
+	data.description = info.description.format(info)
+	data.icon = info.icon
+	setup_from_data(self, data)
 	
 func setup_unit_card(_name : String):
-	card_name = _name + "_unit"
-	type = UnitCard
-	target_type = TargetTroop
+	var data = {}
+	data.card_name = _name + "_unit"
+	data.type = UnitCard
+	data.target_type = TargetTroop
 	var info = Unit.get_info(_name)
-	display_name = info.display_name
-	icon = info.icon
-	get_node("CardBase/Name").text = display_name
-	get_node("CardBase/TextureRect").texture = load(icon)
+	data.display_name = info.display_name + "(卡)"
+	data.description = info.description.format(info)
+	data.icon = info.icon
+	setup_from_data(self, data)
 
 func activate_on_tile(tile_coord : Vector2i) -> bool :
 	var main_player = Game.players[0] as Player

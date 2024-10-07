@@ -11,4 +11,3 @@ func _run():
 		image2.load(ProjectSettings.globalize_path(paths[1]))
 		image1.blend_rect(image2, Rect2i(Vector2i(0, 0), image1.get_size()), Vector2i(0, 0))
 		image1.save_png("res://tiles/bank/bank-.png")
-	

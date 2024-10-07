@@ -5,7 +5,9 @@ enum
 	TerrainWater
 }
 
+var coord : Vector2i
 var terrain : int
+var passable : bool = true
 var tilemap_atlas_ids : Array
 var tilemap_atlas_coords : Array
 var tile_lt : Vector2i
@@ -14,19 +16,20 @@ var tile_rt : Vector2i
 var tile_lb : Vector2i
 var tile_b : Vector2i
 var tile_rb : Vector2i
-var building : String = ""
+var building : String
 var player : int = -1
 var neutral_units : Array
-var production_resource : int = 0
-var gold_resource : int = 0
-var science_resource : int = 0
-
-var coord : Vector2i
+var production_resource : int
+var gold_resource : int
+var science_resource : int
 
 var label : String
 
-func _init(c : Vector2i):
-	coord = c
+func _init(_coord : Vector2i, _terrain : int):
+	coord = _coord
+	terrain = _terrain
+	if terrain == TerrainWater:
+		passable = false
 	tile_lt = Vector2i(-1, -1)
 	tile_t = Vector2i(-1, -1)
 	tile_rt = Vector2i(-1, -1)

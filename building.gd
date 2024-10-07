@@ -6,7 +6,9 @@ enum
 {
 	City,
 	ProductionBuilding,
-	BarracksBuilding
+	BarracksBuilding,
+	RallyPointBuilding,
+	KeepBuilding
 }
 
 var building_name : String
@@ -19,36 +21,37 @@ var description : String
 var tile_id : int
 var ext : Dictionary
 
-static func get_info(key : String):
+static func get_info(name : String):
 	if !config:
 		config = ConfigFile.new()
 		config.load("res://buildings.ini")
 	var ret = {}
-	ret.type = config.get_value(key, "type")
-	ret.cost_production = config.get_value(key, "cost_production")
-	ret.cost_gold = config.get_value(key, "cost_gold")
-	ret.need_terrain = config.get_value(key, "need_terrain")
-	ret.display_name = config.get_value(key, "display_name")
-	ret.description = config.get_value(key, "description")
-	ret.icon = config.get_value(key, "icon")
-	ret.tile_id = config.get_value(key, "tile_id")
+	var vars = config.get_section_keys(name)
+	ret.type = config.get_value(name, "type")
+	ret.cost_production = config.get_value(name, "cost_production")
+	ret.cost_gold = config.get_value(name, "cost_gold")
+	ret.need_terrain = config.get_value(name, "need_terrain")
+	ret.display_name = config.get_value(name, "display_name")
+	ret.description = config.get_value(name, "description")
+	ret.icon = config.get_value(name, "icon")
+	ret.tile_id = config.get_value(name, "tile_id")
 	if ret.type == City:
 		pass
 	elif ret.type == ProductionBuilding:
-		ret.production = config.get_value(key, "production")
-		if !ret.production:
-			ret.production = 0
-		ret.gold_production = config.get_value(key, "gold_production")
-		if !ret.gold_production:
-			ret.gold_production = 0
-		ret.science_production = config.get_value(key, "science_production")
-		if !ret.science_production:
-			ret.science_production = 0
+		ret.production = config.get_value(name, "production", 0)
+		ret.gold_production = config.get_value(name, "gold_production", 0)
+		ret.science_production = config.get_value(name, "science_production", 0)
+		ret.food_production = config.get_value(name, "food_production", 0)
+		ret.geer_production = config.get_value(name, "geer_production", 0)
 	elif ret.type == BarracksBuilding:
-		ret.produce_unit_name = config.get_value(key, "produce_unit_name")
-		var unit_info = Unit.get_info(ret.produce_unit_name)
-		ret.produce_unit_display_name = unit_info.display_name
-		ret.produce_unit_count = config.get_value(key, "produce_unit_count")
+		ret.train_unit_name = config.get_value(name, "train_unit_name")
+		var unit_info = Unit.get_info(ret.train_unit_name)
+		ret.train_unit_display_name = unit_info.display_name
+		ret.train_unit_count = config.get_value(name, "train_unit_count")
+	elif ret.type == RallyPointBuilding:
+		ret.additional_mobility = config.get_value(name, "additional_mobility")
+	elif ret.type == KeepBuilding:
+		ret.additional_defense = config.get_value(name, "additional_defense")
 	return ret
 
 func _init(key : String):
@@ -67,7 +70,13 @@ func _init(key : String):
 		ext["production"] = info.production
 		ext["gold_production"] = info.gold_production
 		ext["science_production"] = info.science_production
+		ext["food_production"] = info.food_production
+		ext["geer_production"] = info.geer_production
 	elif type == BarracksBuilding:
-		ext["produce_unit_name"] = info.produce_unit_name
-		ext["produce_unit_display_name"] = info.produce_unit_display_name
-		ext["produce_unit_count"] = info.produce_unit_count
+		ext["train_unit_name"] = info.train_unit_name
+		ext["train_unit_display_name"] = info.train_unit_display_name
+		ext["train_unit_count"] = info.train_unit_count
+	elif type == RallyPointBuilding:
+		ext["additional_mobility"] = info.additional_mobility
+	elif type == KeepBuilding:
+		ext["additional_defense"] = info.additional_defense

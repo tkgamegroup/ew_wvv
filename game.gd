@@ -5,15 +5,18 @@ const Player = preload("res://player.gd")
 
 enum
 {
-	ConstructState,
+	PrepareState,
 	BattleState
 }
 
 enum
 {
+	NoneResource,
 	ProductionResource,
 	GoldResource,
-	ScienceResource
+	ScienceResource,
+	FoodResource,
+	GeerResource
 }
 
 const cx = 20
@@ -22,6 +25,7 @@ const cy = 10
 var map : Dictionary
 var players : Dictionary
 var techs : Dictionary
+var turn : int = 0
 var state : int = 0
 signal state_changed
 signal attack_commited
@@ -83,7 +87,7 @@ func get_surrounding_tiles_within(tile : Tile, range : int) -> Array:
 		range -= 1
 	return ret
 	
-func find_path_on_map(start : Vector2i, end : Vector2i):
+func find_path_on_map(start : Vector2i, end : Vector2i, vision : Dictionary):
 	var ret = []
 	var start_tile = map[start]
 	if start.x == end.x && start.y == end.y:
@@ -92,10 +96,15 @@ func find_path_on_map(start : Vector2i, end : Vector2i):
 	var end_tile = map[end]
 	var dict = {}
 	var d = 1
+	var max_d = max(Game.cx, Game.cy)
 	var found = false
 	while true:
 		var surroundings = get_surrounding_tiles_within(start_tile, d)
 		for t in surroundings:
+			if !t.passable:
+				continue
+			if !vision.is_empty() && vision.has(t.coord):
+				continue
 			if !dict.has(t):
 				dict[t] = d
 			if t == end_tile:
@@ -104,6 +113,8 @@ func find_path_on_map(start : Vector2i, end : Vector2i):
 		if found:
 			break
 		d += 1
+		if d > max_d:
+			return ret
 	ret.append(end_tile)
 	found = false
 	var reverse_loop = false
@@ -133,7 +144,8 @@ func find_path_on_map(start : Vector2i, end : Vector2i):
 	
 func change_state(new_state : int) :
 	state = new_state
-	if state == ConstructState:
+	if state == PrepareState:
+		turn += 1
 		for id in players:
 			var player = players[id] as Player
 			player.on_state()
@@ -172,7 +184,7 @@ func next_attacker():
 			idx = 0
 		var id = battle_order_list[idx]
 		var player = players[id] as Player
-		if !player.units.is_empty():
+		if id == 0 || !player.units.is_empty():
 			battle_attacker = id
 			break
 		if idx == start_idx:
@@ -193,18 +205,21 @@ func next_attacker():
 		if !cands.is_empty():
 			var c = cands.keys().pick_random()
 			attacker_player.troop_target = c
-			attacker_player.troop_path = find_path_on_map(cands[c], c)
+			attacker_player.troop_path = find_path_on_map(cands[c], c, {})
 			var target_tile = map[c] as Tile
 			if target_tile.player != -1:
 				battle_defender = target_tile.player
-		
+
 	battle_player_changed.emit()
 		
 func commit_attack():
 	if battle_attacker == -1:
 		return
+	var attacker_player = players[battle_attacker] as Player
+	var need_food = attacker_player.get_troop_need_food()
+	attacker_player.add_food(-need_food)
+	
 	if battle_attacker == 0:
-		var attacker_player = players[battle_attacker] as Player
 		var target_tile = map[attacker_player.troop_target] as Tile
 		if target_tile.player != -1 && target_tile.player != 0:
 			battle_defender = target_tile.player
@@ -221,7 +236,7 @@ func cleanup_unit_list(list : Array):
 	var ret = []
 	for u in list:
 		if u != null:
-			ret.append(u.unit_name)
+			ret.append(u)
 	return ret
 
 var battle_calc_callback : Callable
@@ -234,8 +249,7 @@ func battle_calc():
 	var defender_units = []
 	
 	for u in attacker_player.troop_units:
-		var unit = Unit.new(u)
-		attacker_units.append(unit)
+		attacker_units.append(u)
 	
 	attacker_player.troop_units.clear()
 	attacker_player.troop_target = Vector2i(-1, -1)
@@ -244,13 +258,11 @@ func battle_calc():
 	
 	if target_tile.player == -1:
 		for u in target_tile.neutral_units:
-			var unit = Unit.new(u)
-			defender_units.append(unit)
+			defender_units.append(u)
 	else:
 		var defender_player = players[target_tile.player] as Player
 		for u in defender_player.troop_units:
-			var unit = Unit.new(u)
-			defender_units.append(unit)
+			defender_units.append(u)
 		defender_player.troop_units.clear()
 		
 	if battle_calc_callback.is_valid():
@@ -339,26 +351,24 @@ func _ready() -> void:
 	
 	for x in cx:
 		for y in cy:
-			var c = Vector2i(x, y)
-			var t = Tile.new(c)
+			var coord = Vector2i(x, y)
+			var terrain = Tile.TerrainPlain
 			if randf() > 0.3:
-				if randf() > 0.3:
-					t.terrain = Tile.TerrainPlain
-				else:
-					t.terrain = Tile.TerrainForest
+				if randf() > 0.7:
+					terrain = Tile.TerrainForest
 			else:
-				t.terrain = Tile.TerrainWater
-			if randf() < 0.3:
-				for i in randi_range(0, 5):
-					t.neutral_units.append("bear")
+				terrain = Tile.TerrainWater
+			var t = Tile.new(coord, terrain)
 			t.production_resource = randi_range(4, 9)
-			map[c] = t
+			if terrain == Tile.TerrainPlain || terrain == Tile.TerrainForest:
+				if randf() < 0.3:
+					for i in randi_range(0, 5):
+						var unit = Unit.new("bear")
+						t.neutral_units.append(unit)
+			map[coord] = t
 			
 	for c in map:
 		map[c].init_surroundings(map)
 	
 	var main_player = add_player(0)
 	var ai1 = add_player(1)
-
-func _process(delta: float) -> void:
-	pass

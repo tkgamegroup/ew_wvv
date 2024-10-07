@@ -65,14 +65,16 @@ func add_line_to_border(border : Array, p0 : Vector2, p1 : Vector2):
 	
 func update_border(player_id : int):
 	var border = []
+	var main_player = Game.players[0] as Player
 	var player = Game.players[player_id] as Player
-	for t in player.territories:
-		var points = get_tile_points(t)
-		add_line_to_border(border, points[0], points[1])
-		add_line_to_border(border, points[1], points[2])
-		add_line_to_border(border, points[2], points[3])
-		add_line_to_border(border, points[3], points[4])
-		add_line_to_border(border, points[4], points[5])
-		add_line_to_border(border, points[5], points[0])
+	for c in player.territories:
+		if main_player.vision.has(c):
+			var points = get_tile_points(c)
+			add_line_to_border(border, points[0], points[1])
+			add_line_to_border(border, points[1], points[2])
+			add_line_to_border(border, points[2], points[3])
+			add_line_to_border(border, points[3], points[4])
+			add_line_to_border(border, points[4], points[5])
+			add_line_to_border(border, points[5], points[0])
 	borders[player_id] = border
 	queue_redraw()

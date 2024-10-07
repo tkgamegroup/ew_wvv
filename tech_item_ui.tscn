@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3 uid="uid://blso66vpwalfe"]
+
+[ext_resource type="Script" path="res://tech_item.gd" id="1_ew6pc"]
+[ext_resource type="Texture2D" uid="uid://drgc8ty7lh6on" path="res://icons/science.png" id="1_mhrpc"]
+
+[node name="TechItem" type="Control"]
+custom_minimum_size = Vector2(32, 40)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 32.0
+script = ExtResource("1_ew6pc")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+texture = ExtResource("1_mhrpc")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -12.5
+offset_top = -23.0
+offset_right = 12.5
+grow_horizontal = 2
+grow_vertical = 0
+text = "0/3
+"

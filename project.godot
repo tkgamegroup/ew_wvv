@@ -29,7 +29,7 @@ movie_writer/movie_file="G:/record.avi"
 
 [gui]
 
-theme/custom="res://new_theme.tres"
+theme/custom="res://game_theme.tres"
 
 [input]
 

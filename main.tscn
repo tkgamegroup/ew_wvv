@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=3 uid="uid://bs1rpkum5d02r"]
+[gd_scene load_steps=76 format=3 uid="uid://bs1rpkum5d02r"]
 
 [ext_resource type="Script" path="res://root.gd" id="1_640q5"]
 [ext_resource type="Texture2D" uid="uid://dbl28m7en1mcc" path="res://tiles/bank.png" id="4_7wog6"]
@@ -15,13 +15,22 @@
 [ext_resource type="Texture2D" uid="uid://cbmid25rujtcj" path="res://tiles/building/academy.png" id="12_a0gw1"]
 [ext_resource type="Texture2D" uid="uid://dwv0oc4upuysn" path="res://tiles/pine/pine-small.png" id="12_miumm"]
 [ext_resource type="Texture2D" uid="uid://bbnhubq1mkubw" path="res://tiles/pine/pine-sparse2.png" id="13_3r6pn"]
+[ext_resource type="Texture2D" uid="uid://b8fgssu3h3lhq" path="res://tiles/building/farm.png" id="13_8hsuk"]
+[ext_resource type="Texture2D" uid="uid://bk5wx1wtoigcy" path="res://tiles/building/black_smith.png" id="13_xiaoc"]
 [ext_resource type="Texture2D" uid="uid://cjde5w3ubkovl" path="res://tiles/pine/pine-sparse3.png" id="14_fhkq1"]
 [ext_resource type="Texture2D" uid="uid://bhmamalv2wdkw" path="res://tiles/pine/pine-sparse4.png" id="15_gyhfu"]
+[ext_resource type="Texture2D" uid="uid://d32c6iid34egf" path="res://tiles/building/stable.png" id="15_nmmxp"]
+[ext_resource type="Texture2D" uid="uid://dndbxg3a7bw1w" path="res://tiles/building/rally_point.png" id="16_7s0b2"]
 [ext_resource type="Texture2D" uid="uid://drg7y7bsgi3u1" path="res://tiles/pine/pine-sparse-small.png" id="16_ds4sq"]
 [ext_resource type="Texture2D" uid="uid://dhtdykitibkee" path="res://tiles/pine/pine-sparse.png" id="17_05g2u"]
+[ext_resource type="Texture2D" uid="uid://7j3k782ili7w" path="res://tiles/building/keep.png" id="17_hn8yq"]
+[ext_resource type="Texture2D" uid="uid://bgb8isnruls28" path="res://tiles/building/fishing_camp.png" id="19_gyhxx"]
+[ext_resource type="Texture2D" uid="uid://hk6vk1pwk5gy" path="res://tiles/building/wind_mill.png" id="20_4psrw"]
 [ext_resource type="Texture2D" uid="uid://yi5p8yirwy43" path="res://icons/production.png" id="23_i85pf"]
 [ext_resource type="Texture2D" uid="uid://gm50qpnho5ei" path="res://icons/gold.png" id="24_m6jih"]
 [ext_resource type="Texture2D" uid="uid://drgc8ty7lh6on" path="res://icons/science.png" id="25_kxr5m"]
+[ext_resource type="Texture2D" uid="uid://c1of6b7dj4m6m" path="res://icons/food.png" id="26_o7f4c"]
+[ext_resource type="PackedScene" uid="uid://cc5hsg56qvglc" path="res://battle_unit.tscn" id="32_l554o"]
 [ext_resource type="Script" path="res://camera.gd" id="167_gjjxa"]
 [ext_resource type="Script" path="res://tilemap.gd" id="167_rj17h"]
 [ext_resource type="Script" path="res://tilemap_overlay.gd" id="170_j5vcd"]
@@ -875,14 +884,6 @@ texture_region_size = Vector2i(72, 72)
 0:1/0 = 0
 1:1/0 = 0
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fshdh"]
-texture = ExtResource("7_4k7gj")
-texture_region_size = Vector2i(72, 72)
-0:0/0 = 0
-1:0/0 = 0
-0:1/0 = 0
-1:1/0 = 0
-
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_osupp"]
 texture = ExtResource("8_a8jms")
 texture_region_size = Vector2i(72, 72)
@@ -902,6 +903,14 @@ texture_region_size = Vector2i(72, 72)
 0:0/0/terrains_peering_bit/top_right_side = 0
 0:0/0/terrains_peering_bit/top_right_corner = 0
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fshdh"]
+texture = ExtResource("7_4k7gj")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+1:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6teky"]
 texture = ExtResource("9_0c5id")
 texture_region_size = Vector2i(72, 72)
@@ -912,13 +921,38 @@ texture = ExtResource("9_sc0sq")
 texture_region_size = Vector2i(72, 72)
 0:0/0 = 0
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_vtls1"]
-texture = ExtResource("11_bbrdv")
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_i5kic"]
+texture = ExtResource("13_8hsuk")
 texture_region_size = Vector2i(72, 72)
 0:0/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_w2b4k"]
 texture = ExtResource("12_a0gw1")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_n8rtg"]
+texture = ExtResource("13_xiaoc")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_vtls1"]
+texture = ExtResource("11_bbrdv")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ve74t"]
+texture = ExtResource("15_nmmxp")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_dux7s"]
+texture = ExtResource("16_7s0b2")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_aot6c"]
+texture = ExtResource("17_hn8yq")
 texture_region_size = Vector2i(72, 72)
 0:0/0 = 0
 
@@ -929,6 +963,16 @@ texture_region_size = Vector2i(72, 72)
 1:0/0 = 0
 0:1/0 = 0
 1:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e1hnc"]
+texture = ExtResource("19_gyhxx")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_o5seo"]
+texture = ExtResource("20_4psrw")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7rnq4"]
 texture = ExtResource("10_g4xdr")
@@ -1002,7 +1046,6 @@ terrain_set_0/mode = 0
 terrain_set_0/terrain_0/name = "forest"
 terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
 sources/0 = SubResource("TileSetAtlasSource_3v6rf")
-sources/1 = SubResource("TileSetAtlasSource_fshdh")
 sources/2 = SubResource("TileSetAtlasSource_7rnq4")
 sources/3 = SubResource("TileSetAtlasSource_t16sj")
 sources/4 = SubResource("TileSetAtlasSource_jawgy")
@@ -1011,12 +1054,23 @@ sources/6 = SubResource("TileSetAtlasSource_cd2gh")
 sources/7 = SubResource("TileSetAtlasSource_yy3rp")
 sources/8 = SubResource("TileSetAtlasSource_sloiq")
 sources/9 = SubResource("TileSetAtlasSource_66pab")
-sources/10 = SubResource("TileSetAtlasSource_osupp")
 sources/11 = SubResource("TileSetAtlasSource_kvp2f")
 sources/1001 = SubResource("TileSetAtlasSource_pa5u7")
 sources/1000 = SubResource("TileSetAtlasSource_6teky")
-sources/1002 = SubResource("TileSetAtlasSource_vtls1")
-sources/1003 = SubResource("TileSetAtlasSource_w2b4k")
+sources/1004 = SubResource("TileSetAtlasSource_i5kic")
+sources/13 = SubResource("TileSetAtlasSource_e1hnc")
+sources/17 = SubResource("TileSetAtlasSource_o5seo")
+sources/1005 = SubResource("TileSetAtlasSource_w2b4k")
+sources/1006 = SubResource("TileSetAtlasSource_n8rtg")
+sources/1007 = SubResource("TileSetAtlasSource_vtls1")
+sources/1008 = SubResource("TileSetAtlasSource_ve74t")
+sources/1009 = SubResource("TileSetAtlasSource_dux7s")
+sources/1010 = SubResource("TileSetAtlasSource_aot6c")
+sources/100 = SubResource("TileSetAtlasSource_fshdh")
+sources/1 = SubResource("TileSetAtlasSource_osupp")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hb8gg"]
+bg_color = Color(1, 1, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_75akk"]
 bg_color = Color(0.6, 0.6, 0.6, 0.443137)
@@ -1035,6 +1089,27 @@ expand_margin_left = 2.0
 expand_margin_top = 2.0
 expand_margin_right = 2.0
 expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tpm8k"]
+bg_color = Color(0.682419, 0.200757, 0.333077, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pmv7x"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qk14p"]
+bg_color = Color(0.282152, 0.317194, 0.691287, 1)
 
 [node name="Root" type="Node2D"]
 script = ExtResource("1_640q5")
@@ -1068,7 +1143,7 @@ polygon = PackedVector2Array(-14, -9, -3, -9, 0, -21, 4, -9, 15, -9, 5, 0, 9, 12
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer"]
+[node name="StateTip" type="PanelContainer" parent="CanvasLayer"]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -1076,17 +1151,65 @@ offset_left = -32.0
 offset_right = 32.0
 offset_bottom = 23.0
 grow_horizontal = 2
-mouse_filter = 2
+mouse_filter = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/PanelContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/StateTip"]
 layout_mode = 2
 size_flags_horizontal = 4
+mouse_filter = 2
 
-[node name="Label2" type="Label" parent="CanvasLayer/PanelContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/StateTip/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/StateTip/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 18
+
+[node name="Button" type="Button" parent="CanvasLayer/StateTip/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+text = "提示"
+
+[node name="Label2" type="Label" parent="CanvasLayer/StateTip/VBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="Alert" type="MarginContainer" parent="CanvasLayer"]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -58.0
+offset_right = 58.0
+offset_bottom = 33.0
+grow_horizontal = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_constants/margin_top = 50
+
+[node name="Panel" type="PanelContainer" parent="CanvasLayer/Alert"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hb8gg")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Alert/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="Label" type="Label" parent="CanvasLayer/Alert/Panel/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+text = "不能干嘛干嘛"
 
 [node name="ResourcePanel" type="HBoxContainer" parent="CanvasLayer"]
 anchors_preset = 1
@@ -1136,6 +1259,20 @@ text = "0"
 custom_minimum_size = Vector2(24, 0)
 layout_mode = 2
 texture = ExtResource("25_kxr5m")
+expand_mode = 1
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="CanvasLayer/ResourcePanel"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Food" type="Label" parent="CanvasLayer/ResourcePanel/HBoxContainer4"]
+layout_mode = 2
+text = "0"
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/ResourcePanel/HBoxContainer4"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+texture = ExtResource("26_o7f4c")
 expand_mode = 1
 
 [node name="RightBottomConer" type="MarginContainer" parent="CanvasLayer"]
@@ -1273,7 +1410,7 @@ layout_mode = 2
 size_flags_vertical = 4
 text = "确认"
 
-[node name="Shop" type="Panel" parent="CanvasLayer"]
+[node name="Shop" type="PanelContainer" parent="CanvasLayer"]
 visible = false
 anchors_preset = 8
 anchor_left = 0.5
@@ -1283,23 +1420,33 @@ anchor_bottom = 0.5
 offset_left = -160.0
 offset_top = -117.5
 offset_right = 160.0
-offset_bottom = 117.5
+offset_bottom = 141.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_2davj")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Shop"]
 layout_mode = 2
-offset_right = 320.0
-offset_bottom = 235.0
 
 [node name="Label" type="Label" parent="CanvasLayer/Shop/VBoxContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_tpm8k")
 text = "商店"
+
+[node name="TabBar" type="TabBar" parent="CanvasLayer/Shop/VBoxContainer"]
+layout_mode = 2
+current_tab = 0
+tab_count = 3
+tab_0/title = "建筑"
+tab_0/icon = ExtResource("23_i85pf")
+tab_1/title = "建筑"
+tab_1/icon = ExtResource("24_m6jih")
+tab_2/title = "单位"
 
 [node name="GridContainer" type="GridContainer" parent="CanvasLayer/Shop/VBoxContainer"]
 layout_mode = 2
-columns = 6
+columns = 5
 
 [node name="Card" parent="CanvasLayer/Shop/VBoxContainer/GridContainer" instance=ExtResource("172_ve8xk")]
 layout_mode = 2
@@ -1327,15 +1474,12 @@ layout_mode = 2
 
 [node name="Button" type="Button" parent="CanvasLayer/Shop"]
 layout_mode = 2
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -18.0
-offset_bottom = 31.0
-grow_horizontal = 0
+size_flags_horizontal = 8
+size_flags_vertical = 0
 text = "X
 "
 
-[node name="Battle" type="PanelContainer" parent="CanvasLayer"]
+[node name="Battle" type="Panel" parent="CanvasLayer"]
 visible = false
 custom_minimum_size = Vector2(212, 200)
 anchors_preset = 8
@@ -1352,6 +1496,7 @@ grow_vertical = 2
 
 [node name="Control" type="Control" parent="CanvasLayer/Battle"]
 layout_mode = 2
+anchors_preset = 0
 
 [node name="Label" type="Label" parent="CanvasLayer/Battle/Control"]
 layout_mode = 2
@@ -1366,31 +1511,13 @@ offset_top = 27.0
 offset_right = 212.0
 offset_bottom = 87.0
 
-[node name="CardBase" parent="CanvasLayer/Battle/Control/Side1" instance=ExtResource("173_nwnif")]
-layout_mode = 2
-offset_right = 50.0
-offset_bottom = 60.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(0.5, 0)
+[node name="BattleUnit" parent="CanvasLayer/Battle/Control/Side1" instance=ExtResource("32_l554o")]
 
-[node name="CardBase2" parent="CanvasLayer/Battle/Control/Side1" instance=ExtResource("173_nwnif")]
-layout_mode = 2
-offset_left = 54.0
-offset_right = 104.0
-offset_bottom = 60.0
+[node name="BattleUnit2" parent="CanvasLayer/Battle/Control/Side1" instance=ExtResource("32_l554o")]
 
-[node name="CardBase3" parent="CanvasLayer/Battle/Control/Side1" instance=ExtResource("173_nwnif")]
-layout_mode = 2
-offset_left = 108.0
-offset_right = 158.0
-offset_bottom = 60.0
+[node name="BattleUnit3" parent="CanvasLayer/Battle/Control/Side1" instance=ExtResource("32_l554o")]
 
-[node name="CardBase4" parent="CanvasLayer/Battle/Control/Side1" instance=ExtResource("173_nwnif")]
-layout_mode = 2
-offset_left = 162.0
-offset_right = 212.0
-offset_bottom = 60.0
+[node name="BattleUnit4" parent="CanvasLayer/Battle/Control/Side1" instance=ExtResource("32_l554o")]
 
 [node name="Side2" type="Control" parent="CanvasLayer/Battle/Control"]
 layout_mode = 2
@@ -1399,42 +1526,57 @@ offset_top = 137.0
 offset_right = 212.0
 offset_bottom = 197.0
 
-[node name="CardBase" parent="CanvasLayer/Battle/Control/Side2" instance=ExtResource("173_nwnif")]
-layout_mode = 2
-offset_right = 50.0
-offset_bottom = 60.0
+[node name="BattleUnit" parent="CanvasLayer/Battle/Control/Side2" instance=ExtResource("32_l554o")]
 
-[node name="CardBase2" parent="CanvasLayer/Battle/Control/Side2" instance=ExtResource("173_nwnif")]
-layout_mode = 2
-offset_left = 54.0
-offset_right = 104.0
-offset_bottom = 60.0
+[node name="BattleUnit2" parent="CanvasLayer/Battle/Control/Side2" instance=ExtResource("32_l554o")]
 
-[node name="CardBase3" parent="CanvasLayer/Battle/Control/Side2" instance=ExtResource("173_nwnif")]
-layout_mode = 2
-offset_left = 108.0
-offset_right = 158.0
-offset_bottom = 60.0
+[node name="BattleUnit3" parent="CanvasLayer/Battle/Control/Side2" instance=ExtResource("32_l554o")]
 
-[node name="CardBase4" parent="CanvasLayer/Battle/Control/Side2" instance=ExtResource("173_nwnif")]
-layout_mode = 2
-offset_left = 162.0
-offset_right = 212.0
-offset_bottom = 60.0
+[node name="BattleUnit4" parent="CanvasLayer/Battle/Control/Side2" instance=ExtResource("32_l554o")]
 
-[node name="TechTree" type="PanelContainer" parent="CanvasLayer"]
+[node name="TechTree" type="Panel" parent="CanvasLayer"]
 visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
+offset_left = -400.0
+offset_top = -250.0
+offset_right = 400.0
+offset_bottom = 250.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pmv7x")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/TechTree"]
+layout_mode = 1
+offset_right = 800.0
+offset_bottom = 482.0
+
+[node name="Label" type="Label" parent="CanvasLayer/TechTree/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_qk14p")
+text = "科技树"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CanvasLayer/TechTree/VBoxContainer"]
+custom_minimum_size = Vector2(800, 450)
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="CanvasLayer/TechTree/VBoxContainer/ScrollContainer"]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 2
+
+[node name="Button" type="Button" parent="CanvasLayer/TechTree"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -18.0
+offset_bottom = 31.0
+grow_horizontal = 0
+text = "X"
 
 [node name="DragCard" parent="CanvasLayer" instance=ExtResource("173_nwnif")]
 visible = false
@@ -1447,13 +1589,19 @@ offset_bottom = 40.0
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/ToolTip"]
 layout_mode = 2
 
-[node name="Text" type="Label" parent="CanvasLayer/ToolTip/VBoxContainer"]
+[node name="Text" type="RichTextLabel" parent="CanvasLayer/ToolTip/VBoxContainer"]
 custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
+bbcode_enabled = true
+fit_content = true
 autowrap_mode = 2
 
+[connection signal="pressed" from="CanvasLayer/StateTip/VBoxContainer/HBoxContainer/Button" to="." method="on_show_tip_button"]
 [connection signal="pressed" from="CanvasLayer/RightBottomConer/HBoxContainer/Button2" to="." method="on_shop_button"]
+[connection signal="pressed" from="CanvasLayer/RightBottomConer/HBoxContainer/Button" to="." method="on_tech_button"]
 [connection signal="pressed" from="CanvasLayer/RightBottomConer/HBoxContainer/StateButton" to="." method="on_state_button"]
 [connection signal="mode_changed" from="CanvasLayer/TroopContainer/Troop/VBoxContainer/HBoxContainer/TargetButton" to="." method="on_target_button"]
 [connection signal="pressed" from="CanvasLayer/TroopContainer/Troop/VBoxContainer/HBoxContainer/ComfireButton" to="." method="on_troop_comfire"]
+[connection signal="tab_changed" from="CanvasLayer/Shop/VBoxContainer/TabBar" to="." method="on_shop_tab_changed"]
 [connection signal="pressed" from="CanvasLayer/Shop/Button" to="." method="on_shop_close_button"]
+[connection signal="pressed" from="CanvasLayer/TechTree/Button" to="." method="on_tech_close_button"]
