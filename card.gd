@@ -97,30 +97,51 @@ func setup_unit_card(_name : String):
 	data.icon = info.icon
 	setup_from_data(self, data)
 
-func activate_on_tile(tile_coord : Vector2i) -> bool :
-	var main_player = Game.players[0] as Player
+func activate_on_tile(tile_coord : Vector2i, result : Dictionary) -> bool :
 	if type == TerritoryCard:
+		if Game.state != Game.PrepareState:
+			result.message = "只能在准备阶段使用"
+			return false
 		var ok = false
-		if !main_player.territories.has(tile_coord):
-			var tile = Game.map[tile_coord]
+		if !Game.main_player.territories.has(tile_coord):
+			var tile = Game.map[tile_coord] as Tile
 			if tile.player == -1:
-				for t in Game.get_surrounding_tiles(tile):
-					if main_player.territories.has(t.coord):
-						ok = true
-						break
+				if tile.neutral_units.is_empty():
+					for t in Game.get_surrounding_tiles(tile):
+						if Game.main_player.territories.has(t.coord):
+							ok = true
+							break
+					if !ok:
+						result.message = "必须放在已有领地旁边"
+				else:
+					result.message = "此地块上有野生生物，不能占领"
+			else:
+				result.message = "此地块已被其他玩家占领"
+		else:
+			result.message = "已经有此领地"
 		if ok:
-			if main_player.unused_territories > 0:
-				if main_player.add_territory(tile_coord):
-					main_player.unused_territories -= 1
+			if Game.main_player.unused_territories > 0:
+				if Game.main_player.add_territory(tile_coord):
+					Game.main_player.unused_territories -= 1
 					return true
 	elif type == BuildingCard:
-		if main_player.territories.has(tile_coord):
+		if Game.state != Game.PrepareState:
+			result.message = "只能在准备阶段使用"
+			return false
+		if Game.main_player.territories.has(tile_coord):
 			var tile = Game.map[tile_coord] as Tile
-			var name = card_name.substr(0, card_name.length() - 9)
-			var info = Building.get_info(name)
-			if tile.building == "" && info.need_terrain.find(tile.terrain) != -1:
-				if main_player.add_building(tile_coord, name):
-					return true
+			if tile.building == "":
+				var name = card_name.substr(0, card_name.length() - 9)
+				var info = Building.get_info(name)
+				if info.need_terrain.find(tile.terrain) != -1:
+					if Game.main_player.add_building(tile_coord, name):
+						return true
+				else:
+					result.message = "不符合建筑要求的领地类型"
+			else:
+				result.message = "领地上已经有别的建筑"
+		else:
+			result.message = "只能在你的领地上使用"
 	return false
 
 var tween : Tween = null

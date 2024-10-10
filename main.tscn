@@ -921,8 +921,18 @@ texture = ExtResource("9_sc0sq")
 texture_region_size = Vector2i(72, 72)
 0:0/0 = 0
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_o5seo"]
+texture = ExtResource("20_4psrw")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_i5kic"]
 texture = ExtResource("13_8hsuk")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e1hnc"]
+texture = ExtResource("19_gyhxx")
 texture_region_size = Vector2i(72, 72)
 0:0/0 = 0
 
@@ -963,16 +973,6 @@ texture_region_size = Vector2i(72, 72)
 1:0/0 = 0
 0:1/0 = 0
 1:1/0 = 0
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e1hnc"]
-texture = ExtResource("19_gyhxx")
-texture_region_size = Vector2i(72, 72)
-0:0/0 = 0
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_o5seo"]
-texture = ExtResource("20_4psrw")
-texture_region_size = Vector2i(72, 72)
-0:0/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7rnq4"]
 texture = ExtResource("10_g4xdr")
@@ -1057,9 +1057,6 @@ sources/9 = SubResource("TileSetAtlasSource_66pab")
 sources/11 = SubResource("TileSetAtlasSource_kvp2f")
 sources/1001 = SubResource("TileSetAtlasSource_pa5u7")
 sources/1000 = SubResource("TileSetAtlasSource_6teky")
-sources/1004 = SubResource("TileSetAtlasSource_i5kic")
-sources/13 = SubResource("TileSetAtlasSource_e1hnc")
-sources/17 = SubResource("TileSetAtlasSource_o5seo")
 sources/1005 = SubResource("TileSetAtlasSource_w2b4k")
 sources/1006 = SubResource("TileSetAtlasSource_n8rtg")
 sources/1007 = SubResource("TileSetAtlasSource_vtls1")
@@ -1068,6 +1065,9 @@ sources/1009 = SubResource("TileSetAtlasSource_dux7s")
 sources/1010 = SubResource("TileSetAtlasSource_aot6c")
 sources/100 = SubResource("TileSetAtlasSource_fshdh")
 sources/1 = SubResource("TileSetAtlasSource_osupp")
+sources/1003 = SubResource("TileSetAtlasSource_i5kic")
+sources/1002 = SubResource("TileSetAtlasSource_o5seo")
+sources/1004 = SubResource("TileSetAtlasSource_e1hnc")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hb8gg"]
 bg_color = Color(1, 1, 1, 1)

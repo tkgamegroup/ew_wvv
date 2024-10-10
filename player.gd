@@ -41,15 +41,15 @@ func _init(_id : int) -> void:
 	color = Color.from_hsv(id / 6.0, 0.5, 1)
 	
 	avaliable_constructions.append("lumber_mill")
-	avaliable_constructions.append("wind_mill")
+	#avaliable_constructions.append("wind_mill")
 	avaliable_constructions.append("farm")
-	avaliable_constructions.append("fishing_camp")
+	#avaliable_constructions.append("fishing_camp")
 	avaliable_constructions.append("academy")
 	avaliable_constructions.append("barracks")
-	avaliable_constructions.append("stable")
-	avaliable_constructions.append("rally_point")
-	avaliable_constructions.append("keep")
-	avaliable_constructions.append("black_smith")
+	#avaliable_constructions.append("stable")
+	#avaliable_constructions.append("rally_point")
+	#avaliable_constructions.append("keep")
+	#avaliable_constructions.append("black_smith")
 	
 	modifiers["LUMBER_MILL_PRODUCTION_BOUNS_PERCENTAGE"] = 0
 	modifiers["ACADEMY_PRODUCTION_BOUNS_PERCENTAGE"] = 0
@@ -94,6 +94,13 @@ func add_food(v : int):
 	food += v
 	food_changed.emit(old_value, food)
 
+func add_vision(coord : Vector2i, range : int):
+	vision[coord] = 1
+	var tile = Game.map[coord] as Tile
+	for t in Game.get_surrounding_tiles_within(tile, range):
+		vision[t.coord] = 1
+	vision_changed.emit()
+
 func add_territory(coord : Vector2i):
 	var tile = Game.map[coord] as Tile
 	if tile.player == -1:
@@ -101,12 +108,13 @@ func add_territory(coord : Vector2i):
 			tile.player = id
 			territories[coord] = 1
 			territory_changed.emit(id)
-			vision[coord] = 1
-			for t in Game.get_surrounding_tiles(tile):
-				vision[t.coord] = 1
-			vision_changed.emit()
+			add_vision(coord, 1)
 			return true
 	return false
+
+func remove_territory(coord : Vector2i):
+	if territories.has(coord):
+		territories.erase(coord)
 
 func add_building(coord : Vector2i, name : String):
 	if territories.has(coord):
@@ -126,6 +134,14 @@ func add_building(coord : Vector2i, name : String):
 			building_changed.emit(id)
 			return true
 	return false
+
+func remove_building(coord : Vector2i):
+	if territories.has(coord):
+		var tile = Game.map[coord]
+		if tile.building != "":
+			tile.label = ""
+			tile.building = ""
+			buildings.erase(coord)
 
 func add_unit(name : String, mobility : int = -1):
 	var unit = Unit.new(name)
@@ -194,7 +210,7 @@ func on_state():
 			if on_state_callback.is_valid():
 				on_state_callback.call("next_building", c)
 
-			if Game.turn != 1:
+			if Game.turn != 1 && corruped_food > 0:
 				processed = false
 				if on_state_callback.is_valid():
 					if on_state_callback.call("food", -corruped_food):

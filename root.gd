@@ -105,15 +105,14 @@ func add_resource(type : int, v : int, pos : Vector2, parent_node : Node = ui_ro
 	var tween2 = get_tree().create_tween()
 	tween2.tween_property(label, "position", pos - Vector2(0, 5), 0.2)
 	tween2.tween_callback(func():
-		var main_player = Game.players[0] as Player
 		if type == Game.ProductionResource:
-			main_player.add_production(v)
+			Game.main_player.add_production(v)
 		elif type == Game.GoldResource:
-			main_player.add_gold(v)
+			Game.main_player.add_gold(v)
 		elif type == Game.ScienceResource:
-			main_player.add_science(v)
+			Game.main_player.add_science(v)
 		elif type == Game.FoodResource:
-			main_player.add_food(v)
+			Game.main_player.add_food(v)
 	)
 	tween2.tween_property(label, "position", pos - Vector2(0, 10), 0.2)
 	tween2.tween_callback(func():
@@ -218,15 +217,13 @@ func create_hand_card():
 								Card.setup_from_data(new_card2, inst_to_dict(new_card))
 								hand.add_child(new_card2)
 								new_card.queue_free()
-								var main_player = Game.players[0] as Player
-								main_player.move_unit_from_troop(new_card2.card_name.substr(0, new_card2.card_name.length() - 5))
+								Game.main_player.move_unit_from_troop(new_card2.card_name.substr(0, new_card2.card_name.length() - 5))
 								tilemap_overlay.queue_redraw()
 							)
 					)
 					troop_list.add_child(new_card)
 					card.queue_free()
-					var main_player = Game.players[0] as Player
-					main_player.move_unit_to_troop(new_card.card_name.substr(0, new_card.card_name.length() - 5))
+					Game.main_player.move_unit_to_troop(new_card.card_name.substr(0, new_card.card_name.length() - 5))
 					tilemap_overlay.queue_redraw()
 				)
 		else:
@@ -343,8 +340,6 @@ func on_state_animation(what, data):
 		return true
 
 func on_state_changed():
-	var main_player = Game.players[0] as Player
-	
 	if Game.state == Game.PrepareState:
 		state_text.text = "准备阶段"
 		state_button.text = "开始战斗"
@@ -374,11 +369,11 @@ func on_state_changed():
 			n.queue_free()
 			
 func on_battle_player_changed():
-	if Game.battle_attacker == 0:
+	if Game.battle_attacker == Game.main_player_id:
 		troop_side_text.text = "你是攻击方"
 		troop_target_button.show()
 		troop_ui.show()
-	elif Game.battle_defender == 0:
+	elif Game.battle_defender == Game.main_player_id:
 		troop_side_text.text = "你是防守方"
 		troop_target_button.hide()
 		troop_ui.show()
@@ -392,9 +387,12 @@ func on_battle_player_changed():
 func process_card_drop():
 	if dragging_card.target_type == Card.TargetTile:
 		if Game.hovering_tile.x != -1:
-			if dragging_card.activate_on_tile(Game.hovering_tile):
+			var result = {}
+			if dragging_card.activate_on_tile(Game.hovering_tile, result):
 				dragging_card.queue_free()
 				return true
+			else:
+				alert(result.message)
 	return false
 
 func move_back_drag_card():
@@ -448,15 +446,13 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey:
 		if event.pressed:
 			if event.keycode == KEY_H:
-				var main_player = Game.players[0] as Player
-				camera.move_to(tilemap.to_global(tilemap.map_to_local(main_player.coord)))
+				camera.move_to(tilemap.to_global(tilemap.map_to_local(Game.main_player.coord)))
 			elif event.keycode == KEY_S:
 				on_shop_button()
 			elif event.keycode == KEY_T:
 				on_tech_button()
 
 func add_shop_item(card_type : int, name : String, use_resource : int, amount : int):
-	var main_player = Game.players[0] as Player
 	var shop_item = ShopItemPrefab.instantiate()
 	if card_type == Card.TerritoryCard:
 		pass
@@ -485,7 +481,7 @@ func add_shop_item(card_type : int, name : String, use_resource : int, amount : 
 	shop_item.clicked.connect(func():
 		if shop_using:
 			return
-		if main_player.get_resource(shop_item.use_resource) >= shop_item.resource_amount:
+		if Game.main_player.get_resource(shop_item.use_resource) >= shop_item.resource_amount:
 			shop_using = true
 			add_resource(shop_item.use_resource, -shop_item.resource_amount, shop_item.global_position)
 			
@@ -504,7 +500,7 @@ func add_shop_item(card_type : int, name : String, use_resource : int, amount : 
 					card.setup_building_card(name)
 				elif card_type == Card.UnitCard:
 					card.setup_unit_card(name)
-					main_player.add_unit(name)
+					Game.main_player.add_unit(name)
 				hand.add_child(card)
 				shop_using = false
 			)
@@ -519,19 +515,18 @@ func add_shop_item(card_type : int, name : String, use_resource : int, amount : 
 	shop_list.add_child(shop_item)
 
 func update_shop_list():
-	var main_player = Game.players[0] as Player
 	for n in shop_list.get_children():
 		shop_list.remove_child(n)
 		n.queue_free()
 	var category = shop_tab_bar.current_tab
 	if category == 0:
-		for k in main_player.avaliable_constructions:
+		for k in Game.main_player.avaliable_constructions:
 			add_shop_item(Card.BuildingCard, k, Game.ProductionResource, -1)
 	elif category == 1:
-		for k in main_player.avaliable_constructions:
+		for k in Game.main_player.avaliable_constructions:
 			add_shop_item(Card.BuildingCard, k, Game.GoldResource, -1)
 	elif category == 2:
-		for k in main_player.avaliable_trainings:
+		for k in Game.main_player.avaliable_trainings:
 			add_shop_item(Card.UnitCard, k.name, Game.GoldResource, k.amount)
 
 func on_shop_close_button() -> void:
@@ -561,27 +556,26 @@ func on_tech_button() -> void:
 func on_target_button(v: bool) -> void:
 	if v:
 		select_tile_callback = Callable(func(coord : Vector2i, is_peeding : bool):
-			var main_player = Game.players[0] as Player
-			main_player.troop_target = coord
+			Game.main_player.troop_target = coord
 			if !is_peeding:
 				troop_target_button.set_pressed_no_signal(false)
 				troop_target_button.toggled.emit(false)
 				if coord.x == -1 && coord.y == -1:
-					main_player.troop_path.clear()
+					Game.main_player.troop_path.clear()
 					tilemap_overlay.queue_redraw()
 			else:
 				if coord.x != -1 && coord.y != -1:
 					var shortest_path = []
 					var shortest_dist = 1000
-					for c in main_player.territories:
-						var path = Game.find_path_on_map(c, coord, main_player.vision)
-						if path.size() < shortest_dist:
+					for c in Game.main_player.territories:
+						var path = Game.find_path_on_map(c, coord, Game.main_player.vision)
+						if !path.is_empty() && path.size() < shortest_dist:
 							shortest_dist = path.size()
 							shortest_path = path
-					main_player.troop_path = shortest_path
+					Game.main_player.troop_path = shortest_path
 					tilemap_overlay.queue_redraw()
 				else:
-					main_player.troop_path.clear()
+					Game.main_player.troop_path.clear()
 					tilemap_overlay.queue_redraw()
 		)
 	else:
@@ -654,38 +648,34 @@ func on_battle_calc(what : String, data):
 		)
 		return true
 	elif what == "production":
-		if Game.battle_attacker == 0:
+		if Game.battle_attacker == Game.main_player_id:
 			battle_animation.tween_callback(func():
-				var main_player = Game.players[0] as Player
 				add_resource(Game.ProductionResource, data.value, tilemap.map_to_local(data.coord), scene_root)
 			)
 			return true
 		return false
 	elif what == "gold_production":
-		if Game.battle_attacker == 0:
+		if Game.battle_attacker == Game.main_player_id:
 			battle_animation.tween_callback(func():
-				var main_player = Game.players[0] as Player
 				add_resource(Game.GoldResource, data.value, tilemap.map_to_local(data.coord), scene_root)
 			)
 			return true
 		return false
 	elif what == "science_production":
-		if Game.battle_attacker == 0:
+		if Game.battle_attacker == Game.main_player_id:
 			battle_animation.tween_callback(func():
-				var main_player = Game.players[0] as Player
 				add_resource(Game.ScienceResource, data.value, tilemap.map_to_local(data.coord), scene_root)
 			)
 			return true
 		return false
 
 func on_troop_comfire() -> void:
-	var main_player = Game.players[0] as Player
-	if Game.battle_attacker == 0:
-		if main_player.troop_target.x == -1 || main_player.troop_target.y == -1:
+	if Game.battle_attacker == Game.main_player_id:
+		if Game.main_player.troop_target.x == -1 || Game.main_player.troop_target.y == -1:
 			alert("需要一个目标")
-		elif main_player.troop_units.is_empty():
+		elif Game.main_player.troop_units.is_empty():
 			alert("需要至少一个单位")
-		elif main_player.troop_mobility + 1 < main_player.troop_path.size():
+		elif Game.main_player.troop_mobility + 1 < Game.main_player.troop_path.size():
 			alert("行军距离不够")
 		else:
 			troop_side_text.text = ""
@@ -694,7 +684,7 @@ func on_troop_comfire() -> void:
 				n.queue_free()
 			troop_ui.hide()
 			Game.commit_attack()
-	elif Game.battle_defender == 0:
+	elif Game.battle_defender == Game.main_player_id:
 		Game.commit_attack()
 
 func on_attack_commited():
@@ -721,7 +711,7 @@ func on_attack_commited():
 			tween.tween_property(attack_troop_mark, "position", pos, t)
 	tween.tween_callback(func():
 		attack_troop_mark.hide()
-		if Game.battle_attacker == 0 || Game.battle_defender == 0:
+		if Game.battle_attacker == Game.main_player_id || Game.battle_defender == Game.main_player_id:
 			Game.battle_calc_callback = Callable(on_battle_calc)
 		Game.battle_calc()
 		if Game.battle_calc_callback.is_valid():
@@ -803,12 +793,11 @@ func init_tiles():
 var updated_tiles = {}
 
 func update_tiles():
-	var main_player = Game.players[0] as Player
 	for x in Game.cx:
 		for y in Game.cy:
 			var c = Vector2i(x, y)
 			var tile = Game.map[c] as Tile
-			if !updated_tiles.has(c) && main_player.vision.has(c):
+			if !updated_tiles.has(c) && Game.main_player.vision.has(c):
 				tilemap_water.set_cell(c, tile.tilemap_atlas_ids[0], tile.tilemap_atlas_coords[0])
 				tilemap_dirt.set_cell(c, tile.tilemap_atlas_ids[1], tile.tilemap_atlas_coords[1])
 				tilemap.set_cell(c, tile.tilemap_atlas_ids[2], tile.tilemap_atlas_coords[2])
@@ -816,10 +805,9 @@ func update_tiles():
 				updated_tiles[c] = 1
 				
 func update_buildings(id : int):
-	var main_player = Game.players[0] as Player
 	var player = Game.players[id] as Player
 	for c in player.buildings:
-		if main_player.vision.has(c):
+		if Game.main_player.vision.has(c):
 			var building = player.buildings[c]
 			tilemap_object.set_cell(c, building.tile_id, Vector2i(0, 0))
 
@@ -918,18 +906,17 @@ func _ready() -> void:
 		)
 		tilemap_overlay.update_border(id)
 	
-	var main_player = Game.players[0] as Player
-	main_player.on_state_callback = Callable(on_state_animation)
-	main_player.vision_changed.connect(update_tiles)
+	Game.main_player.on_state_callback = Callable(on_state_animation)
+	Game.main_player.vision_changed.connect(update_tiles)
 	
-	update_production(0, main_player.production)
-	update_gold(0, main_player.gold)
-	update_science(0, main_player.science)
-	update_food(0, main_player.food)
-	main_player.production_changed.connect(update_production)
-	main_player.gold_changed.connect(update_gold)
-	main_player.science_changed.connect(update_science)
-	main_player.food_changed.connect(update_food)
+	update_production(0, Game.main_player.production)
+	update_gold(0, Game.main_player.gold)
+	update_science(0, Game.main_player.science)
+	update_food(0, Game.main_player.food)
+	Game.main_player.production_changed.connect(update_production)
+	Game.main_player.gold_changed.connect(update_gold)
+	Game.main_player.science_changed.connect(update_science)
+	Game.main_player.food_changed.connect(update_food)
 		
 	Game.state_changed.connect(on_state_changed)
 	Game.battle_player_changed.connect(on_battle_player_changed)
@@ -961,10 +948,10 @@ func _ready() -> void:
 			tooltip.hide()
 		)
 		tech_item.clicked.connect(func():
-			if main_player.science >= t.cost_science && t.level < t.max_level:
+			if Game.main_player.science >= t.cost_science && t.level < t.max_level:
 				add_resource(Game.ScienceResource, -t.cost_science, tech_item.global_position)
 				
-				t.acquired(main_player)
+				t.acquired(Game.main_player)
 				
 				tech_item.get_node("Label").text = "%d/%d" % [t.level, t.max_level]
 				tech_item.hide()

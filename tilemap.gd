@@ -22,6 +22,5 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouse:
 		var coord = local_to_map(get_local_mouse_position())
 		if coord.x >= 0 && coord.x < Game.cx && coord.y >= 0 && coord.y < Game.cy:
-			var main_player = Game.players[0] as Player
-			if main_player.vision.has(coord):
+			if Game.main_player.vision.has(coord):
 				set_hovering_tile(coord)

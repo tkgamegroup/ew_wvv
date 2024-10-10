@@ -2,6 +2,7 @@ extends Node2D
 
 const Player = preload("res://player.gd")
 const Tile = preload("res://tile.gd")
+const img_neutral_camp = preload("res://icons/neutral_camp.png")
 
 @onready var tilemap = $"../TileMapLayerMain"
 var borders : Dictionary
@@ -26,14 +27,14 @@ func _draw() -> void:
 		for i in n:
 			draw_dashed_line(b[i * 2 + 0], b[i * 2 + 1], color, 4.0, 8.0)
 	
-	if drawer.is_valid():
-		drawer.call(self)
-	
 	for x in Game.cx:
 		for y in Game.cy:
 			var coord = Vector2i(x, y)
 			var tile = Game.map[coord] as Tile
+			var pos = tilemap.map_to_local(tile.coord)
 			#draw_string(ThemeDB.fallback_font, tilemap.map_to_local(coord) , tile.label)
+			if !tile.neutral_units.is_empty() && Game.main_player.vision.has(tile.coord):
+				draw_texture_rect(img_neutral_camp, Rect2(pos - Vector2(20, 20), Vector2(40, 40)), false, Color(1, 1, 1, 0.5))
 			
 	if Game.hovering_tile.x != -1 && Game.hovering_tile.y != -1:
 		var points = get_tile_points(Game.hovering_tile)
@@ -44,11 +45,17 @@ func _draw() -> void:
 		draw_line(points[3], points[4], color, 4.0)
 		draw_line(points[4], points[5], color, 4.0)
 		draw_line(points[5], points[0], color, 4.0)
-		
-
-func _process(delta: float) -> void:
-	pass
 	
+	for start in Game.peeding_neutral_attacks:
+		var end = Game.peeding_neutral_attacks[start]
+		var color = Color(1.0, 1.0, 1.0, 0.5)
+		var p0 = tilemap.map_to_local(start.coord)
+		var p1 = tilemap.map_to_local(end.coord)
+		draw_dashed_line(p0, p1, color, 4, 14)
+	
+	if drawer.is_valid():
+		drawer.call(self)
+
 func add_line_to_border(border : Array, p0 : Vector2, p1 : Vector2):
 	var n = border.size() / 2
 	for i in n:
@@ -65,10 +72,9 @@ func add_line_to_border(border : Array, p0 : Vector2, p1 : Vector2):
 	
 func update_border(player_id : int):
 	var border = []
-	var main_player = Game.players[0] as Player
 	var player = Game.players[player_id] as Player
 	for c in player.territories:
-		if main_player.vision.has(c):
+		if Game.main_player.vision.has(c):
 			var points = get_tile_points(c)
 			add_line_to_border(border, points[0], points[1])
 			add_line_to_border(border, points[1], points[2])
