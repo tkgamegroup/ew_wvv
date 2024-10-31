@@ -1,4 +1,4 @@
-const Tile = preload("res://tile.gd")
+class_name Player
 
 signal territory_changed
 signal building_changed
@@ -6,16 +6,16 @@ signal vision_changed
 
 var id : int
 var coord : Vector2i
-var territories : Dictionary
-var buildings : Dictionary
+var territories : Dictionary[Vector2i, int]
+var buildings : Dictionary[Vector2i, Building]
 var color : Color
-var vision : Dictionary
+var vision : Dictionary[Vector2i, int]
 
-var production : int = 100
+var production : int = 150
 var gold : int = 0
 var science : int = 100
 var food : int = 3
-var geer : int = 0
+var gear : int = 0
 signal production_changed
 signal gold_changed
 signal science_changed
@@ -25,12 +25,13 @@ signal geer_changed
 var avaliable_constructions : Array
 var avaliable_trainings : Array
 var unused_territories : int = 0
-var units : Array
+var units : Array[Unit]
 
-var troop_units : Array
-var troop_target : Vector2i
+var troop_units : Array[Unit]
+var troop_target = Vector2i(-1, -1)
 var troop_mobility : int
-var troop_path : Array
+var troop_path : Array[Tile]
+var action_skipped : bool
 
 var modifiers : Dictionary
 
@@ -63,8 +64,8 @@ func get_resource(type : int):
 		return science
 	if type == Game.FoodResource:
 		return food
-	if type == Game.GeerResource:
-		return geer
+	if type == Game.GearResource:
+		return gear
 
 func add_production(v : int):
 	if v == 0:
@@ -114,7 +115,11 @@ func add_territory(coord : Vector2i):
 
 func remove_territory(coord : Vector2i):
 	if territories.has(coord):
+		remove_building(coord)
+		var tile = Game.map[coord] as Tile
+		tile.player = -1
 		territories.erase(coord)
+		territory_changed.emit(id)
 
 func add_building(coord : Vector2i, name : String):
 	if territories.has(coord):
@@ -124,13 +129,16 @@ func add_building(coord : Vector2i, name : String):
 			tile.label = info.display_name
 			tile.building = name
 			var building = Building.new(name)
-			buildings[coord] = building
+			if building.type == Building.BarracksBuilding:
+				var trainnings = building.ext["trainnings"] as Dictionary
+				building.set_trainning(trainnings.keys()[0])
 			if building.building_name == "lumber_mill":
 				var production = building.ext["production"]
 				building.ext["production"] = production * (100 + modifiers["LUMBER_MILL_PRODUCTION_BOUNS_PERCENTAGE"]) / 100
 			elif building.building_name == "academy":
 				var production = building.ext["science_production"]
 				building.ext["science_production"] = production * (100 + modifiers["ACADEMY_PRODUCTION_BOUNS_PERCENTAGE"]) / 100
+			buildings[coord] = building
 			building_changed.emit(id)
 			return true
 	return false
@@ -142,6 +150,7 @@ func remove_building(coord : Vector2i):
 			tile.label = ""
 			tile.building = ""
 			buildings.erase(coord)
+			building_changed.emit(id)
 
 func add_unit(name : String, mobility : int = -1):
 	var unit = Unit.new(name)
@@ -176,6 +185,13 @@ func move_unit_from_troop(name : String):
 			calc_troop_mobility()
 			break
 
+func add_trainning(name : String, amount : int):
+	for t in avaliable_trainings:
+		if t.name == name:
+			t.amount += amount
+			return
+	avaliable_trainings.append({"name": name, "amount": amount})
+
 func change_modifier(name : String, v : int):
 	modifiers[name] += v
 	
@@ -198,7 +214,7 @@ func on_state():
 		on_state_callback.call("begin", self)
 
 	var corruped_food = food
-	if Game.turn == 1:
+	if Game.round == 1:
 		corruped_food = 0
 	avaliable_trainings.clear()
 
@@ -209,8 +225,16 @@ func on_state():
 				continue
 			if on_state_callback.is_valid():
 				on_state_callback.call("next_building", c)
+				
+			if Game.round == 1:
+				processed = false
+				if on_state_callback.is_valid():
+					if on_state_callback.call("territory", 6):
+						processed = true
+				if !processed:
+					self.unused_territories += 6
 
-			if Game.turn != 1 && corruped_food > 0:
+			if Game.round != 1 && corruped_food > 0:
 				processed = false
 				if on_state_callback.is_valid():
 					if on_state_callback.call("food", -corruped_food):
@@ -218,12 +242,14 @@ func on_state():
 				if !processed:
 					self.add_food(-corruped_food)
 
-			processed = false
-			if on_state_callback.is_valid():
-				if on_state_callback.call("territory", 2):
-					processed = true
-			if !processed:
-				unused_territories += 2
+			var production = building.ext["production"]
+			if production > 0:
+				processed = false
+				if on_state_callback.is_valid():
+					if on_state_callback.call("production", production):
+						processed = true
+				if !processed:
+					self.production += production
 		elif building.type == Building.ProductionBuilding:
 			if Game.state != Game.PrepareState:
 				continue
@@ -264,8 +290,26 @@ func on_state():
 		elif building.type == Building.BarracksBuilding:
 			if Game.state != Game.BattleState:
 				continue
+			if on_state_callback.is_valid():
+				on_state_callback.call("next_building", c)
 			var unit_name = building.ext["train_unit_name"]
 			var unit_count = building.ext["train_unit_count"]
-			avaliable_trainings.append({ "name": unit_name, "amount": unit_count })
+			var unit_info = Unit.get_info(unit_name)
+			var num = min(food / unit_info.cost_food, unit_count)
+			if num > 0:
+				add_food(-(num * unit_info.cost_food))
+				processed = false
+				if on_state_callback.is_valid():
+					var data = {}
+					data.unit_name = unit_name
+					data.unit_count = num
+					if on_state_callback.call("unit", data):
+						processed = true
+				if !processed:
+					for i in num:
+						var unit = Unit.new(unit_name)
+						units.append(unit)
+				unit_count -= num
+			add_trainning(unit_name, unit_count)
 	if on_state_callback.is_valid():
 		on_state_callback.call("end", null)

@@ -1,6 +1,9 @@
-[gd_scene format=3 uid="uid://cc5hsg56qvglc"]
+[gd_scene load_steps=2 format=3 uid="uid://cc5hsg56qvglc"]
+
+[ext_resource type="Texture2D" uid="uid://vx47bpsy205g" path="res://units/footman.png" id="1_8xudj"]
 
 [node name="BattleUnit" type="Control"]
+custom_minimum_size = Vector2(72, 72)
 layout_mode = 3
 anchors_preset = 0
 
@@ -9,4 +12,5 @@ custom_minimum_size = Vector2(72, 72)
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
+texture = ExtResource("1_8xudj")
 expand_mode = 1

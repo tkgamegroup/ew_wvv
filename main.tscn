@@ -1,14 +1,21 @@
-[gd_scene load_steps=76 format=3 uid="uid://bs1rpkum5d02r"]
+[gd_scene load_steps=112 format=3 uid="uid://bs1rpkum5d02r"]
 
 [ext_resource type="Script" path="res://root.gd" id="1_640q5"]
+[ext_resource type="AudioStream" uid="uid://b83a787gmci73" path="res://ui/sfx/MouseOver1.wav" id="3_d772w"]
 [ext_resource type="Texture2D" uid="uid://dbl28m7en1mcc" path="res://tiles/bank.png" id="4_7wog6"]
+[ext_resource type="AudioStream" uid="uid://vvswtwncyeml" path="res://ui/sfx/Error.wav" id="4_21ips"]
 [ext_resource type="Texture2D" uid="uid://dsq8yipa65tt0" path="res://tiles/water.png" id="4_jrnhe"]
+[ext_resource type="AudioStream" uid="uid://du6l5uqaychlh" path="res://ui/sfx/draw.wav" id="5_fpkw4"]
+[ext_resource type="AudioStream" uid="uid://dyhrg0wfcj0r8" path="res://ui/sfx/buy_sell.wav" id="6_4trc6"]
 [ext_resource type="Texture2D" uid="uid://b3od7ol7pu73y" path="res://tiles/pine/pine2.png" id="6_sp1jv"]
+[ext_resource type="AudioStream" uid="uid://b7fyjyvdj8dn4" path="res://ui/sfx/BigButtonClick.wav" id="7_4aunk"]
 [ext_resource type="Texture2D" uid="uid://dueru4vb1pshi" path="res://tiles/pine/pine3.png" id="7_4k7gj"]
 [ext_resource type="Texture2D" uid="uid://licnv0m5nrv3" path="res://tiles/pine/pine-tile.png" id="8_a8jms"]
 [ext_resource type="Texture2D" uid="uid://bae5ph7l5j7ad" path="res://tiles/building/town_hall.png" id="9_0c5id"]
 [ext_resource type="Texture2D" uid="uid://d1o1gcf0bmf5o" path="res://tiles/pine/pine.png" id="9_nrnpe"]
 [ext_resource type="Texture2D" uid="uid://tyk148w5h3bd" path="res://tiles/building/lumber_mill.png" id="9_sc0sq"]
+[ext_resource type="AudioStream" uid="uid://d4gmd600ndxmv" path="res://ui/sfx/building1.wav" id="9_wxubv"]
+[ext_resource type="AudioStream" uid="uid://bd2wtgfn6mb1p" path="res://ui/sfx/shuffle.wav" id="10_4skwy"]
 [ext_resource type="Texture2D" uid="uid://dbqo4h0k6u7kr" path="res://tiles/pine/pine4.png" id="10_g4xdr"]
 [ext_resource type="Texture2D" uid="uid://clkl1ywwuv6l4" path="res://tiles/pine/pine-small2.png" id="11_2lycn"]
 [ext_resource type="Texture2D" uid="uid://y7scrfb281cl" path="res://tiles/building/barracks.png" id="11_bbrdv"]
@@ -31,12 +38,27 @@
 [ext_resource type="Texture2D" uid="uid://drgc8ty7lh6on" path="res://icons/science.png" id="25_kxr5m"]
 [ext_resource type="Texture2D" uid="uid://c1of6b7dj4m6m" path="res://icons/food.png" id="26_o7f4c"]
 [ext_resource type="PackedScene" uid="uid://cc5hsg56qvglc" path="res://battle_unit.tscn" id="32_l554o"]
+[ext_resource type="Texture2D" uid="uid://buccmsb42xxjj" path="res://ui/circle.png" id="37_ltvud"]
+[ext_resource type="Texture2D" uid="uid://vx47bpsy205g" path="res://units/footman.png" id="38_31l1i"]
+[ext_resource type="Texture2D" uid="uid://c7ygsvulfio3d" path="res://ui/state_button_down.png" id="43_awvt5"]
+[ext_resource type="Texture2D" uid="uid://cina8eitts7s5" path="res://ui/state_button_up.png" id="43_ppjy5"]
+[ext_resource type="Script" path="res://hand.gd" id="44_lxs0f"]
+[ext_resource type="Texture2D" uid="uid://dvdopagc7iiet" path="res://icons/gear.png" id="46_co2o0"]
+[ext_resource type="Texture2D" uid="uid://dcxtxcyj266ty" path="res://ui/cancel_button_up.png" id="46_s1gky"]
+[ext_resource type="Texture2D" uid="uid://cuiv2oie7dohy" path="res://ui/cancel_button_down.png" id="47_a0wv4"]
+[ext_resource type="Texture2D" uid="uid://d01ne13t0mruc" path="res://ui/frame.png" id="47_fdenu"]
+[ext_resource type="Texture2D" uid="uid://bv1w5fqcy7jsf" path="res://icons/battle.png" id="48_lgbnk"]
+[ext_resource type="Texture2D" uid="uid://esaf3qbx3y72" path="res://ui/bottom.png" id="48_ou8o5"]
+[ext_resource type="Texture2D" uid="uid://dlk4jfmw3t4wf" path="res://ui/shop_button_up.png" id="48_r1mru"]
+[ext_resource type="Texture2D" uid="uid://t0wvweucw7av" path="res://ui/shop_button_down.png" id="49_keriu"]
+[ext_resource type="Texture2D" uid="uid://c7ao3dn0cwk5v" path="res://ui/tech_button_up.png" id="50_523rm"]
+[ext_resource type="Texture2D" uid="uid://dwai5jpqgftkt" path="res://ui/tech_button_down.png" id="51_3vt0g"]
+[ext_resource type="Texture2D" uid="uid://c2880im1ilpdd" path="res://icons/ban.png" id="51_d6gyw"]
 [ext_resource type="Script" path="res://camera.gd" id="167_gjjxa"]
 [ext_resource type="Script" path="res://tilemap.gd" id="167_rj17h"]
 [ext_resource type="Script" path="res://tilemap_overlay.gd" id="170_j5vcd"]
 [ext_resource type="PackedScene" uid="uid://dao8cs4oslu4r" path="res://card_ui.tscn" id="171_62cl8"]
 [ext_resource type="PackedScene" uid="uid://b8mhurhw77wkb" path="res://shop_item_ui.tscn" id="172_ve8xk"]
-[ext_resource type="PackedScene" uid="uid://d0r0gk3l0ag1u" path="res://card_base.tscn" id="173_nwnif"]
 [ext_resource type="PackedScene" uid="uid://d4ckxmnu8yqqa" path="res://mode_button_ui.tscn" id="174_0axfu"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cdm5b"]
@@ -1072,8 +1094,49 @@ sources/1004 = SubResource("TileSetAtlasSource_e1hnc")
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hb8gg"]
 bg_color = Color(1, 1, 1, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_75akk"]
-bg_color = Color(0.6, 0.6, 0.6, 0.443137)
+[sub_resource type="Curve" id="Curve_ndre5"]
+_data = [Vector2(0, 0), 0.0, 1.96287, 0, 0, Vector2(0.501062, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -1.96286, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_lyp13"]
+_data = [Vector2(0, 0), 0.0, 1.74823, 0, 0, Vector2(0.498938, 0.504369), 0.0, 0.0, 0, 0, Vector2(1, 1), 1.78801, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8ga47"]
+texture = ExtResource("43_ppjy5")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vopu6"]
+texture = ExtResource("43_awvt5")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tcbju"]
+texture = ExtResource("43_ppjy5")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j0bg4"]
+texture = ExtResource("46_s1gky")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ynwu3"]
+texture = ExtResource("47_a0wv4")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rvu6d"]
+texture = ExtResource("46_s1gky")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_iqx1i"]
+texture = ExtResource("48_r1mru")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_r1mio"]
+texture = ExtResource("49_keriu")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j2mci"]
+texture = ExtResource("48_r1mru")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j7v0a"]
+texture = ExtResource("50_523rm")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2bx6g"]
+texture = ExtResource("51_3vt0g")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5qv0n"]
+texture = ExtResource("50_523rm")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2davj"]
 bg_color = Color(0, 0, 0, 1)
@@ -1111,11 +1174,45 @@ expand_margin_bottom = 2.0
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qk14p"]
 bg_color = Color(0.282152, 0.317194, 0.691287, 1)
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3am1k"]
+texture = ExtResource("47_fdenu")
+texture_margin_left = 10.0
+texture_margin_top = 12.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+
 [node name="Root" type="Node2D"]
 script = ExtResource("1_640q5")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 script = ExtResource("167_gjjxa")
+
+[node name="Sound" type="Node" parent="."]
+
+[node name="Hover" type="AudioStreamPlayer" parent="Sound"]
+stream = ExtResource("3_d772w")
+
+[node name="Error" type="AudioStreamPlayer" parent="Sound"]
+stream = ExtResource("4_21ips")
+volume_db = -15.808
+
+[node name="Draw" type="AudioStreamPlayer" parent="Sound"]
+stream = ExtResource("5_fpkw4")
+
+[node name="Buy" type="AudioStreamPlayer" parent="Sound"]
+stream = ExtResource("6_4trc6")
+
+[node name="Open" type="AudioStreamPlayer" parent="Sound"]
+stream = ExtResource("7_4aunk")
+
+[node name="Close" type="AudioStreamPlayer" parent="Sound"]
+stream = ExtResource("7_4aunk")
+
+[node name="Build" type="AudioStreamPlayer" parent="Sound"]
+stream = ExtResource("9_wxubv")
+
+[node name="Shuffle" type="AudioStreamPlayer" parent="Sound"]
+stream = ExtResource("10_4skwy")
 
 [node name="TileMapLayerWater" type="TileMapLayer" parent="."]
 tile_set = SubResource("TileSet_8cjdc")
@@ -1133,13 +1230,37 @@ tile_set = SubResource("TileSet_1akas")
 [node name="TileMapOverlay" type="Node2D" parent="."]
 script = ExtResource("170_j5vcd")
 
-[node name="AttackTroop" type="Polygon2D" parent="."]
+[node name="AttackTroop" type="Sprite2D" parent="."]
 visible = false
-polygon = PackedVector2Array(-14, -9, -3, -9, 0, -21, 4, -9, 15, -9, 5, 0, 9, 12, 0, 4, -9, 13, -5, 1)
+self_modulate = Color(0, 0.536286, 0.526796, 1)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("37_ltvud")
 
-[node name="DefendTroop" type="Polygon2D" parent="."]
+[node name="Sprite2D2" type="Sprite2D" parent="AttackTroop"]
+self_modulate = Color(0.122252, 0.122252, 0.122252, 1)
+clip_children = 2
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("37_ltvud")
+
+[node name="Sprite2D" type="Sprite2D" parent="AttackTroop/Sprite2D2"]
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("38_31l1i")
+
+[node name="DefendTroop" type="Sprite2D" parent="."]
 visible = false
-polygon = PackedVector2Array(-14, -9, -3, -9, 0, -21, 4, -9, 15, -9, 5, 0, 9, 12, 0, 4, -9, 13, -5, 1)
+self_modulate = Color(0, 0.536286, 0.526796, 1)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("37_ltvud")
+
+[node name="Sprite2D2" type="Sprite2D" parent="DefendTroop"]
+self_modulate = Color(0.122252, 0.122252, 0.122252, 1)
+clip_children = 2
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("37_ltvud")
+
+[node name="Sprite2D" type="Sprite2D" parent="DefendTroop/Sprite2D2"]
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("38_31l1i")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -1151,7 +1272,6 @@ offset_left = -32.0
 offset_right = 32.0
 offset_bottom = 23.0
 grow_horizontal = 2
-mouse_filter = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/StateTip"]
 layout_mode = 2
@@ -1177,6 +1297,32 @@ text = "提示"
 [node name="Label2" type="Label" parent="CanvasLayer/StateTip/VBoxContainer"]
 visible = false
 layout_mode = 2
+
+[node name="RoundTip" type="PanelContainer" parent="CanvasLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/RoundTip"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 8
+
+[node name="Label" type="Label" parent="CanvasLayer/RoundTip/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "回合1"
 
 [node name="Alert" type="MarginContainer" parent="CanvasLayer"]
 visible = false
@@ -1212,12 +1358,9 @@ theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 text = "不能干嘛干嘛"
 
 [node name="ResourcePanel" type="HBoxContainer" parent="CanvasLayer"]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -64.0
+offset_right = 166.0
 offset_bottom = 23.0
-grow_horizontal = 0
+mouse_filter = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/ResourcePanel"]
 layout_mode = 2
@@ -1275,7 +1418,8 @@ layout_mode = 2
 texture = ExtResource("26_o7f4c")
 expand_mode = 1
 
-[node name="RightBottomConer" type="MarginContainer" parent="CanvasLayer"]
+[node name="Panels" type="MarginContainer" parent="CanvasLayer"]
+visible = false
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -1288,37 +1432,12 @@ grow_vertical = 0
 theme_override_constants/margin_right = 30
 theme_override_constants/margin_bottom = 30
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/RightBottomConer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Panels"]
 layout_mode = 2
 
-[node name="Button2" type="Button" parent="CanvasLayer/RightBottomConer/HBoxContainer"]
+[node name="Deconstruct" parent="CanvasLayer/Panels/HBoxContainer" instance=ExtResource("174_0axfu")]
 layout_mode = 2
-text = "商店(S)"
-
-[node name="Button" type="Button" parent="CanvasLayer/RightBottomConer/HBoxContainer"]
-layout_mode = 2
-text = "科技树(T)"
-
-[node name="StateButton" type="Button" parent="CanvasLayer/RightBottomConer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-text = "开始战斗"
-
-[node name="NoUnitsTip" type="TextureRect" parent="CanvasLayer"]
-visible = false
-offset_left = 1030.0
-offset_top = 551.0
-offset_right = 1142.0
-offset_bottom = 591.0
-
-[node name="Label" type="Label" parent="CanvasLayer/NoUnitsTip"]
-layout_mode = 2
-offset_right = 112.0
-offset_bottom = 23.0
-size_flags_horizontal = 8
-size_flags_vertical = 0
-text = "没有可用的单位"
+text = "拆除"
 
 [node name="HandContainer" type="MarginContainer" parent="CanvasLayer"]
 anchors_preset = 7
@@ -1332,83 +1451,120 @@ offset_right = 79.0
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
-theme_override_constants/margin_bottom = 25
+theme_override_constants/margin_bottom = 0
 
-[node name="Hand" type="HBoxContainer" parent="CanvasLayer/HandContainer"]
-custom_minimum_size = Vector2(0, 60)
+[node name="Hand" type="Control" parent="CanvasLayer/HandContainer"]
+custom_minimum_size = Vector2(640, 144)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-mouse_filter = 0
+script = ExtResource("44_lxs0f")
+y_curve = SubResource("Curve_ndre5")
+angle_curve = SubResource("Curve_lyp13")
 
 [node name="Card" parent="CanvasLayer/HandContainer/Hand" instance=ExtResource("171_62cl8")]
 layout_mode = 2
+offset_right = 60.0
+offset_bottom = 72.0
 
 [node name="Card2" parent="CanvasLayer/HandContainer/Hand" instance=ExtResource("171_62cl8")]
 layout_mode = 2
+offset_left = 64.0
+offset_right = 124.0
+offset_bottom = 72.0
 
 [node name="Card3" parent="CanvasLayer/HandContainer/Hand" instance=ExtResource("171_62cl8")]
 layout_mode = 2
+offset_left = 128.0
+offset_right = 188.0
+offset_bottom = 72.0
 
-[node name="TroopContainer" type="MarginContainer" parent="CanvasLayer"]
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -168.0
-offset_top = -187.0
-offset_right = 168.0
+offset_left = -20.0
+offset_top = -40.0
+offset_right = 20.0
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
-theme_override_constants/margin_bottom = 100
 
-[node name="Troop" type="PanelContainer" parent="CanvasLayer/TroopContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_styles/panel = SubResource("StyleBoxFlat_75akk")
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -500.0
+offset_top = -500.0
+offset_right = 500.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+texture = ExtResource("48_ou8o5")
 
-[node name="SideText" type="Label" parent="CanvasLayer/TroopContainer/Troop"]
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 0
+[node name="ComfireButton" type="Button" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 332.0
+offset_top = -28.0
+offset_right = 372.0
+offset_bottom = 14.0
+theme_override_constants/icon_max_width = 16
+theme_override_font_sizes/font_size = 2
+theme_override_styles/hover = SubResource("StyleBoxTexture_8ga47")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_vopu6")
+theme_override_styles/normal = SubResource("StyleBoxTexture_tcbju")
+icon = ExtResource("48_lgbnk")
+icon_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/TroopContainer/Troop"]
-layout_mode = 2
+[node name="CancelButton" type="Button" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 366.0
+offset_top = 9.0
+offset_right = 388.0
+offset_bottom = 31.0
+theme_override_constants/icon_max_width = 16
+theme_override_styles/hover = SubResource("StyleBoxTexture_j0bg4")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_ynwu3")
+theme_override_styles/normal = SubResource("StyleBoxTexture_rvu6d")
+icon = ExtResource("51_d6gyw")
+icon_alignment = 1
 
-[node name="Label" type="Label" parent="CanvasLayer/TroopContainer/Troop/VBoxContainer"]
-layout_mode = 2
-text = "军队栏"
+[node name="ShopButton" type="Button" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 399.0
+offset_top = 11.0
+offset_right = 451.0
+offset_bottom = 33.0
+theme_override_styles/hover = SubResource("StyleBoxTexture_iqx1i")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_r1mio")
+theme_override_styles/normal = SubResource("StyleBoxTexture_j2mci")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/TroopContainer/Troop/VBoxContainer"]
-layout_mode = 2
+[node name="TechButton" type="Button" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 457.0
+offset_top = 11.0
+offset_right = 509.0
+offset_bottom = 33.0
+theme_override_styles/hover = SubResource("StyleBoxTexture_j7v0a")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_2bx6g")
+theme_override_styles/normal = SubResource("StyleBoxTexture_5qv0n")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/TroopContainer/Troop/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(212, 60)
-layout_mode = 2
-
-[node name="CardBase" parent="CanvasLayer/TroopContainer/Troop/VBoxContainer/HBoxContainer/HBoxContainer" instance=ExtResource("173_nwnif")]
-layout_mode = 2
-
-[node name="CardBase2" parent="CanvasLayer/TroopContainer/Troop/VBoxContainer/HBoxContainer/HBoxContainer" instance=ExtResource("173_nwnif")]
-layout_mode = 2
-
-[node name="CardBase3" parent="CanvasLayer/TroopContainer/Troop/VBoxContainer/HBoxContainer/HBoxContainer" instance=ExtResource("173_nwnif")]
-layout_mode = 2
-
-[node name="CardBase4" parent="CanvasLayer/TroopContainer/Troop/VBoxContainer/HBoxContainer/HBoxContainer" instance=ExtResource("173_nwnif")]
-layout_mode = 2
-
-[node name="TargetButton" parent="CanvasLayer/TroopContainer/Troop/VBoxContainer/HBoxContainer" instance=ExtResource("174_0axfu")]
-layout_mode = 2
-text = "选择目标"
-
-[node name="ComfireButton" type="Button" parent="CanvasLayer/TroopContainer/Troop/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 4
-text = "确认"
+[node name="Label" type="Label" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_top = -68.0
+offset_right = 20.0
+offset_bottom = -45.0
+grow_horizontal = 2
 
 [node name="Shop" type="PanelContainer" parent="CanvasLayer"]
 visible = false
@@ -1487,52 +1643,73 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -106.0
+offset_left = -500.0
 offset_top = -100.0
-offset_right = 106.0
+offset_right = 500.0
 offset_bottom = 100.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Control" type="Control" parent="CanvasLayer/Battle"]
-layout_mode = 2
-anchors_preset = 0
-
-[node name="Label" type="Label" parent="CanvasLayer/Battle/Control"]
-layout_mode = 2
-offset_right = 212.0
+[node name="Label" type="Label" parent="CanvasLayer/Battle"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -16.0
+offset_right = 16.0
 offset_bottom = 23.0
+grow_horizontal = 2
 text = "战斗"
 
-[node name="Side1" type="Control" parent="CanvasLayer/Battle/Control"]
+[node name="Side1" type="HBoxContainer" parent="CanvasLayer/Battle"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -500.0
+offset_top = 21.0
+offset_right = 500.0
+offset_bottom = 93.0
+grow_horizontal = 2
+alignment = 1
+
+[node name="BattleUnit" parent="CanvasLayer/Battle/Side1" instance=ExtResource("32_l554o")]
 layout_mode = 2
-anchors_preset = 0
-offset_top = 27.0
-offset_right = 212.0
-offset_bottom = 87.0
 
-[node name="BattleUnit" parent="CanvasLayer/Battle/Control/Side1" instance=ExtResource("32_l554o")]
-
-[node name="BattleUnit2" parent="CanvasLayer/Battle/Control/Side1" instance=ExtResource("32_l554o")]
-
-[node name="BattleUnit3" parent="CanvasLayer/Battle/Control/Side1" instance=ExtResource("32_l554o")]
-
-[node name="BattleUnit4" parent="CanvasLayer/Battle/Control/Side1" instance=ExtResource("32_l554o")]
-
-[node name="Side2" type="Control" parent="CanvasLayer/Battle/Control"]
+[node name="BattleUnit2" parent="CanvasLayer/Battle/Side1" instance=ExtResource("32_l554o")]
 layout_mode = 2
-anchors_preset = 0
-offset_top = 137.0
-offset_right = 212.0
-offset_bottom = 197.0
 
-[node name="BattleUnit" parent="CanvasLayer/Battle/Control/Side2" instance=ExtResource("32_l554o")]
+[node name="BattleUnit3" parent="CanvasLayer/Battle/Side1" instance=ExtResource("32_l554o")]
+layout_mode = 2
 
-[node name="BattleUnit2" parent="CanvasLayer/Battle/Control/Side2" instance=ExtResource("32_l554o")]
+[node name="BattleUnit4" parent="CanvasLayer/Battle/Side1" instance=ExtResource("32_l554o")]
+layout_mode = 2
 
-[node name="BattleUnit3" parent="CanvasLayer/Battle/Control/Side2" instance=ExtResource("32_l554o")]
+[node name="Side2" type="HBoxContainer" parent="CanvasLayer/Battle"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -500.0
+offset_top = -72.0
+offset_right = 500.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
 
-[node name="BattleUnit4" parent="CanvasLayer/Battle/Control/Side2" instance=ExtResource("32_l554o")]
+[node name="BattleUnit" parent="CanvasLayer/Battle/Side2" instance=ExtResource("32_l554o")]
+layout_mode = 2
+
+[node name="BattleUnit2" parent="CanvasLayer/Battle/Side2" instance=ExtResource("32_l554o")]
+layout_mode = 2
+
+[node name="BattleUnit3" parent="CanvasLayer/Battle/Side2" instance=ExtResource("32_l554o")]
+layout_mode = 2
+
+[node name="BattleUnit4" parent="CanvasLayer/Battle/Side2" instance=ExtResource("32_l554o")]
+layout_mode = 2
 
 [node name="TechTree" type="Panel" parent="CanvasLayer"]
 visible = false
@@ -1578,13 +1755,24 @@ offset_bottom = 31.0
 grow_horizontal = 0
 text = "X"
 
-[node name="DragCard" parent="CanvasLayer" instance=ExtResource("173_nwnif")]
-visible = false
+[node name="GameMenuButton" type="Button" parent="CanvasLayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+icon = ExtResource("46_co2o0")
 
 [node name="ToolTip" type="PanelContainer" parent="CanvasLayer"]
 visible = false
-offset_right = 40.0
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -160.0
 offset_bottom = 40.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxTexture_3am1k")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/ToolTip"]
 layout_mode = 2
@@ -1592,16 +1780,69 @@ layout_mode = 2
 [node name="Text" type="RichTextLabel" parent="CanvasLayer/ToolTip/VBoxContainer"]
 custom_minimum_size = Vector2(140, 0)
 layout_mode = 2
+theme_override_colors/default_color = Color(0.286823, 0.178105, 0.0542015, 1)
 bbcode_enabled = true
 fit_content = true
 autowrap_mode = 2
 
+[node name="GameMenu" type="Panel" parent="CanvasLayer"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="CanvasLayer/GameMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -52.0
+offset_top = -85.5
+offset_right = 52.0
+offset_bottom = 85.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Resume" type="Button" parent="CanvasLayer/GameMenu/VBox"]
+layout_mode = 2
+text = "回到游戏"
+
+[node name="SaveGame" type="Button" parent="CanvasLayer/GameMenu/VBox"]
+layout_mode = 2
+text = "保存游戏"
+
+[node name="LoadGame" type="Button" parent="CanvasLayer/GameMenu/VBox"]
+layout_mode = 2
+text = "载入游戏"
+
+[node name="Options" type="Button" parent="CanvasLayer/GameMenu/VBox"]
+layout_mode = 2
+text = "选项"
+
+[node name="BackToTitle" type="Button" parent="CanvasLayer/GameMenu/VBox"]
+layout_mode = 2
+text = "返回标题界面"
+
+[node name="QuitToDesktop" type="Button" parent="CanvasLayer/GameMenu/VBox"]
+layout_mode = 2
+text = "退出到桌面"
+
 [connection signal="pressed" from="CanvasLayer/StateTip/VBoxContainer/HBoxContainer/Button" to="." method="on_show_tip_button"]
-[connection signal="pressed" from="CanvasLayer/RightBottomConer/HBoxContainer/Button2" to="." method="on_shop_button"]
-[connection signal="pressed" from="CanvasLayer/RightBottomConer/HBoxContainer/Button" to="." method="on_tech_button"]
-[connection signal="pressed" from="CanvasLayer/RightBottomConer/HBoxContainer/StateButton" to="." method="on_state_button"]
-[connection signal="mode_changed" from="CanvasLayer/TroopContainer/Troop/VBoxContainer/HBoxContainer/TargetButton" to="." method="on_target_button"]
-[connection signal="pressed" from="CanvasLayer/TroopContainer/Troop/VBoxContainer/HBoxContainer/ComfireButton" to="." method="on_troop_comfire"]
+[connection signal="mode_changed" from="CanvasLayer/Panels/HBoxContainer/Deconstruct" to="." method="on_deconstruct_button"]
+[connection signal="pressed" from="CanvasLayer/Control/ComfireButton" to="." method="on_comfire_button"]
+[connection signal="pressed" from="CanvasLayer/Control/CancelButton" to="." method="on_cancel_button"]
+[connection signal="pressed" from="CanvasLayer/Control/ShopButton" to="." method="on_shop_button"]
+[connection signal="pressed" from="CanvasLayer/Control/TechButton" to="." method="on_tech_button"]
 [connection signal="tab_changed" from="CanvasLayer/Shop/VBoxContainer/TabBar" to="." method="on_shop_tab_changed"]
 [connection signal="pressed" from="CanvasLayer/Shop/Button" to="." method="on_shop_close_button"]
 [connection signal="pressed" from="CanvasLayer/TechTree/Button" to="." method="on_tech_close_button"]
+[connection signal="pressed" from="CanvasLayer/GameMenuButton" to="." method="on_game_menu"]
+[connection signal="pressed" from="CanvasLayer/GameMenu/VBox/Resume" to="." method="on_resume"]
+[connection signal="pressed" from="CanvasLayer/GameMenu/VBox/SaveGame" to="." method="on_save_game"]
+[connection signal="pressed" from="CanvasLayer/GameMenu/VBox/LoadGame" to="." method="on_load_game"]
+[connection signal="pressed" from="CanvasLayer/GameMenu/VBox/BackToTitle" to="." method="on_back_to_title"]
+[connection signal="pressed" from="CanvasLayer/GameMenu/VBox/QuitToDesktop" to="." method="on_quit"]

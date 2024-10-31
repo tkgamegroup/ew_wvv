@@ -1,3 +1,5 @@
+class_name Tile
+
 enum
 {
 	TerrainPlain,
@@ -19,11 +21,18 @@ var tile_rb : Vector2i
 var building : String
 var player : int = -1
 var neutral_units : Array
-var production_resource : int
-var gold_resource : int
-var science_resource : int
+var resource_type : int
+var resource_amount : int
 
 var label : String
+
+static func get_terrain_text(terrain : int):
+	if terrain == TerrainPlain:
+		return "平原"
+	elif terrain == TerrainForest:
+		return "森林"
+	elif terrain == TerrainWater:
+		return "水"
 
 func _init(_coord : Vector2i, _terrain : int):
 	coord = _coord
@@ -80,3 +89,19 @@ func init_surroundings(map : Dictionary):
 			var c = Vector2i(coord.x, coord.y + 1)
 			if map.has(c):
 				tile_b = c
+
+func get_neutral_unit_types():
+	var dic = {}
+	for u in neutral_units:
+		var name = u.unit_name
+		if dic.has(name):
+			dic[name] += 1
+		else:
+			dic[name] = 1
+	return dic
+
+func remove_neutral_unit(name : String):
+	for i in neutral_units.size():
+		if neutral_units[i].unit_name == name:
+			neutral_units.remove_at(i)
+			break

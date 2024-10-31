@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://b8mhurhw77wkb"]
 
 [ext_resource type="Script" path="res://shop_item.gd" id="1_m108j"]
-[ext_resource type="PackedScene" uid="uid://d0r0gk3l0ag1u" path="res://card_base.tscn" id="2_w2k31"]
+[ext_resource type="PackedScene" uid="uid://d0r0gk3l0ag1u" path="res://card_ui_base.tscn" id="2_w2k31"]
 
 [node name="Card" type="Control"]
 custom_minimum_size = Vector2(60, 99)

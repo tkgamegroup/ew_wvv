@@ -1,12 +1,11 @@
 extends Node2D
 
-const Tile = preload("res://tile.gd")
-const Player = preload("res://player.gd")
 const Camera = preload("res://camera.gd")
 const Tilemap = preload("res://tilemap.gd")
 const TilemapOverlay = preload("res://tilemap_overlay.gd")
-const CardBasePrefab = preload("res://card_base.tscn")
+const CardBasePrefab = preload("res://card_ui_base.tscn")
 const CardPrefab = preload("res://card_ui.tscn")
+const CardShadowPrefab = preload("res://card_ui_shadow.tscn")
 const ShopItemPrefab = preload("res://shop_item_ui.tscn")
 const TechItemPrefab = preload("res://tech_item_ui.tscn")
 const BattleUnitPrefab = preload("res://battle_unit.tscn")
@@ -20,36 +19,44 @@ const BattleUnitPrefab = preload("res://battle_unit.tscn")
 @onready var scene_root = $"."
 @onready var ui_root = $CanvasLayer
 @onready var state_text = $CanvasLayer/StateTip/VBoxContainer/HBoxContainer/Label
+@onready var round_tip = $CanvasLayer/RoundTip
+@onready var round_text = $CanvasLayer/RoundTip/MarginContainer/Label
 @onready var tips_text = $CanvasLayer/StateTip/VBoxContainer/Label2
 @onready var show_tips_button = $CanvasLayer/StateTip/VBoxContainer/HBoxContainer/Button
 @onready var alert_panel = $CanvasLayer/Alert
 @onready var alert_text = $CanvasLayer/Alert/Panel/MarginContainer/Label
-@onready var state_button = $CanvasLayer/RightBottomConer/HBoxContainer/StateButton
+@onready var deconstruct_button = $CanvasLayer/Panels/HBoxContainer/Deconstruct
+@onready var comfire_button = $CanvasLayer/Control/ComfireButton
+@onready var cancel_button = $CanvasLayer/Control/CancelButton
 @onready var resource_panel = $CanvasLayer/ResourcePanel
 @onready var production_text = $CanvasLayer/ResourcePanel/HBoxContainer/Production
 @onready var gold_text = $CanvasLayer/ResourcePanel/HBoxContainer2/Gold
 @onready var science_text = $CanvasLayer/ResourcePanel/HBoxContainer3/Science
 @onready var food_text = $CanvasLayer/ResourcePanel/HBoxContainer4/Food
 @onready var hand = $CanvasLayer/HandContainer/Hand
-@onready var dragging_dummy = $CanvasLayer/DragCard
 @onready var shop_ui = $CanvasLayer/Shop
 @onready var shop_tab_bar = $CanvasLayer/Shop/VBoxContainer/TabBar
 @onready var shop_list = $CanvasLayer/Shop/VBoxContainer/GridContainer
-@onready var troop_ui = $CanvasLayer/TroopContainer/Troop
-@onready var troop_list = $CanvasLayer/TroopContainer/Troop/VBoxContainer/HBoxContainer/HBoxContainer
-@onready var troop_side_text = $CanvasLayer/TroopContainer/Troop/SideText
-@onready var troop_target_button = $CanvasLayer/TroopContainer/Troop/VBoxContainer/HBoxContainer/TargetButton
-@onready var troop_comfire_button = $CanvasLayer/TroopContainer/Troop/VBoxContainer/HBoxContainer/ComfireButton
+@onready var action_text = $CanvasLayer/Control/Label
 @onready var attack_troop_mark = $AttackTroop
 @onready var defend_troop_mark = $DefendTroop
 @onready var battle_ui = $CanvasLayer/Battle
-@onready var battle_list1 = $CanvasLayer/Battle/Control/Side1
-@onready var battle_list2 = $CanvasLayer/Battle/Control/Side2
+@onready var battle_list1 = $CanvasLayer/Battle/Side1
+@onready var battle_list2 = $CanvasLayer/Battle/Side2
 @onready var tech_ui = $CanvasLayer/TechTree
 @onready var tech_tree = $CanvasLayer/TechTree/VBoxContainer/ScrollContainer/Panel
 @onready var tooltip = $CanvasLayer/ToolTip
 @onready var tooltip_text = $CanvasLayer/ToolTip/VBoxContainer/Text
-@onready var no_units_tip = $CanvasLayer/NoUnitsTip
+@onready var sfx_hover = $Sound/Hover
+@onready var sfx_open = $Sound/Open
+@onready var sfx_close = $Sound/Close
+@onready var sfx_error = $Sound/Error
+@onready var sfx_draw = $Sound/Draw
+@onready var sfx_buy = $Sound/Buy
+@onready var sfx_build = $Sound/Build
+@onready var sfx_shuffle = $Sound/Shuffle
+
+var round_tip_tween : Tween = null
 var production_text_tween : Tween = null
 var gold_text_tween : Tween = null
 var science_text_tween : Tween = null
@@ -57,7 +64,6 @@ var food_text_tween : Tween = null
 var shop_using : bool = false
 var dragging_card : Card = null
 var drag_offset : Vector2
-var dragging_dummy_tween : Tween = null
 var tooltip_using = false
 
 var select_tile_callback : Callable
@@ -80,6 +86,22 @@ func alert(text: String):
 		alert_tween = null
 	)
 
+func yes_no_dialog(text : String, callback : Callable):
+	var dialog = AcceptDialog.new()
+	dialog.dialog_text = text
+	dialog.ok_button_text = "Yes"
+	dialog.add_cancel_button("No")
+	dialog.confirmed.connect(func():
+		callback.call(true)
+		dialog.queue_free()
+	)
+	dialog.canceled.connect(func():
+		callback.call(false)
+		dialog.queue_free()
+	)
+	ui_root.add_child(dialog)
+	dialog.popup_centered()
+		
 func add_resource(type : int, v : int, pos : Vector2, parent_node : Node = ui_root):
 	var label = RichTextLabel.new()
 	label.bbcode_enabled = true
@@ -130,6 +152,9 @@ func update_production(o, n):
 	production_text_tween.tween_callback(func():
 		production_text_tween = null
 	)
+	
+	if shop_ui.visible:
+		update_shop_list()
 
 func update_gold(o, n):
 	if gold_text_tween:
@@ -142,6 +167,9 @@ func update_gold(o, n):
 	gold_text_tween.tween_callback(func():
 		gold_text_tween = null
 	)
+	
+	if shop_ui.visible:
+		update_shop_list()
 
 func update_science(o, n):
 	if science_text_tween:
@@ -167,7 +195,10 @@ func update_food(o, n):
 		food_text_tween = null
 	)
 	
-func create_hand_card():
+	if shop_ui.visible:
+		update_shop_list()
+	
+func add_hand_card():
 	var card = CardPrefab.instantiate()
 	card.mouse_entered.connect(func():
 		tooltip_using = true
@@ -175,85 +206,54 @@ func create_hand_card():
 		text += "\n%s" % card.description
 		tooltip_text.text = text
 		tooltip.show()
+		sfx_hover.play()
 	)
 	card.mouse_exited.connect(func():
 		tooltip_using = true
 		tooltip.hide()
 	)
-	card.clicked.connect(func(_drag_offset : Vector2):
+	card.clicked.connect(func():
 		if card.target_type == Card.TargetNull:
 			pass
 		elif card.target_type == Card.TargetTroop:
-			if !card.tween:
-				card.modulate.a = 0
-				card.tween = get_tree().create_tween()
-				card.tween.tween_property(card, "custom_minimum_size:x", 0, 0.15)
-			
-				var card_temp = CardBasePrefab.instantiate()
-				Card.setup_from_data(card_temp, inst_to_dict(card))
-				card_temp.position = card.global_position
-				ui_root.add_child(card_temp)
-				var card_tween = get_tree().create_tween()
-				card_tween.tween_property(card_temp, "position", troop_list.global_position + Vector2(troop_list.get_child_count() * 50, 0), 0.15)
-				card_tween.tween_callback(func():
-					card_temp.queue_free()
-					var new_card = CardPrefab.instantiate()
-					Card.setup_from_data(new_card, inst_to_dict(card))
-					new_card.clicked.connect(func(_drag_offset : Vector2):
-						if !new_card.tween:
-							new_card.modulate.a = 0
-							new_card.tween = get_tree().create_tween()
-							new_card.tween.tween_property(new_card, "custom_minimum_size:x", 0, 0.15)
-						
-							var card_temp2 = CardBasePrefab.instantiate()
-							Card.setup_from_data(card_temp2, inst_to_dict(new_card))
-							card_temp2.position = new_card.global_position
-							ui_root.add_child(card_temp2)
-							var card_tween2 = get_tree().create_tween()
-							card_tween2.tween_property(card_temp2, "position", hand.global_position + Vector2(hand.get_child_count() * 50, 0), 0.15)
-							card_tween2.tween_callback(func():
-								card_temp2.queue_free()
-								var new_card2 = create_hand_card()
-								Card.setup_from_data(new_card2, inst_to_dict(new_card))
-								hand.add_child(new_card2)
-								new_card.queue_free()
-								Game.main_player.move_unit_from_troop(new_card2.card_name.substr(0, new_card2.card_name.length() - 5))
+			if !card.selected:
+				card.select()
+				Game.main_player.move_unit_to_troop(card.card_name.substr(0, card.card_name.length() - 5))
+				if Game.main_player.troop_units.size() == 1 && Game.battle_attacker == Game.main_player_id:
+					select_tile_callback = Callable(func(coord : Vector2i, is_peeding : bool):
+						Game.main_player.troop_target = coord
+						if !is_peeding:
+							if coord.x == -1 && coord.y == -1:
+								Game.main_player.troop_path.clear()
 								tilemap_overlay.queue_redraw()
-							)
+						else:
+							if coord.x != -1 && coord.y != -1:
+								var shortest_path : Array[Tile] = []
+								var shortest_dist = 1000
+								for c in Game.main_player.territories:
+									var path = Game.find_path_on_map(c, coord, Game.main_player.vision)
+									if !path.is_empty() && path.size() < shortest_dist:
+										shortest_dist = path.size()
+										shortest_path = path
+								Game.main_player.troop_path = shortest_path
+								tilemap_overlay.queue_redraw()
+							else:
+								Game.main_player.troop_path.clear()
+								tilemap_overlay.queue_redraw()
 					)
-					troop_list.add_child(new_card)
-					card.queue_free()
-					Game.main_player.move_unit_to_troop(new_card.card_name.substr(0, new_card.card_name.length() - 5))
-					tilemap_overlay.queue_redraw()
-				)
+			else:
+				card.deselect()
+				Game.main_player.move_unit_from_troop(card.card_name.substr(0, card.card_name.length() - 5))
+				if Game.main_player.troop_units.is_empty():
+					select_tile_callback = Callable()
 		else:
+			if dragging_card != null:
+				release_dragging_card()
+				return
 			dragging_card = card
-			drag_offset = _drag_offset
-			if card.tween:
-				card.tween.kill()
-			card.modulate.a = 0
-			card.tween = get_tree().create_tween()
-			card.tween.tween_property(card, "custom_minimum_size:x", 0, 0.15)
-			card.tween.tween_callback(func():
-				card.hide()
-				card.tween = null
-			)
-		
-			dragging_dummy.show()
-			dragging_dummy.position = get_viewport().get_mouse_position() - drag_offset
-			dragging_dummy.scale = Vector2(1, 1)
-			dragging_dummy.find_child("Name").text = dragging_card.find_child("Name").text
-			dragging_dummy.find_child("TextureRect").texture = dragging_card.find_child("TextureRect").texture
-			
-			if dragging_dummy_tween:
-				dragging_dummy_tween.kill()
-			dragging_dummy_tween = get_tree().create_tween()
-			dragging_dummy_tween.tween_property(dragging_dummy, "scale", Vector2(0.9, 0.9), 0.15)
-			dragging_dummy_tween.tween_callback(func():
-				dragging_dummy_tween = null
-			)
 			
 			shop_ui.hide()
+			sfx_draw.play()
 	)
 	return card
 
@@ -263,6 +263,8 @@ var state_animation_pos : Vector2
 func on_state_animation(what, data):
 	if what == "begin":
 		state_animation = get_tree().create_tween()
+		if Game.state == Game.PrepareState:
+			state_animation.tween_interval(0.5)
 		state_player = data
 		return true
 	elif what == "next_building":
@@ -275,17 +277,20 @@ func on_state_animation(what, data):
 		state_animation.tween_interval(0.2)
 		return true
 	elif what == "territory":
+		state_animation.tween_callback(func():
+			sfx_shuffle.play()
+		)
 		for i in data:
 			var pos = state_animation_pos
 			state_animation.tween_callback(func():
-				var card = create_hand_card()
+				var card = add_hand_card()
 				card.setup("territory")
 				var card_temp = CardBasePrefab.instantiate()
 				Card.setup_from_data(card_temp, inst_to_dict(card))
-				card_temp.position = tilemap.get_canvas_transform().origin + pos - Vector2(25, 30)
+				card_temp.position = tilemap.get_canvas_transform().origin + pos - Vector2(Game.card_hf_width, Game.card_hf_height)
 				ui_root.add_child(card_temp)
 				var tween2 = get_tree().create_tween()
-				tween2.tween_property(card_temp, "position", hand.global_position + Vector2(hand.get_child_count() * 50, 0), 0.15)
+				tween2.tween_property(card_temp, "position", hand.global_position + Vector2(hand.get_child_count() * 64, 0), 0.15)
 				tween2.tween_callback(func():
 					card_temp.queue_free()
 					hand.add_child(card)
@@ -297,39 +302,42 @@ func on_state_animation(what, data):
 	elif what == "production":
 		var pos = state_animation_pos
 		state_animation.tween_callback(func():
-			add_resource(Game.ProductionResource, data, pos - Vector2(25, 30), scene_root)
+			add_resource(Game.ProductionResource, data, pos - Vector2(Game.card_hf_width, Game.card_hf_height), scene_root)
 		)
 		return true
 	elif what == "gold":
 		var pos = state_animation_pos
 		state_animation.tween_callback(func():
-			add_resource(Game.GoldResource, data, pos - Vector2(25, 30), scene_root)
+			add_resource(Game.GoldResource, data, pos - Vector2(Game.card_hf_width, Game.card_hf_height), scene_root)
 		)
 		return true
 	elif what == "science":
 		var pos = state_animation_pos
 		state_animation.tween_callback(func():
-			add_resource(Game.ScienceResource, data, pos - Vector2(25, 30), scene_root)
+			add_resource(Game.ScienceResource, data, pos - Vector2(Game.card_hf_width, Game.card_hf_height), scene_root)
 		)
 		return true
 	elif what == "food":
 		var pos = state_animation_pos
 		state_animation.tween_callback(func():
-			add_resource(Game.FoodResource, data, pos - Vector2(25, 30), scene_root)
+			add_resource(Game.FoodResource, data, pos - Vector2(Game.card_hf_width, Game.card_hf_height), scene_root)
 		)
 		return true
 	elif what == "unit":
+		state_animation.tween_callback(func():
+			sfx_shuffle.play()
+		)
 		for i in data.unit_count:
 			var pos = state_animation_pos
 			state_animation.tween_callback(func():
-				var card = create_hand_card()
+				var card = add_hand_card()
 				card.setup_unit_card(data.unit_name)
 				var card_temp = CardBasePrefab.instantiate()
 				Card.setup_from_data(card_temp, inst_to_dict(card))
-				card_temp.position = tilemap.get_canvas_transform().origin + pos - Vector2(25, 30)
+				card_temp.position = tilemap.get_canvas_transform().origin + pos - Vector2(Game.card_hf_width, Game.card_hf_height)
 				ui_root.add_child(card_temp)
 				var tween2 = get_tree().create_tween()
-				tween2.tween_property(card_temp, "position", hand.global_position + Vector2(hand.get_child_count() * 50, 0), 0.15)
+				tween2.tween_property(card_temp, "position", hand.global_position + Vector2(hand.get_child_count() * 64, 0), 0.15)
 				tween2.tween_callback(func():
 					card_temp.queue_free()
 					hand.add_child(card)
@@ -342,46 +350,47 @@ func on_state_animation(what, data):
 func on_state_changed():
 	if Game.state == Game.PrepareState:
 		state_text.text = "准备阶段"
-		state_button.text = "开始战斗"
 		tips_text.text = " 1、拖拽领地卡到临近的空地块上以扩充领地\n 2、拖拽建筑卡到领地上来添加建筑\n 3、从商店使用生产力或金币来购买建筑卡或领地卡"
 		
+		round_tip.modulate.a = 1
+		round_tip.show()
+		round_text.text = "回合%d" % Game.round
+		if round_tip_tween != null:
+			round_tip_tween.kill()
+			round_tip_tween = null
+		round_tip_tween = get_tree().create_tween()
+		round_tip_tween.tween_interval(0.5)
+		round_tip_tween.tween_property(round_tip, "modulate:a", 0, 0.3)
+		round_tip_tween.tween_callback(func():
+			round_tip.hide()
+			round_tip_tween = null
+		)
+		
 		shop_ui.hide()
-		troop_ui.hide()
+		tech_ui.hide()
 		state_animation.tween_callback(func():
 			pass
 			#shop_ui.show()
 		)
 	elif Game.state == Game.BattleState:
 		state_text.text = "战斗阶段"
-		state_button.text = "结束战斗"
 		tips_text.text = " 1、战斗时，参与的势力轮流对目标发起攻击，目标领地的领主作为防御方对攻击进行应对\n 2、点击单位卡以放置在军队栏上或从军队栏上返还\n 3、作为防御方时在军队栏上放置应对此次攻击的单位\n 4、作为攻击方时在军队栏上放置发起攻击的单位，并指定攻击目标\n 5、所有势力的单位使用完毕后战斗结束"
 		
 		shop_ui.hide()
-		troop_ui.hide()
-		no_units_tip.hide()
+		tech_ui.hide()
 		state_animation.tween_callback(func():
-			troop_ui.show()
-			
 			Game.next_attacker()
 		)
-		for n in troop_list.get_children():
-			troop_list.remove_child(n)
-			n.queue_free()
 			
 func on_battle_player_changed():
 	if Game.battle_attacker == Game.main_player_id:
-		troop_side_text.text = "你是攻击方"
-		troop_target_button.show()
-		troop_ui.show()
+		action_text.text = "你是攻击方"
 	elif Game.battle_defender == Game.main_player_id:
-		troop_side_text.text = "你是防守方"
-		troop_target_button.hide()
-		troop_ui.show()
-	elif Game.battle_attacker == -1 :
-		troop_ui.hide()
-		no_units_tip.show()
+		action_text.text = "你是防守方"
+	elif Game.battle_attacker == -1:
+		pass
 	else:
-		troop_ui.hide()
+		pass
 	tilemap_overlay.queue_redraw()
 
 func process_card_drop():
@@ -389,34 +398,23 @@ func process_card_drop():
 		if Game.hovering_tile.x != -1:
 			var result = {}
 			if dragging_card.activate_on_tile(Game.hovering_tile, result):
+				if dragging_card.type == Card.TerritoryCard || dragging_card.type == Card.BuildingCard:
+					sfx_build.play()
 				dragging_card.queue_free()
 				return true
 			else:
+				sfx_error.play()
 				alert(result.message)
 	return false
 
-func move_back_drag_card():
-	var tween = get_tree().create_tween()
-	tween.tween_property(dragging_dummy, "position", dragging_card.global_position - Vector2(25, 0), 0.15)
-	tween.tween_callback(func():
-		dragging_dummy.hide()
-	)
-	
-	var card = dragging_card
-	card.show()
-	if card.tween:
-		card.tween.kill()
-	card.tween = get_tree().create_tween()
-	card.tween.tween_property(card, "custom_minimum_size:x", 50, 0.15)
-	card.tween.tween_callback(func():
-		card.modulate.a = 1
-		card.tween = null
-	)
+func release_dragging_card():
+	if dragging_card == null:
+		return
+	dragging_card.release_drag()
 	dragging_card = null
 	
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion:
-		tilemap.set_hovering_tile(Vector2i(-1, -1))
+	pass
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -427,21 +425,13 @@ func _unhandled_input(event: InputEvent) -> void:
 					select_tile_callback = Callable()
 			else:
 				if dragging_card:
-					if process_card_drop():
-						dragging_dummy.hide()
-						dragging_card = null
-					else:
-						move_back_drag_card()
+					process_card_drop()
+					dragging_card = null
 		if event.button_index == MOUSE_BUTTON_RIGHT:
 			if event.pressed:
-				if dragging_card:
-					move_back_drag_card()
 				if select_tile_callback.is_valid():
 					select_tile_callback.call(Vector2i(-1, -1), false)
 					select_tile_callback = Callable()
-	if event is InputEventMouseMotion:
-		if dragging_card:
-			dragging_dummy.position = event.position - drag_offset
 	
 	if event is InputEventKey:
 		if event.pressed:
@@ -452,10 +442,10 @@ func _unhandled_input(event: InputEvent) -> void:
 			elif event.keycode == KEY_T:
 				on_tech_button()
 
-func add_shop_item(card_type : int, name : String, use_resource : int, amount : int):
+func add_shop_item(card_type : int, name : String, use_resource : int, cost : int, amount : int):
 	var shop_item = ShopItemPrefab.instantiate()
 	if card_type == Card.TerritoryCard:
-		pass
+		shop_item.setup_territory_item(use_resource, cost)
 	elif card_type == Card.BuildingCard:
 		shop_item.setup_building_item(name, use_resource)
 	elif card_type == Card.UnitCard:
@@ -464,15 +454,17 @@ func add_shop_item(card_type : int, name : String, use_resource : int, amount : 
 		tooltip_using = true
 		var info : Dictionary
 		if card_type == Card.TerritoryCard:
-			pass
+			info = Card.get_info("territory")
 		elif card_type == Card.BuildingCard:
 			info = Building.get_info(name)
+			info.description = "地块需求：%s\n" % Building.get_need_terrain_text(info.need_terrain) + info.description
 		elif card_type == Card.UnitCard:
 			info = Unit.get_info(name)
 		var text = shop_item.display_name
 		text += "\n%s" % info.description.format(info)
 		tooltip_text.text = text
 		tooltip.show()
+		sfx_hover.play()
 	)
 	shop_item.mouse_exited.connect(func():
 		tooltip_using = true
@@ -481,21 +473,24 @@ func add_shop_item(card_type : int, name : String, use_resource : int, amount : 
 	shop_item.clicked.connect(func():
 		if shop_using:
 			return
-		if Game.main_player.get_resource(shop_item.use_resource) >= shop_item.resource_amount:
+		var result = {}
+		if shop_item.buy(result):
 			shop_using = true
-			add_resource(shop_item.use_resource, -shop_item.resource_amount, shop_item.global_position)
+			add_resource(result.cost_type, -result.cost, shop_item.global_position)
+			sfx_buy.play()
 			
 			var card_temp = CardBasePrefab.instantiate()
-			Card.setup_from_data(card_temp, inst_to_dict(shop_item))
+			Card.setup_from_data(card_temp, result.card_data)
 			card_temp.position = shop_item.global_position
 			ui_root.add_child(card_temp)
 			var card_tween = get_tree().create_tween()
-			card_tween.tween_property(card_temp, "position", hand.global_position + Vector2(hand.get_child_count() * 50, 0), 0.15)
+			card_tween.tween_property(card_temp, "position", hand.global_position + Vector2(hand.get_child_count() * 64, 0), 0.15)
 			card_tween.tween_callback(func():
 				card_temp.queue_free()
-				var card = create_hand_card()
+				var card = add_hand_card()
 				if card_type == Card.TerritoryCard:
-					card.setup(name)
+					card.setup("territory")
+					Game.main_player.unused_territories += 1
 				elif card_type == Card.BuildingCard:
 					card.setup_building_card(name)
 				elif card_type == Card.UnitCard:
@@ -505,12 +500,8 @@ func add_shop_item(card_type : int, name : String, use_resource : int, amount : 
 				shop_using = false
 			)
 		else:
-			if shop_item.use_resource == Game.ProductionResource:
-				alert("生产力不足")
-			elif shop_item.use_resource == Game.GoldResource:
-				alert("金币不足")
-			elif shop_item.use_resource == Game.FoodResource:
-				alert("食物不足")
+			alert(result.message)
+			sfx_error.play()
 	)
 	shop_list.add_child(shop_item)
 
@@ -520,17 +511,19 @@ func update_shop_list():
 		n.queue_free()
 	var category = shop_tab_bar.current_tab
 	if category == 0:
+		add_shop_item(Card.TerritoryCard, "", Game.ProductionResource, 20 + (Game.main_player.territories.size() + Game.main_player.unused_territories) * 2, -1)
 		for k in Game.main_player.avaliable_constructions:
-			add_shop_item(Card.BuildingCard, k, Game.ProductionResource, -1)
+			add_shop_item(Card.BuildingCard, k, Game.ProductionResource, -1, -1)
 	elif category == 1:
 		for k in Game.main_player.avaliable_constructions:
-			add_shop_item(Card.BuildingCard, k, Game.GoldResource, -1)
+			add_shop_item(Card.BuildingCard, k, Game.GoldResource, -1, -1)
 	elif category == 2:
 		for k in Game.main_player.avaliable_trainings:
-			add_shop_item(Card.UnitCard, k.name, Game.GoldResource, k.amount)
+			add_shop_item(Card.UnitCard, k.name, Game.GoldResource, -1, k.amount)
 
 func on_shop_close_button() -> void:
 	shop_ui.hide()
+	sfx_close.play()
 
 func on_shop_tab_changed(tab: int) -> void:
 	update_shop_list()
@@ -538,45 +531,35 @@ func on_shop_tab_changed(tab: int) -> void:
 func on_shop_button() -> void:
 	if shop_ui.visible:
 		shop_ui.hide()
+		sfx_close.play()
 	else:
 		update_shop_list()
 		shop_ui.show()
 		tech_ui.hide()
+		sfx_open.play()
 
 func on_tech_close_button() -> void:
 	tech_ui.hide()
+	sfx_close.play()
 
 func on_tech_button() -> void:
 	if tech_ui.visible:
 		tech_ui.hide()
+		sfx_close.play()
 	else:
 		shop_ui.hide()
 		tech_ui.show()
+		sfx_open.play()
 
-func on_target_button(v: bool) -> void:
+func on_deconstruct_button(v : bool):
 	if v:
 		select_tile_callback = Callable(func(coord : Vector2i, is_peeding : bool):
 			Game.main_player.troop_target = coord
 			if !is_peeding:
-				troop_target_button.set_pressed_no_signal(false)
-				troop_target_button.toggled.emit(false)
-				if coord.x == -1 && coord.y == -1:
-					Game.main_player.troop_path.clear()
-					tilemap_overlay.queue_redraw()
-			else:
+				deconstruct_button.set_pressed_no_signal(false)
+				deconstruct_button.toggled.emit(false)
 				if coord.x != -1 && coord.y != -1:
-					var shortest_path = []
-					var shortest_dist = 1000
-					for c in Game.main_player.territories:
-						var path = Game.find_path_on_map(c, coord, Game.main_player.vision)
-						if !path.is_empty() && path.size() < shortest_dist:
-							shortest_dist = path.size()
-							shortest_path = path
-					Game.main_player.troop_path = shortest_path
-					tilemap_overlay.queue_redraw()
-				else:
-					Game.main_player.troop_path.clear()
-					tilemap_overlay.queue_redraw()
+					Game.main_player.remove_building(coord)
 		)
 	else:
 		select_tile_callback = Callable()
@@ -654,54 +637,81 @@ func on_battle_calc(what : String, data):
 			)
 			return true
 		return false
-	elif what == "gold_production":
+	elif what == "gold":
 		if Game.battle_attacker == Game.main_player_id:
 			battle_animation.tween_callback(func():
 				add_resource(Game.GoldResource, data.value, tilemap.map_to_local(data.coord), scene_root)
 			)
 			return true
 		return false
-	elif what == "science_production":
+	elif what == "science":
 		if Game.battle_attacker == Game.main_player_id:
 			battle_animation.tween_callback(func():
 				add_resource(Game.ScienceResource, data.value, tilemap.map_to_local(data.coord), scene_root)
 			)
 			return true
 		return false
-
-func on_troop_comfire() -> void:
-	if Game.battle_attacker == Game.main_player_id:
-		if Game.main_player.troop_target.x == -1 || Game.main_player.troop_target.y == -1:
-			alert("需要一个目标")
-		elif Game.main_player.troop_units.is_empty():
-			alert("需要至少一个单位")
-		elif Game.main_player.troop_mobility + 1 < Game.main_player.troop_path.size():
-			alert("行军距离不够")
-		else:
-			troop_side_text.text = ""
-			for n in troop_list.get_children():
-				troop_list.remove_child(n)
-				n.queue_free()
-			troop_ui.hide()
-			Game.commit_attack()
-	elif Game.battle_defender == Game.main_player_id:
-		Game.commit_attack()
+	elif what == "food":
+		if Game.battle_attacker == Game.main_player_id:
+			battle_animation.tween_callback(func():
+				add_resource(Game.FoodResource, data.value, tilemap.map_to_local(data.coord), scene_root)
+			)
+			return true
+		return false
 
 func on_attack_commited():
-	var attacker_player = Game.players[Game.battle_attacker] as Player
-	var focus_coord = attacker_player.troop_path[attacker_player.troop_path.size() / 2].coord
-	camera.move_to(tilemap.to_global(tilemap.map_to_local(focus_coord)))
+	var attacker_player = Game.players[Game.battle_attacker]
+	var path = attacker_player.troop_path
+	var target_pos = tilemap.get_canvas_transform().origin + tilemap.map_to_local(path[0 if Game.battle_attacker == Game.main_player_id else path.size() - 1].coord)
 	var tween = get_tree().create_tween()
-	var num = attacker_player.troop_path.size()
+	for card in hand.get_children():
+		if card.selected:
+			if card.tween:
+				card.tween.kill()
+			card.modulate.a = 0
+			card.tween = get_tree().create_tween()
+			card.tween.tween_property(card, "custom_minimum_size:x", 0, 0.15)
+			card.tween.tween_callback(func():
+				card.queue_free()
+				tilemap_overlay.queue_redraw()
+			)
+			var card_shadow = CardShadowPrefab.instantiate()
+			var start_pos = hand.global_position + card.position
+			ui_root.add_child(card_shadow)
+			var tween2 = get_tree().create_tween()
+			tween2.tween_method(func(t : float):
+				var pts = []
+				if t < 0.5:
+					pts.append(lerp(start_pos, target_pos, t * 2))
+					pts.append(lerp(start_pos + Vector2(Game.card_width, 0), target_pos, t * 2))
+					pts.append(start_pos + Vector2(Game.card_width, Game.card_height))
+					pts.append(start_pos + Vector2(0, Game.card_height))
+				else:
+					pts.append(target_pos)
+					pts.append(target_pos)
+					pts.append(lerp(start_pos + Vector2(Game.card_width, Game.card_height), target_pos, (t - 0.5) * 2))
+					pts.append(lerp(start_pos + Vector2(0, Game.card_height), target_pos, (t - 0.5) * 2))
+				card_shadow.polygon = pts
+			, 0.0, 1.0, 0.35)
+			tween2.tween_callback(func():
+				card_shadow.queue_free()
+			)
+			
 	attack_troop_mark.show()
 	attack_troop_mark.position = tilemap.to_global(tilemap.map_to_local(attacker_player.troop_path[0].coord))
 	attack_troop_mark.modulate = attacker_player.color
 	attack_troop_mark.modulate.a = 0
+	tween.tween_interval(0.5)
+	var focus_coord = attacker_player.troop_path[attacker_player.troop_path.size() / 2].coord
+	tween.tween_callback(func():
+		camera.move_to(tilemap.to_global(tilemap.map_to_local(focus_coord)))
+	)
 	tween.tween_property(attack_troop_mark, "modulate:a", 1.0, 0.15)
 	var has_resistance = Game.battle_defender != -1
 	if has_resistance:
-		var defender_player = Game.players[Game.battle_defender] as Player
+		var defender_player = Game.players[Game.battle_defender]
 		has_resistance = !defender_player.troop_units.is_empty()
+	var num = attacker_player.troop_path.size()
 	if num >= 2:
 		var t = 0.4 / (num - 1)
 		for i in num - 1:
@@ -720,15 +730,35 @@ func on_attack_commited():
 	)
 	tilemap_overlay.queue_redraw()
 
-func on_state_button():
+func on_comfire_button():
 	if Game.state == Game.PrepareState:
 		Game.change_state(Game.BattleState)
 	elif Game.state == Game.BattleState:
-		no_units_tip.hide()
-		if Game.is_battle_round_ended():
-			Game.change_state(Game.PrepareState)
+		if Game.battle_attacker == Game.main_player_id:
+			if Game.main_player.troop_target.x == -1 || Game.main_player.troop_target.y == -1:
+				alert("需要指定一个目标")
+				sfx_error.play()
+			elif Game.main_player.troop_units.is_empty():
+				alert("需要至少一个单位")
+				sfx_error.play()
+			elif Game.main_player.troop_mobility + 1 < Game.main_player.troop_path.size():
+				alert("行军距离不够")
+				sfx_error.play()
+			else:
+				action_text.text = ""
+				Game.commit_attack()
+		elif Game.battle_defender == Game.main_player_id:
+			Game.commit_attack()
+
+func on_cancel_button():
+	if Game.state == Game.BattleState:
+		if Game.battle_attacker == Game.main_player_id:
+			yes_no_dialog("是否跳过攻击？", func(yes : bool):
+				if yes:
+					Game.skip_attack()
+			)
 		else:
-			alert("还有未使用的单位")
+			Game.commit_attack()
 
 func on_show_tip_button():
 	if tips_text.visible:
@@ -742,17 +772,15 @@ func init_tiles():
 	var water_tiles = {}
 	var grass_tiles = {}
 	var forest_tiles = {}
-	for x in Game.cx:
-		for y in Game.cy:
-			var c = Vector2i(x, y)
-			var tile = Game.map[c] as Tile
-			if tile.terrain == Tile.TerrainWater:
-				water_tiles[c] = 1
-			elif tile.terrain == Tile.TerrainPlain:
-				grass_tiles[c] = 1
-			elif tile.terrain == Tile.TerrainForest:
-				grass_tiles[c] = 1
-				forest_tiles[c] = 1
+	for c in Game.map:
+		var tile = Game.map[c] as Tile
+		if tile.terrain == Tile.TerrainWater:
+			water_tiles[c] = 1
+		elif tile.terrain == Tile.TerrainPlain:
+			grass_tiles[c] = 1
+		elif tile.terrain == Tile.TerrainForest:
+			grass_tiles[c] = 1
+			forest_tiles[c] = 1
 	if !water_tiles.is_empty():
 		tilemap_water.set_cells_terrain_connect(water_tiles.keys(), 0, 0, false)
 		var bank_tiles = {}
@@ -806,10 +834,13 @@ func update_tiles():
 				
 func update_buildings(id : int):
 	var player = Game.players[id] as Player
+	for c in player.territories:
+		updated_tiles.erase(c)
+	update_tiles()
 	for c in player.buildings:
 		if Game.main_player.vision.has(c):
 			var building = player.buildings[c]
-			tilemap_object.set_cell(c, building.tile_id, Vector2i(0, 0))
+			tilemap_object.set_cell(c, building.image_tile_id, Vector2i(0, 0))
 
 func overlay_drawer(node : Node2D):
 	if Game.battle_attacker != -1:
@@ -859,24 +890,13 @@ func _ready() -> void:
 				tooltip.hide()
 			else:
 				var t = Game.map[coord] as Tile
-				var text : String
-				if t.terrain == Tile.TerrainPlain:
-					text = "草原"
-				elif t.terrain == Tile.TerrainForest:
-					text = "树林"
-				else:
-					text = "水"
-				var dic = {}
-				for u in t.neutral_units:
-					var name = u.unit_name
-					if dic.has(name):
-						dic[name] += 1
-					else:
-						dic[name] = 1
+				var text = "[font_size=18]%s[/font_size]" % Tile.get_terrain_text(t.terrain)
+				var dic = t.get_neutral_unit_types()
 				for k in dic:
 					var info = Unit.get_info(k)
-					text += "\n%s x%d" % [info.display_name, dic[k]]
-				text += "\n%dP" % t.production_resource
+					text += "\n[img=20]%s[/img] x%d" % [info.icon, dic[k]]
+				if t.resource_amount > 0:
+					text += "\n资源: %d[img=20]%s[/img]" % [t.resource_amount, Game.get_resource_icon(t.resource_type)]
 				if t.player != -1:
 					var player = Game.players[t.player] as Player
 					text += "\n领地归属: %d" % player.id
@@ -885,7 +905,8 @@ func _ready() -> void:
 				if t.building != "":
 					var player = Game.players[t.player] as Player
 					var building = player.buildings[t.coord]
-					text += "\n建筑: %s" % building.display_name
+					text += "\n------------------------"
+					text += "\n%s" % building.display_name
 					text += "\n%s" % building.description.format(building.ext)
 				else:
 					text += "\n建筑: 无"
@@ -942,6 +963,8 @@ func _ready() -> void:
 			text += "\n%s" % info.description.format(values)
 			tooltip_text.text = text
 			tooltip.show()
+			
+			sfx_hover.play()
 		)
 		tech_item.mouse_exited.connect(func():
 			tooltip_using = true
@@ -959,4 +982,53 @@ func _ready() -> void:
 		)
 		tech_tree.add_child(tech_item)
 	
-	Game.change_state(0)
+	shop_ui.hide()
+	tech_ui.hide()
+	
+	for c in Game.loaded_hand_data:
+		if c.type == Card.NormalCard:
+			pass
+		elif c.type == Card.TerritoryCard:
+			var card = add_hand_card()
+			card.setup("territory")
+			hand.add_child(card)
+		elif c.type == Card.BuildingCard:
+			var card = add_hand_card()
+			card.setup_building_card(c.name.substr(0, c.name.length() - 9))
+			hand.add_child(card)
+			pass
+		elif c.type == Card.UnitCard:
+			var card = add_hand_card()
+			card.setup_unit_card(c.name.substr(0, c.name.length() - 5))
+			hand.add_child(card)
+			pass
+	Game.loaded_hand_data.clear()
+	Game.on_scene_ready()
+
+func on_game_menu() -> void:
+	if get_tree().get_processed_tweens().is_empty():
+		$CanvasLayer/GameMenu.show()
+		sfx_open.play()
+
+func on_resume() -> void:
+	$CanvasLayer/GameMenu.hide()
+	sfx_open.play()
+
+func on_save_game() -> void:
+	var hand_data = []
+	for n in hand.get_children():
+		var c = {}
+		c.type = n.type
+		c.name = n.card_name
+		hand_data.append(c)
+	Game.save_game("res://savings/auto_save.txt", hand_data)
+
+func on_load_game() -> void:
+	Game.load_game("res://savings/auto_save.txt")
+	get_tree().reload_current_scene()
+
+func on_back_to_title() -> void:
+	get_tree().change_scene_to_file("res://title_screen.tscn")
+
+func on_quit() -> void:
+	get_tree().quit()

@@ -1,7 +1,5 @@
 class_name Technology
 
-const Player = preload("res://player.gd")
-
 static var config : ConfigFile = null
 
 var tech_name : String

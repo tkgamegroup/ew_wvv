@@ -13,13 +13,20 @@ enum
 
 var building_name : String
 var type : int
-var cost_production : int
-var cost_gold : int
-var need_terrain : Array
+var defense : int
 var display_name : String
 var description : String
-var tile_id : int
+var icon : String
+var image_tile_id : int
 var ext : Dictionary
+
+static func get_need_terrain_text(need_terrain : Array):
+	var need_terrain_text = ""
+	for t in need_terrain:
+		if !need_terrain_text.is_empty():
+			need_terrain_text += ", "
+		need_terrain_text += Tile.get_terrain_text(t)
+	return need_terrain_text
 
 static func get_info(name : String):
 	if !config:
@@ -34,20 +41,19 @@ static func get_info(name : String):
 	ret.display_name = config.get_value(name, "display_name")
 	ret.description = config.get_value(name, "description")
 	ret.icon = config.get_value(name, "icon")
-	ret.tile_id = config.get_value(name, "tile_id")
+	ret.image_tile_id = config.get_value(name, "image_tile_id")
+	
+	ret.production = config.get_value(name, "production", 0)
+	ret.gold_production = config.get_value(name, "gold_production", 0)
+	ret.science_production = config.get_value(name, "science_production", 0)
+	ret.food_production = config.get_value(name, "food_production", 0)
+	ret.geer_production = config.get_value(name, "geer_production", 0)
 	if ret.type == City:
 		pass
 	elif ret.type == ProductionBuilding:
-		ret.production = config.get_value(name, "production", 0)
-		ret.gold_production = config.get_value(name, "gold_production", 0)
-		ret.science_production = config.get_value(name, "science_production", 0)
-		ret.food_production = config.get_value(name, "food_production", 0)
-		ret.geer_production = config.get_value(name, "geer_production", 0)
+		pass
 	elif ret.type == BarracksBuilding:
-		ret.train_unit_name = config.get_value(name, "train_unit_name")
-		var unit_info = Unit.get_info(ret.train_unit_name)
-		ret.train_unit_display_name = unit_info.display_name
-		ret.train_unit_count = config.get_value(name, "train_unit_count")
+		ret.trainnings = config.get_value(name, "trainnings")
 	elif ret.type == RallyPointBuilding:
 		ret.additional_mobility = config.get_value(name, "additional_mobility")
 	elif ret.type == KeepBuilding:
@@ -58,25 +64,36 @@ func _init(key : String):
 	var info = get_info(key)
 	building_name = key
 	type = info.type
-	cost_production = info.cost_production
-	cost_gold = info.cost_gold
-	need_terrain = info.need_terrain
 	display_name = info.display_name
 	description = info.description
-	tile_id = info.tile_id
+	icon = info.icon
+	image_tile_id = info.image_tile_id
+	
+	ext["production"] = info.production
+	ext["gold_production"] = info.gold_production
+	ext["science_production"] = info.science_production
+	ext["food_production"] = info.food_production
+	ext["geer_production"] = info.geer_production
 	if type == City:
 		pass
 	elif type == ProductionBuilding:
-		ext["production"] = info.production
-		ext["gold_production"] = info.gold_production
-		ext["science_production"] = info.science_production
-		ext["food_production"] = info.food_production
-		ext["geer_production"] = info.geer_production
+		pass
 	elif type == BarracksBuilding:
-		ext["train_unit_name"] = info.train_unit_name
-		ext["train_unit_display_name"] = info.train_unit_display_name
-		ext["train_unit_count"] = info.train_unit_count
+		ext["trainnings"] = info.trainnings
 	elif type == RallyPointBuilding:
 		ext["additional_mobility"] = info.additional_mobility
 	elif type == KeepBuilding:
 		ext["additional_defense"] = info.additional_defense
+
+func add_trainning(name : String, count : int):
+	pass
+
+func set_trainning(name : String):
+	var trainnings = ext["trainnings"] as Dictionary
+	if trainnings.has(name):
+		ext["train_unit_name"] = name
+		var unit_info = Unit.get_info(name)
+		ext["train_unit_display_name"] = unit_info.display_name
+		ext["train_unit_count"] = trainnings[name]
+		description = get_info(building_name).description
+		description += "\n每回合训练最多[b]{train_unit_count}[/b]个[b]{train_unit_display_name}[/b]"

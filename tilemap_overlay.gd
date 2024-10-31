@@ -1,7 +1,6 @@
 extends Node2D
 
 const Player = preload("res://player.gd")
-const Tile = preload("res://tile.gd")
 const img_neutral_camp = preload("res://icons/neutral_camp.png")
 
 @onready var tilemap = $"../TileMapLayerMain"
@@ -32,7 +31,7 @@ func _draw() -> void:
 			var coord = Vector2i(x, y)
 			var tile = Game.map[coord] as Tile
 			var pos = tilemap.map_to_local(tile.coord)
-			#draw_string(ThemeDB.fallback_font, tilemap.map_to_local(coord) , tile.label)
+			#draw_string(ThemeDB.fallback_font, tilemap.map_to_local(coord), "%d,%d" % [tile.coord.x, tile.coord.y])
 			if !tile.neutral_units.is_empty() && Game.main_player.vision.has(tile.coord):
 				draw_texture_rect(img_neutral_camp, Rect2(pos - Vector2(20, 20), Vector2(40, 40)), false, Color(1, 1, 1, 0.5))
 			

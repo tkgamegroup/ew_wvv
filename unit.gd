@@ -19,6 +19,7 @@ static func get_info(key : String):
 	var ret = {}
 	ret.display_name = config.get_value(key, "display_name")
 	ret.description = config.get_value(key, "description", "")
+	ret.description = "ATK: {atk}\nDEF: {def}\n" + ret.description
 	ret.icon = config.get_value(key, "icon")
 	ret.atk = config.get_value(key, "atk")
 	ret.def = config.get_value(key, "def")
