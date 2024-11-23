@@ -5,7 +5,6 @@ class_name Card
 enum
 {
 	NormalCard,
-	TerritoryCard,
 	BuildingCard,
 	UnitCard
 }
@@ -14,30 +13,41 @@ enum
 {
 	TargetNull,
 	TargetTile,
-	TargetTroop
+	TargetBuilding
 }
+
+const Tile = preload("res://tile.gd")
 
 signal clicked
 
 var card_name : String
 var type : int
 var target_type : int
-var dragging : bool = false
-var drag_off : Vector2
 var last_parent : Control
-var selected : bool = false
 var display_name : String
 var description : String
 var icon : String
 var cost_resource_type : int = Game.NoneResource
 var cost_resource : int = 0
+var effect : Dictionary
+
+var hovering = false
+var lock : bool = false
+var dragable : bool = true
+var dragging : bool = false
+var drag_off : Vector2
+var selected : bool = false
 var xy_quat = Quaternion(Vector3(1, 0, 0), 0)
 var z_angle : float = 0.0
 
 var tween_hover : Tween = null
 var tween_drag : Tween = null
 
-var shadow : Control = null
+@onready var shadow = $Shadow
+@onready var front = $SubViewport/Front
+@onready var back = $SubViewport/Back
+@onready var outline = $SubViewport/Front/Outline
+@onready var sub_viewport = $SubViewport
 
 static var config : ConfigFile = null
 
@@ -53,38 +63,41 @@ static func get_info(key : String):
 	ret.icon = config.get_value(key, "icon")
 	ret.cost_resource_type = config.get_value(key, "cost_resource_type", 0)
 	ret.cost_resource = config.get_value(key, "cost_resource", 0)
+	ret.effect = config.get_value(key, "effect", {})
 	return ret
 
-static func setup_from_data(dst : Control, data : Dictionary):
-	if is_instance_of(dst, Card):
-		dst.card_name = data.card_name
-		dst.type = data.type
-		dst.target_type = data.target_type
-		dst.display_name = data.display_name
-		if data.has("description"):
-			dst.description = data.description
-		dst.icon = data.icon
-		if data.has("cost_resource"):
-			dst.cost_resource_type = data.cost_resource_type
-			dst.cost_resource = data.cost_resource
-		dst.update_projection()
-		dst.update_rotation()
+func setup_from_data(data : Dictionary):
+	card_name = data.card_name
+	type = data.type
+	target_type = data.target_type
+	display_name = data.display_name
+	if data.has("description"):
+		description = data.description
+	icon = data.icon
+	if data.has("cost_resource"):
+		cost_resource_type = data.cost_resource_type
+		cost_resource = data.cost_resource
+	if data.has("effect"):
+		effect = data.effect
 		
-	dst.find_child("Name").text = data.display_name
-	dst.find_child("TextureRect").texture = load(data.icon)
+	$SubViewport/Front/Name.text = display_name
+	$SubViewport/Front/TextureRect.texture = load(icon)
 	if data.has("cost_resource"):
 		if data.cost_resource_type != Game.NoneResource:
-			dst.find_child("Cost").visible = true
-			dst.find_child("CostText").text = "%d" % data.cost_resource
+			$SubViewport/Front/Cost.visible = true
+			$SubViewport/Front/Cost/Polygon2D/CostText.text = "%d" % data.cost_resource
 			var icon_path = ""
 			if data.cost_resource_type == Game.FoodResource:
 				icon_path = "res://icons/food.png"
-			dst.find_child("CostIcon").texture = load(icon_path)
+			$SubViewport/Front/Cost/Polygon2D/CostIcon.texture = load(icon_path)
+			
+	init_matrix()
+	update_rotation()
 
 func setup(_name : String):
 	var info = get_info(_name)
 	info.card_name = _name
-	setup_from_data(self, info)
+	setup_from_data(info)
 	
 func setup_building_card(_name : String):
 	var data = {}
@@ -96,46 +109,65 @@ func setup_building_card(_name : String):
 	data.description = info.description.format(info)
 	data.description = "地块需求：%s\n" % Building.get_need_terrain_text(info.need_terrain) + data.description
 	data.icon = info.icon
-	setup_from_data(self, data)
+	setup_from_data(data)
 	
 func setup_unit_card(_name : String):
 	var data = {}
 	data.card_name = _name + "_unit"
 	data.type = UnitCard
-	data.target_type = TargetTroop
+	data.target_type = TargetTile
 	var info = Unit.get_info(_name)
 	data.display_name = info.display_name
 	data.description = info.description.format(info)
 	data.icon = info.icon
-	setup_from_data(self, data)
+	setup_from_data(data)
 
-func update_projection():
-	var rendered = find_child("Rendered") as Sprite2D
-	var mat = rendered.material as ShaderMaterial
+func init_matrix():
+	var mat = $Rendered.material as ShaderMaterial
 	var proj = Projection()
 	proj = Projection.create_perspective(30.0, 1.0, 1.0, 100.0)
 	mat.set_shader_parameter("projection", proj)
+	var rot = Transform3D()
+	mat.set_shader_parameter("rotation", rot)
+	var holo_rot = Transform3D()
+	holo_rot.basis = Basis(Vector3(0.0, 0.0, 1.0), 27.0)
+	mat.set_shader_parameter("holographic_rotation", holo_rot)
 
 func update_rotation():
-	var rendered = find_child("Rendered") as Sprite2D
-	var mat = rendered.material as ShaderMaterial
+	var mat = $Rendered.material as ShaderMaterial
 	var rot = Transform3D()
 	rot.basis = Basis(xy_quat)
 	mat.set_shader_parameter("rotation", rot)
 
+func update_dissolve(v : float):
+	var mat = $Rendered.material as ShaderMaterial
+	mat.set_shader_parameter("dissolve_value", v)
+
 func select():
-	find_child("Outline").show()
+	outline.show()
 	selected = true
 
 func deselect():
-	find_child("Outline").hide()
+	outline.hide()
 	selected = false
 
+func front_face():
+	front.visible = true
+	back.visible = false
+	sub_viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
+
+func back_face():
+	front.visible = false
+	back.visible = true
+	sub_viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
+
 func on_mouse_entered():
+	hovering = true
+	z_index = 1
 	if tween_hover:
 		tween_hover.kill()
 		tween_hover = null
-	if dragging:
+	if lock || dragging:
 		return
 	tween_hover = get_tree().create_tween()
 	tween_hover.tween_property(self, "scale", Vector2(1.2, 1.2), 0.35).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
@@ -144,10 +176,13 @@ func on_mouse_entered():
 	)
 
 func on_mouse_exited():
+	hovering = false
+	if !dragging:
+		z_index = 0
 	if tween_hover:
 		tween_hover.kill()
 		tween_hover = null
-	if dragging:
+	if lock || dragging:
 		return
 	tween_hover = get_tree().create_tween()
 	tween_hover.tween_property(self, "scale", Vector2(1.0, 1.0), 0.35).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_ELASTIC)
@@ -156,19 +191,21 @@ func on_mouse_exited():
 	)
 
 func start_drag():
-	if dragging:
+	if lock || dragging || !dragable:
 		return
 	dragging = true
+	z_index = 2
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	last_parent = get_parent()
-	var ui_root = get_tree().current_scene.find_child("CanvasLayer")
+	var ui_root = get_tree().current_scene.find_child("UI")
 	reparent(ui_root)
 	if tween_drag:
 		tween_drag.kill()
 		tween_drag = null
 	tween_drag = get_tree().create_tween()
-	tween_drag.tween_property(self, "scale", Vector2(0.4, 0.4), 0.45).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUINT)
-	#tween_drag.parallel().tween_property(self, "modulate:a", 0.8, 0.25)
+	if target_type != TargetNull:
+		tween_drag.tween_property(self, "scale", Vector2(0.4, 0.4), 0.45).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUINT)
+		#tween_drag.parallel().tween_property(self, "modulate:a", 0.8, 0.25)
 	tween_drag.parallel().tween_property(self, "rotation_degrees", 0.0, 0.25)
 	tween_drag.tween_callback(func():
 		tween_drag = null
@@ -178,6 +215,7 @@ func release_drag():
 	if !dragging:
 		return
 	dragging = false
+	z_index = 0
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	reparent(last_parent)
 	if tween_drag:
@@ -185,76 +223,23 @@ func release_drag():
 		tween_drag = null
 	tween_drag = get_tree().create_tween()
 	tween_drag.tween_property(self, "scale", Vector2(1.0, 1.0), 0.35).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUINT)
-	#tween_drag.parallel().tween_property(self, "modulate:a", 1, 0.25)
 	tween_drag.tween_callback(func():
 		tween_drag = null
 	)
 
-func activate_on_tile(tile_coord : Vector2i, result : Dictionary) -> bool :
-	if type == TerritoryCard:
-		if Game.state != Game.PrepareState:
-			result.message = "只能在准备阶段使用"
-			return false
-		var ok = false
-		if !Game.main_player.territories.has(tile_coord):
-			var tile = Game.map[tile_coord] as Tile
-			if tile.player == -1:
-				if tile.neutral_units.is_empty():
-					for t in Game.get_surrounding_tiles(tile):
-						if Game.main_player.territories.has(t.coord):
-							ok = true
-							break
-					if !ok:
-						result.message = "必须放在已有领地旁边"
-				else:
-					result.message = "此地块上有野生生物，不能占领"
-			else:
-				result.message = "此地块已被其他玩家占领"
-		else:
-			result.message = "已经有此领地"
-		if ok:
-			if Game.main_player.unused_territories > 0:
-				if Game.main_player.add_territory(tile_coord):
-					Game.main_player.unused_territories -= 1
-					return true
-			else:
-				result.message = "程序错误, unused_territories == 0"
-	elif type == BuildingCard:
-		if Game.state != Game.PrepareState:
-			result.message = "只能在准备阶段使用"
-			return false
-		if Game.main_player.territories.has(tile_coord):
-			var tile = Game.map[tile_coord] as Tile
-			if tile.building == "":
-				var name = card_name.substr(0, card_name.length() - 9)
-				var info = Building.get_info(name)
-				if info.need_terrain.find(tile.terrain) != -1:
-					if Game.main_player.add_building(tile_coord, name):
-						return true
-				else:
-					result.message = "不符合建筑要求的地块类型"
-			else:
-				result.message = "领地上已经有别的建筑"
-		else:
-			result.message = "只能在你的领地上使用"
-	return false
-
 func _ready() -> void:
 	mouse_entered.connect(on_mouse_entered)
 	mouse_exited.connect(on_mouse_exited)
-	
-	shadow = find_child("Shadow")
 
 func _process(delta: float) -> void:
-	if !dragging:
+	if !lock && !dragging && hovering:
 		var mpos = get_local_mouse_position()
 		var rect = get_rect()
 		var sz = get_rect().size
-		if mpos.x > 0 && mpos.y > 0 && mpos.x < sz.x && mpos.y < sz.y:
-			var dir = Vector3(mpos.x - sz.x * 0.5, mpos.y - sz.y * 0.5, 0.0).normalized()
-			dir = dir.cross(Vector3(0, 0, 1))
-			xy_quat = Quaternion(dir, min(mpos.length() / 100, deg_to_rad(7)))
-	else:
+		var dir = Vector3(mpos.x - sz.x * 0.5, mpos.y - sz.y * 0.5, 0.0).normalized()
+		dir = dir.cross(Vector3(0, 0, 1))
+		xy_quat = Quaternion(dir, min(mpos.length() / 100, deg_to_rad(12)))
+	if dragging:
 		if z_angle != 0:
 			z_angle = z_angle * 0.9
 		rotation_degrees = z_angle
@@ -263,12 +248,13 @@ func _process(delta: float) -> void:
 	var dist_to_center = get_global_rect().get_center().x - screen_center.x
 	shadow.position.x = lerp(0.0, -sign(dist_to_center) * 20, abs(dist_to_center / screen_center.x))
 	
-	var angle = xy_quat.get_angle()
-	if angle * angle > 0:
-		xy_quat = xy_quat.slerp(Quaternion(0.0, 0.0, 0.0, 1.0), 0.05)
-		if angle * angle < 0.0005:
-			xy_quat = Quaternion(0.0, 0.0, 0.0, 1.0)
-		update_rotation()
+	if !lock:
+		var angle = xy_quat.get_angle()
+		if angle * angle > 0:
+			xy_quat = xy_quat.slerp(Quaternion(0.0, 0.0, 0.0, 1.0), 0.05)
+			if angle * angle < 0.0005:
+				xy_quat = Quaternion(0.0, 0.0, 0.0, 1.0)
+			update_rotation()
 
 func _gui_input(event: InputEvent):
 	if event is InputEventMouseButton:
@@ -300,4 +286,3 @@ func _input(event: InputEvent):
 		if event.button_index == MOUSE_BUTTON_RIGHT:
 			if event.pressed:
 				release_drag()
-	

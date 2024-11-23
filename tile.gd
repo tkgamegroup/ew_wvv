@@ -1,43 +1,38 @@
+extends Object
+
 class_name Tile
 
 enum
 {
-	TerrainPlain,
-	TerrainForest,
-	TerrainWater
+	TerrainFloor,
+	TerrainFloor2
 }
 
 var coord : Vector2i
 var terrain : int
 var passable : bool = true
-var tilemap_atlas_ids : Array
-var tilemap_atlas_coords : Array
 var tile_lt : Vector2i
 var tile_t : Vector2i
 var tile_rt : Vector2i
 var tile_lb : Vector2i
 var tile_b : Vector2i
 var tile_rb : Vector2i
-var building : String
-var player : int = -1
-var neutral_units : Array
-var resource_type : int
-var resource_amount : int
-
-var label : String
+var building : Building = null
+var ore : Ore = null
+var monsters : Array[Unit]
+var player_units : Array[Unit]
+var wet : bool = false
 
 static func get_terrain_text(terrain : int):
-	if terrain == TerrainPlain:
-		return "平原"
-	elif terrain == TerrainForest:
-		return "森林"
-	elif terrain == TerrainWater:
-		return "水"
+	if terrain == TerrainFloor:
+		return "空地"
+	elif terrain == TerrainFloor2:
+		return "掩埋的"
 
 func _init(_coord : Vector2i, _terrain : int):
 	coord = _coord
 	terrain = _terrain
-	if terrain == TerrainWater:
+	if terrain == TerrainFloor2:
 		passable = false
 	tile_lt = Vector2i(-1, -1)
 	tile_t = Vector2i(-1, -1)
@@ -89,19 +84,3 @@ func init_surroundings(map : Dictionary):
 			var c = Vector2i(coord.x, coord.y + 1)
 			if map.has(c):
 				tile_b = c
-
-func get_neutral_unit_types():
-	var dic = {}
-	for u in neutral_units:
-		var name = u.unit_name
-		if dic.has(name):
-			dic[name] += 1
-		else:
-			dic[name] = 1
-	return dic
-
-func remove_neutral_unit(name : String):
-	for i in neutral_units.size():
-		if neutral_units[i].unit_name == name:
-			neutral_units.remove_at(i)
-			break

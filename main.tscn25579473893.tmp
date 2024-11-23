@@ -1,0 +1,2005 @@
+[gd_scene load_steps=120 format=3 uid="uid://bs1rpkum5d02r"]
+
+[ext_resource type="Script" path="res://game.gd" id="1_gjuda"]
+[ext_resource type="AudioStream" uid="uid://b83a787gmci73" path="res://ui/sfx/MouseOver1.wav" id="3_d772w"]
+[ext_resource type="Texture2D" uid="uid://dbl28m7en1mcc" path="res://tiles/bank.png" id="4_7wog6"]
+[ext_resource type="AudioStream" uid="uid://vvswtwncyeml" path="res://ui/sfx/Error.wav" id="4_21ips"]
+[ext_resource type="Texture2D" uid="uid://dsq8yipa65tt0" path="res://tiles/water.png" id="4_jrnhe"]
+[ext_resource type="AudioStream" uid="uid://du6l5uqaychlh" path="res://ui/sfx/draw.wav" id="5_fpkw4"]
+[ext_resource type="AudioStream" uid="uid://dyhrg0wfcj0r8" path="res://ui/sfx/buy_sell.wav" id="6_4trc6"]
+[ext_resource type="Texture2D" uid="uid://b3od7ol7pu73y" path="res://tiles/pine/pine2.png" id="6_sp1jv"]
+[ext_resource type="AudioStream" uid="uid://b7fyjyvdj8dn4" path="res://ui/sfx/BigButtonClick.wav" id="7_4aunk"]
+[ext_resource type="Texture2D" uid="uid://dueru4vb1pshi" path="res://tiles/pine/pine3.png" id="7_4k7gj"]
+[ext_resource type="Texture2D" uid="uid://licnv0m5nrv3" path="res://tiles/pine/pine-tile.png" id="8_a8jms"]
+[ext_resource type="Texture2D" uid="uid://bae5ph7l5j7ad" path="res://tiles/building/town_hall.png" id="9_0c5id"]
+[ext_resource type="Texture2D" uid="uid://d1o1gcf0bmf5o" path="res://tiles/pine/pine.png" id="9_nrnpe"]
+[ext_resource type="Texture2D" uid="uid://tyk148w5h3bd" path="res://tiles/building/lumber_mill.png" id="9_sc0sq"]
+[ext_resource type="AudioStream" uid="uid://d4gmd600ndxmv" path="res://ui/sfx/building1.wav" id="9_wxubv"]
+[ext_resource type="AudioStream" uid="uid://bd2wtgfn6mb1p" path="res://ui/sfx/shuffle.wav" id="10_4skwy"]
+[ext_resource type="AudioStream" uid="uid://j8kge6s0il2p" path="res://music/music1.ogg" id="10_dr3hb"]
+[ext_resource type="Texture2D" uid="uid://dbqo4h0k6u7kr" path="res://tiles/pine/pine4.png" id="10_g4xdr"]
+[ext_resource type="Texture2D" uid="uid://clkl1ywwuv6l4" path="res://tiles/pine/pine-small2.png" id="11_2lycn"]
+[ext_resource type="Texture2D" uid="uid://y7scrfb281cl" path="res://tiles/building/barracks.png" id="11_bbrdv"]
+[ext_resource type="Texture2D" uid="uid://cbmid25rujtcj" path="res://tiles/building/academy.png" id="12_a0gw1"]
+[ext_resource type="Texture2D" uid="uid://dwv0oc4upuysn" path="res://tiles/pine/pine-small.png" id="12_miumm"]
+[ext_resource type="Texture2D" uid="uid://bbnhubq1mkubw" path="res://tiles/pine/pine-sparse2.png" id="13_3r6pn"]
+[ext_resource type="Texture2D" uid="uid://b8fgssu3h3lhq" path="res://tiles/building/farm.png" id="13_8hsuk"]
+[ext_resource type="Texture2D" uid="uid://bk5wx1wtoigcy" path="res://tiles/building/black_smith.png" id="13_xiaoc"]
+[ext_resource type="Texture2D" uid="uid://cjde5w3ubkovl" path="res://tiles/pine/pine-sparse3.png" id="14_fhkq1"]
+[ext_resource type="Texture2D" uid="uid://bhmamalv2wdkw" path="res://tiles/pine/pine-sparse4.png" id="15_gyhfu"]
+[ext_resource type="Texture2D" uid="uid://d32c6iid34egf" path="res://tiles/building/stable.png" id="15_nmmxp"]
+[ext_resource type="Texture2D" uid="uid://dndbxg3a7bw1w" path="res://tiles/building/rally_point.png" id="16_7s0b2"]
+[ext_resource type="Texture2D" uid="uid://drg7y7bsgi3u1" path="res://tiles/pine/pine-sparse-small.png" id="16_ds4sq"]
+[ext_resource type="Texture2D" uid="uid://dhtdykitibkee" path="res://tiles/pine/pine-sparse.png" id="17_05g2u"]
+[ext_resource type="Texture2D" uid="uid://7j3k782ili7w" path="res://tiles/building/keep.png" id="17_hn8yq"]
+[ext_resource type="Texture2D" uid="uid://bgb8isnruls28" path="res://tiles/building/fishing_camp.png" id="19_gyhxx"]
+[ext_resource type="Texture2D" uid="uid://hk6vk1pwk5gy" path="res://tiles/building/wind_mill.png" id="20_4psrw"]
+[ext_resource type="Texture2D" uid="uid://yi5p8yirwy43" path="res://icons/production.png" id="23_i85pf"]
+[ext_resource type="Texture2D" uid="uid://gm50qpnho5ei" path="res://icons/gold.png" id="24_m6jih"]
+[ext_resource type="Texture2D" uid="uid://drgc8ty7lh6on" path="res://icons/science.png" id="25_kxr5m"]
+[ext_resource type="Texture2D" uid="uid://c1of6b7dj4m6m" path="res://icons/food.png" id="26_o7f4c"]
+[ext_resource type="PackedScene" uid="uid://cc5hsg56qvglc" path="res://battle_unit.tscn" id="32_l554o"]
+[ext_resource type="Texture2D" uid="uid://c7ygsvulfio3d" path="res://ui/state_button_down.png" id="43_awvt5"]
+[ext_resource type="Texture2D" uid="uid://cina8eitts7s5" path="res://ui/state_button_up.png" id="43_ppjy5"]
+[ext_resource type="FontFile" uid="uid://b2kgoekxg6bis" path="res://ark-pixel-10px-monospaced-zh_cn.woff2" id="44_gt8ma"]
+[ext_resource type="Script" path="res://hand.gd" id="44_lxs0f"]
+[ext_resource type="Texture2D" uid="uid://dvdopagc7iiet" path="res://icons/gear.png" id="46_co2o0"]
+[ext_resource type="Script" path="res://deck.gd" id="46_lnc8i"]
+[ext_resource type="Texture2D" uid="uid://dcxtxcyj266ty" path="res://ui/cancel_button_up.png" id="46_s1gky"]
+[ext_resource type="Texture2D" uid="uid://cuiv2oie7dohy" path="res://ui/cancel_button_down.png" id="47_a0wv4"]
+[ext_resource type="Texture2D" uid="uid://d01ne13t0mruc" path="res://ui/frame.png" id="47_fdenu"]
+[ext_resource type="Texture2D" uid="uid://bv1w5fqcy7jsf" path="res://icons/battle.png" id="48_lgbnk"]
+[ext_resource type="Texture2D" uid="uid://esaf3qbx3y72" path="res://ui/bottom.png" id="48_ou8o5"]
+[ext_resource type="Texture2D" uid="uid://dlk4jfmw3t4wf" path="res://ui/shop_button_up.png" id="48_r1mru"]
+[ext_resource type="Texture2D" uid="uid://t0wvweucw7av" path="res://ui/shop_button_down.png" id="49_keriu"]
+[ext_resource type="Texture2D" uid="uid://c7ao3dn0cwk5v" path="res://ui/tech_button_up.png" id="50_523rm"]
+[ext_resource type="Texture2D" uid="uid://dwai5jpqgftkt" path="res://ui/tech_button_down.png" id="51_3vt0g"]
+[ext_resource type="Texture2D" uid="uid://c2880im1ilpdd" path="res://icons/ban.png" id="51_d6gyw"]
+[ext_resource type="Shader" path="res://crt.gdshader" id="62_yll2j"]
+[ext_resource type="Script" path="res://camera.gd" id="167_gjjxa"]
+[ext_resource type="Script" path="res://tilemap.gd" id="167_rj17h"]
+[ext_resource type="Script" path="res://tilemap_overlay.gd" id="170_j5vcd"]
+[ext_resource type="PackedScene" uid="uid://d0r0gk3l0ag1u" path="res://card.tscn" id="171_62cl8"]
+[ext_resource type="PackedScene" uid="uid://b8mhurhw77wkb" path="res://shop_item.tscn" id="172_ve8xk"]
+[ext_resource type="PackedScene" uid="uid://d4ckxmnu8yqqa" path="res://mode_button_ui.tscn" id="174_0axfu"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cdm5b"]
+texture = ExtResource("4_jrnhe")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+0:0/0/terrain_set = 0
+0:0/0/terrain = 0
+0:0/0/terrains_peering_bit/bottom_right_side = 0
+0:0/0/terrains_peering_bit/bottom_side = 0
+0:0/0/terrains_peering_bit/bottom_left_side = 0
+0:0/0/terrains_peering_bit/top_left_side = 0
+0:0/0/terrains_peering_bit/top_side = 0
+0:0/0/terrains_peering_bit/top_right_side = 0
+1:0/0 = 0
+1:0/0/terrain_set = 0
+1:0/0/terrain = 0
+1:0/0/terrains_peering_bit/bottom_right_side = 0
+1:0/0/terrains_peering_bit/bottom_side = 0
+1:0/0/terrains_peering_bit/bottom_left_side = 0
+1:0/0/terrains_peering_bit/top_left_side = 0
+1:0/0/terrains_peering_bit/top_side = 0
+1:0/0/terrains_peering_bit/top_right_side = 0
+2:0/0 = 0
+2:0/0/terrain_set = 0
+2:0/0/terrain = 0
+2:0/0/terrains_peering_bit/bottom_right_side = 0
+2:0/0/terrains_peering_bit/bottom_side = 0
+2:0/0/terrains_peering_bit/bottom_left_side = 0
+2:0/0/terrains_peering_bit/top_left_side = 0
+2:0/0/terrains_peering_bit/top_side = 0
+2:0/0/terrains_peering_bit/top_right_side = 0
+3:0/0 = 0
+3:0/0/terrain_set = 0
+3:0/0/terrain = 0
+3:0/0/terrains_peering_bit/bottom_right_side = 0
+3:0/0/terrains_peering_bit/bottom_side = 0
+3:0/0/terrains_peering_bit/bottom_left_side = 0
+3:0/0/terrains_peering_bit/top_left_side = 0
+3:0/0/terrains_peering_bit/top_side = 0
+3:0/0/terrains_peering_bit/top_right_side = 0
+4:0/0 = 0
+4:0/0/terrain_set = 0
+4:0/0/terrain = 0
+4:0/0/terrains_peering_bit/bottom_right_side = 0
+4:0/0/terrains_peering_bit/bottom_side = 0
+4:0/0/terrains_peering_bit/bottom_left_side = 0
+4:0/0/terrains_peering_bit/top_left_side = 0
+4:0/0/terrains_peering_bit/top_side = 0
+4:0/0/terrains_peering_bit/top_right_side = 0
+5:0/0 = 0
+5:0/0/terrain_set = 0
+5:0/0/terrain = 0
+5:0/0/terrains_peering_bit/bottom_right_side = 0
+5:0/0/terrains_peering_bit/bottom_side = 0
+5:0/0/terrains_peering_bit/bottom_left_side = 0
+5:0/0/terrains_peering_bit/top_left_side = 0
+5:0/0/terrains_peering_bit/top_side = 0
+5:0/0/terrains_peering_bit/top_right_side = 0
+6:0/0 = 0
+6:0/0/terrain_set = 0
+6:0/0/terrain = 0
+6:0/0/terrains_peering_bit/bottom_right_side = 0
+6:0/0/terrains_peering_bit/bottom_side = 0
+6:0/0/terrains_peering_bit/bottom_left_side = 0
+6:0/0/terrains_peering_bit/top_left_side = 0
+6:0/0/terrains_peering_bit/top_side = 0
+6:0/0/terrains_peering_bit/top_right_side = 0
+7:0/0 = 0
+7:0/0/terrain_set = 0
+7:0/0/terrain = 0
+7:0/0/terrains_peering_bit/bottom_right_side = 0
+7:0/0/terrains_peering_bit/bottom_side = 0
+7:0/0/terrains_peering_bit/bottom_left_side = 0
+7:0/0/terrains_peering_bit/top_left_side = 0
+7:0/0/terrains_peering_bit/top_side = 0
+7:0/0/terrains_peering_bit/top_right_side = 0
+8:0/0 = 0
+8:0/0/terrain_set = 0
+8:0/0/terrain = 0
+8:0/0/terrains_peering_bit/bottom_right_side = 0
+8:0/0/terrains_peering_bit/bottom_side = 0
+8:0/0/terrains_peering_bit/bottom_left_side = 0
+8:0/0/terrains_peering_bit/top_left_side = 0
+8:0/0/terrains_peering_bit/top_side = 0
+8:0/0/terrains_peering_bit/top_right_side = 0
+9:0/0 = 0
+9:0/0/terrain_set = 0
+9:0/0/terrain = 0
+9:0/0/terrains_peering_bit/bottom_right_side = 0
+9:0/0/terrains_peering_bit/bottom_side = 0
+9:0/0/terrains_peering_bit/bottom_left_side = 0
+9:0/0/terrains_peering_bit/top_left_side = 0
+9:0/0/terrains_peering_bit/top_side = 0
+9:0/0/terrains_peering_bit/top_right_side = 0
+10:0/0 = 0
+10:0/0/terrain_set = 0
+10:0/0/terrain = 0
+10:0/0/terrains_peering_bit/bottom_right_side = 0
+10:0/0/terrains_peering_bit/bottom_side = 0
+10:0/0/terrains_peering_bit/bottom_left_side = 0
+10:0/0/terrains_peering_bit/top_left_side = 0
+10:0/0/terrains_peering_bit/top_side = 0
+10:0/0/terrains_peering_bit/top_right_side = 0
+11:0/0 = 0
+11:0/0/terrain_set = 0
+11:0/0/terrain = 0
+11:0/0/terrains_peering_bit/bottom_right_side = 0
+11:0/0/terrains_peering_bit/bottom_side = 0
+11:0/0/terrains_peering_bit/bottom_left_side = 0
+11:0/0/terrains_peering_bit/top_left_side = 0
+11:0/0/terrains_peering_bit/top_side = 0
+11:0/0/terrains_peering_bit/top_right_side = 0
+12:0/0 = 0
+12:0/0/terrain_set = 0
+12:0/0/terrain = 0
+12:0/0/terrains_peering_bit/bottom_right_side = 0
+12:0/0/terrains_peering_bit/bottom_side = 0
+12:0/0/terrains_peering_bit/bottom_left_side = 0
+12:0/0/terrains_peering_bit/top_left_side = 0
+12:0/0/terrains_peering_bit/top_side = 0
+12:0/0/terrains_peering_bit/top_right_side = 0
+13:0/0 = 0
+13:0/0/terrain_set = 0
+13:0/0/terrain = 0
+13:0/0/terrains_peering_bit/bottom_right_side = 0
+13:0/0/terrains_peering_bit/bottom_side = 0
+13:0/0/terrains_peering_bit/bottom_left_side = 0
+13:0/0/terrains_peering_bit/top_left_side = 0
+13:0/0/terrains_peering_bit/top_side = 0
+13:0/0/terrains_peering_bit/top_right_side = 0
+14:0/0 = 0
+14:0/0/terrain_set = 0
+14:0/0/terrain = 0
+14:0/0/terrains_peering_bit/bottom_right_side = 0
+14:0/0/terrains_peering_bit/bottom_side = 0
+14:0/0/terrains_peering_bit/bottom_left_side = 0
+14:0/0/terrains_peering_bit/top_left_side = 0
+14:0/0/terrains_peering_bit/top_side = 0
+14:0/0/terrains_peering_bit/top_right_side = 0
+
+[sub_resource type="TileSet" id="TileSet_8cjdc"]
+tile_shape = 3
+tile_offset_axis = 1
+tile_size = Vector2i(72, 72)
+terrain_set_0/mode = 2
+terrain_set_0/terrain_0/name = "water"
+terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
+sources/2 = SubResource("TileSetAtlasSource_cdm5b")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_oylww"]
+texture = ExtResource("4_7wog6")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+0:0/0/terrain_set = 0
+0:0/0/terrain = 0
+0:0/0/terrains_peering_bit/bottom_right_side = 0
+0:0/0/terrains_peering_bit/bottom_side = 0
+0:0/0/terrains_peering_bit/bottom_left_side = 0
+0:0/0/terrains_peering_bit/top_left_side = 0
+0:0/0/terrains_peering_bit/top_side = 0
+0:0/0/terrains_peering_bit/top_right_side = 0
+1:0/0 = 0
+1:0/0/terrain_set = 0
+1:0/0/terrains_peering_bit/bottom_left_side = 0
+1:0/0/terrains_peering_bit/top_left_side = 0
+1:0/0/terrains_peering_bit/top_side = 0
+1:0/0/terrains_peering_bit/top_right_side = 0
+2:0/0 = 0
+2:0/0/terrain_set = 0
+2:0/0/terrains_peering_bit/bottom_side = 0
+2:0/0/terrains_peering_bit/top_left_side = 0
+2:0/0/terrains_peering_bit/top_side = 0
+2:0/0/terrains_peering_bit/top_right_side = 0
+3:0/0 = 0
+3:0/0/terrain_set = 0
+3:0/0/terrains_peering_bit/bottom_right_side = 0
+3:0/0/terrains_peering_bit/top_left_side = 0
+3:0/0/terrains_peering_bit/top_side = 0
+3:0/0/terrains_peering_bit/top_right_side = 0
+4:0/0 = 0
+4:0/0/terrain_set = 0
+4:0/0/terrains_peering_bit/top_left_side = 0
+4:0/0/terrains_peering_bit/top_side = 0
+4:0/0/terrains_peering_bit/top_right_side = 0
+5:0/0 = 0
+5:0/0/terrain_set = 0
+5:0/0/terrains_peering_bit/bottom_side = 0
+5:0/0/terrains_peering_bit/bottom_left_side = 0
+5:0/0/terrains_peering_bit/top_side = 0
+5:0/0/terrains_peering_bit/top_right_side = 0
+6:0/0 = 0
+6:0/0/terrain_set = 0
+6:0/0/terrains_peering_bit/bottom_right_side = 0
+6:0/0/terrains_peering_bit/bottom_left_side = 0
+6:0/0/terrains_peering_bit/top_side = 0
+6:0/0/terrains_peering_bit/top_right_side = 0
+7:0/0 = 0
+7:0/0/terrain_set = 0
+7:0/0/terrains_peering_bit/bottom_left_side = 0
+7:0/0/terrains_peering_bit/top_side = 0
+7:0/0/terrains_peering_bit/top_right_side = 0
+8:0/0 = 0
+8:0/0/terrain_set = 0
+8:0/0/terrains_peering_bit/bottom_right_side = 0
+8:0/0/terrains_peering_bit/bottom_side = 0
+8:0/0/terrains_peering_bit/top_side = 0
+8:0/0/terrains_peering_bit/top_right_side = 0
+9:0/0 = 0
+9:0/0/terrain_set = 0
+9:0/0/terrains_peering_bit/bottom_side = 0
+9:0/0/terrains_peering_bit/top_side = 0
+9:0/0/terrains_peering_bit/top_right_side = 0
+10:0/0 = 0
+10:0/0/terrain_set = 0
+10:0/0/terrains_peering_bit/bottom_right_side = 0
+10:0/0/terrains_peering_bit/top_side = 0
+10:0/0/terrains_peering_bit/top_right_side = 0
+11:0/0 = 0
+11:0/0/terrain_set = 0
+11:0/0/terrains_peering_bit/top_side = 0
+11:0/0/terrains_peering_bit/top_right_side = 0
+12:0/0 = 0
+12:0/0/terrain_set = 0
+12:0/0/terrains_peering_bit/bottom_side = 0
+12:0/0/terrains_peering_bit/bottom_left_side = 0
+12:0/0/terrains_peering_bit/top_left_side = 0
+12:0/0/terrains_peering_bit/top_right_side = 0
+13:0/0 = 0
+13:0/0/terrain_set = 0
+13:0/0/terrains_peering_bit/bottom_right_side = 0
+13:0/0/terrains_peering_bit/bottom_left_side = 0
+13:0/0/terrains_peering_bit/top_left_side = 0
+13:0/0/terrains_peering_bit/top_right_side = 0
+14:0/0 = 0
+14:0/0/terrain_set = 0
+14:0/0/terrains_peering_bit/bottom_left_side = 0
+14:0/0/terrains_peering_bit/top_left_side = 0
+14:0/0/terrains_peering_bit/top_right_side = 0
+0:1/0 = 0
+0:1/0/terrain_set = 0
+0:1/0/terrains_peering_bit/bottom_right_side = 0
+0:1/0/terrains_peering_bit/bottom_side = 0
+0:1/0/terrains_peering_bit/top_left_side = 0
+0:1/0/terrains_peering_bit/top_right_side = 0
+1:1/0 = 0
+1:1/0/terrain_set = 0
+1:1/0/terrains_peering_bit/bottom_side = 0
+1:1/0/terrains_peering_bit/top_left_side = 0
+1:1/0/terrains_peering_bit/top_right_side = 0
+2:1/0 = 0
+2:1/0/terrain_set = 0
+2:1/0/terrains_peering_bit/bottom_right_side = 0
+2:1/0/terrains_peering_bit/top_left_side = 0
+2:1/0/terrains_peering_bit/top_right_side = 0
+3:1/0 = 0
+3:1/0/terrain_set = 0
+3:1/0/terrains_peering_bit/top_left_side = 0
+3:1/0/terrains_peering_bit/top_right_side = 0
+4:1/0 = 0
+4:1/0/terrain_set = 0
+4:1/0/terrains_peering_bit/bottom_right_side = 0
+4:1/0/terrains_peering_bit/bottom_side = 0
+4:1/0/terrains_peering_bit/bottom_left_side = 0
+4:1/0/terrains_peering_bit/top_right_side = 0
+5:1/0 = 0
+5:1/0/terrain_set = 0
+5:1/0/terrains_peering_bit/bottom_side = 0
+5:1/0/terrains_peering_bit/bottom_left_side = 0
+5:1/0/terrains_peering_bit/top_right_side = 0
+6:1/0 = 0
+6:1/0/terrain_set = 0
+6:1/0/terrains_peering_bit/bottom_right_side = 0
+6:1/0/terrains_peering_bit/bottom_left_side = 0
+6:1/0/terrains_peering_bit/top_right_side = 0
+7:1/0 = 0
+7:1/0/terrain_set = 0
+7:1/0/terrains_peering_bit/bottom_left_side = 0
+7:1/0/terrains_peering_bit/top_right_side = 0
+8:1/0 = 0
+8:1/0/terrain_set = 0
+8:1/0/terrains_peering_bit/bottom_right_side = 0
+8:1/0/terrains_peering_bit/bottom_side = 0
+8:1/0/terrains_peering_bit/top_right_side = 0
+9:1/0 = 0
+9:1/0/terrain_set = 0
+9:1/0/terrains_peering_bit/bottom_side = 0
+9:1/0/terrains_peering_bit/top_right_side = 0
+10:1/0 = 0
+10:1/0/terrain_set = 0
+10:1/0/terrains_peering_bit/bottom_right_side = 0
+10:1/0/terrains_peering_bit/top_right_side = 0
+11:1/0 = 0
+11:1/0/terrain_set = 0
+11:1/0/terrains_peering_bit/top_right_side = 0
+12:1/0 = 0
+12:1/0/terrain_set = 0
+12:1/0/terrains_peering_bit/bottom_side = 0
+12:1/0/terrains_peering_bit/bottom_left_side = 0
+12:1/0/terrains_peering_bit/top_left_side = 0
+12:1/0/terrains_peering_bit/top_side = 0
+13:1/0 = 0
+13:1/0/terrain_set = 0
+13:1/0/terrains_peering_bit/bottom_right_side = 0
+13:1/0/terrains_peering_bit/bottom_left_side = 0
+13:1/0/terrains_peering_bit/top_left_side = 0
+13:1/0/terrains_peering_bit/top_side = 0
+14:1/0 = 0
+14:1/0/terrain_set = 0
+14:1/0/terrains_peering_bit/bottom_left_side = 0
+14:1/0/terrains_peering_bit/top_left_side = 0
+14:1/0/terrains_peering_bit/top_side = 0
+0:2/0 = 0
+0:2/0/terrain_set = 0
+0:2/0/terrains_peering_bit/bottom_right_side = 0
+0:2/0/terrains_peering_bit/bottom_side = 0
+0:2/0/terrains_peering_bit/top_left_side = 0
+0:2/0/terrains_peering_bit/top_side = 0
+1:2/0 = 0
+1:2/0/terrain_set = 0
+1:2/0/terrains_peering_bit/bottom_side = 0
+1:2/0/terrains_peering_bit/top_left_side = 0
+1:2/0/terrains_peering_bit/top_side = 0
+2:2/0 = 0
+2:2/0/terrain_set = 0
+2:2/0/terrains_peering_bit/bottom_right_side = 0
+2:2/0/terrains_peering_bit/top_left_side = 0
+2:2/0/terrains_peering_bit/top_side = 0
+3:2/0 = 0
+3:2/0/terrain_set = 0
+3:2/0/terrains_peering_bit/top_left_side = 0
+3:2/0/terrains_peering_bit/top_side = 0
+4:2/0 = 0
+4:2/0/terrain_set = 0
+4:2/0/terrains_peering_bit/bottom_right_side = 0
+4:2/0/terrains_peering_bit/bottom_side = 0
+4:2/0/terrains_peering_bit/bottom_left_side = 0
+4:2/0/terrains_peering_bit/top_side = 0
+5:2/0 = 0
+5:2/0/terrain_set = 0
+5:2/0/terrains_peering_bit/bottom_side = 0
+5:2/0/terrains_peering_bit/bottom_left_side = 0
+5:2/0/terrains_peering_bit/top_side = 0
+6:2/0 = 0
+6:2/0/terrain_set = 0
+6:2/0/terrains_peering_bit/bottom_right_side = 0
+6:2/0/terrains_peering_bit/bottom_left_side = 0
+6:2/0/terrains_peering_bit/top_side = 0
+7:2/0 = 0
+7:2/0/terrain_set = 0
+7:2/0/terrains_peering_bit/bottom_left_side = 0
+7:2/0/terrains_peering_bit/top_side = 0
+8:2/0 = 0
+8:2/0/terrain_set = 0
+8:2/0/terrains_peering_bit/bottom_right_side = 0
+8:2/0/terrains_peering_bit/bottom_side = 0
+8:2/0/terrains_peering_bit/top_side = 0
+9:2/0 = 0
+9:2/0/terrain_set = 0
+9:2/0/terrains_peering_bit/bottom_side = 0
+9:2/0/terrains_peering_bit/top_side = 0
+10:2/0 = 0
+10:2/0/terrain_set = 0
+10:2/0/terrains_peering_bit/bottom_right_side = 0
+10:2/0/terrains_peering_bit/top_side = 0
+11:2/0 = 0
+11:2/0/terrain_set = 0
+11:2/0/terrains_peering_bit/top_side = 0
+12:2/0 = 0
+12:2/0/terrain_set = 0
+12:2/0/terrains_peering_bit/bottom_right_side = 0
+12:2/0/terrains_peering_bit/bottom_side = 0
+12:2/0/terrains_peering_bit/bottom_left_side = 0
+12:2/0/terrains_peering_bit/top_left_side = 0
+13:2/0 = 0
+13:2/0/terrain_set = 0
+13:2/0/terrains_peering_bit/bottom_side = 0
+13:2/0/terrains_peering_bit/bottom_left_side = 0
+13:2/0/terrains_peering_bit/top_left_side = 0
+14:2/0 = 0
+14:2/0/terrain_set = 0
+14:2/0/terrains_peering_bit/bottom_right_side = 0
+14:2/0/terrains_peering_bit/bottom_left_side = 0
+14:2/0/terrains_peering_bit/top_left_side = 0
+0:3/0 = 0
+0:3/0/terrain_set = 0
+0:3/0/terrains_peering_bit/bottom_left_side = 0
+0:3/0/terrains_peering_bit/top_left_side = 0
+1:3/0 = 0
+1:3/0/terrain_set = 0
+1:3/0/terrains_peering_bit/bottom_right_side = 0
+1:3/0/terrains_peering_bit/bottom_side = 0
+1:3/0/terrains_peering_bit/top_left_side = 0
+2:3/0 = 0
+2:3/0/terrain_set = 0
+2:3/0/terrains_peering_bit/bottom_side = 0
+2:3/0/terrains_peering_bit/top_left_side = 0
+3:3/0 = 0
+3:3/0/terrain_set = 0
+3:3/0/terrains_peering_bit/bottom_right_side = 0
+3:3/0/terrains_peering_bit/top_left_side = 0
+4:3/0 = 0
+4:3/0/terrain_set = 0
+4:3/0/terrains_peering_bit/top_left_side = 0
+5:3/0 = 0
+5:3/0/terrain_set = 0
+5:3/0/terrains_peering_bit/bottom_right_side = 0
+5:3/0/terrains_peering_bit/bottom_side = 0
+5:3/0/terrains_peering_bit/bottom_left_side = 0
+6:3/0 = 0
+6:3/0/terrain_set = 0
+6:3/0/terrains_peering_bit/bottom_side = 0
+6:3/0/terrains_peering_bit/bottom_left_side = 0
+7:3/0 = 0
+7:3/0/terrain_set = 0
+7:3/0/terrains_peering_bit/bottom_right_side = 0
+7:3/0/terrains_peering_bit/bottom_left_side = 0
+8:3/0 = 0
+8:3/0/terrain_set = 0
+8:3/0/terrains_peering_bit/bottom_left_side = 0
+9:3/0 = 0
+9:3/0/terrain_set = 0
+9:3/0/terrains_peering_bit/bottom_right_side = 0
+9:3/0/terrains_peering_bit/bottom_side = 0
+10:3/0 = 0
+10:3/0/terrain_set = 0
+10:3/0/terrains_peering_bit/bottom_side = 0
+11:3/0 = 0
+11:3/0/terrain_set = 0
+11:3/0/terrains_peering_bit/bottom_right_side = 0
+
+[sub_resource type="TileSet" id="TileSet_y6g88"]
+tile_shape = 3
+tile_offset_axis = 1
+tile_size = Vector2i(72, 72)
+terrain_set_0/mode = 2
+terrain_set_0/terrain_0/name = "bank"
+terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
+sources/57 = SubResource("TileSetAtlasSource_oylww")
+tile_proxies/coords_level = [[0, Vector2i(0, 0)], [57, Vector2i(0, 0)], [1, Vector2i(0, 0)], [57, Vector2i(1, 0)], [2, Vector2i(0, 0)], [57, Vector2i(2, 0)], [3, Vector2i(0, 0)], [57, Vector2i(3, 0)], [4, Vector2i(0, 0)], [57, Vector2i(4, 0)], [5, Vector2i(0, 0)], [57, Vector2i(5, 0)], [6, Vector2i(0, 0)], [57, Vector2i(6, 0)], [7, Vector2i(0, 0)], [57, Vector2i(7, 0)], [8, Vector2i(0, 0)], [57, Vector2i(8, 0)], [9, Vector2i(0, 0)], [57, Vector2i(9, 0)], [10, Vector2i(0, 0)], [57, Vector2i(10, 0)], [11, Vector2i(0, 0)], [57, Vector2i(11, 0)], [12, Vector2i(0, 0)], [57, Vector2i(12, 0)], [13, Vector2i(0, 0)], [57, Vector2i(13, 0)], [14, Vector2i(0, 0)], [57, Vector2i(14, 0)], [15, Vector2i(0, 0)], [57, Vector2i(0, 1)], [16, Vector2i(0, 0)], [57, Vector2i(1, 1)], [17, Vector2i(0, 0)], [57, Vector2i(2, 1)], [18, Vector2i(0, 0)], [57, Vector2i(3, 1)], [19, Vector2i(0, 0)], [57, Vector2i(4, 1)], [20, Vector2i(0, 0)], [57, Vector2i(5, 1)], [21, Vector2i(0, 0)], [57, Vector2i(6, 1)], [22, Vector2i(0, 0)], [57, Vector2i(7, 1)], [23, Vector2i(0, 0)], [57, Vector2i(8, 1)], [24, Vector2i(0, 0)], [57, Vector2i(9, 1)], [25, Vector2i(0, 0)], [57, Vector2i(10, 1)], [26, Vector2i(0, 0)], [57, Vector2i(11, 1)], [27, Vector2i(0, 0)], [57, Vector2i(12, 1)], [28, Vector2i(0, 0)], [57, Vector2i(13, 1)], [29, Vector2i(0, 0)], [57, Vector2i(14, 1)], [30, Vector2i(0, 0)], [57, Vector2i(0, 2)], [31, Vector2i(0, 0)], [57, Vector2i(1, 2)], [32, Vector2i(0, 0)], [57, Vector2i(2, 2)], [33, Vector2i(0, 0)], [57, Vector2i(3, 2)], [34, Vector2i(0, 0)], [57, Vector2i(4, 2)], [35, Vector2i(0, 0)], [57, Vector2i(5, 2)], [36, Vector2i(0, 0)], [57, Vector2i(6, 2)], [37, Vector2i(0, 0)], [57, Vector2i(7, 2)], [38, Vector2i(0, 0)], [57, Vector2i(8, 2)], [39, Vector2i(0, 0)], [57, Vector2i(9, 2)], [40, Vector2i(0, 0)], [57, Vector2i(10, 2)], [41, Vector2i(0, 0)], [57, Vector2i(11, 2)], [42, Vector2i(0, 0)], [57, Vector2i(12, 2)], [43, Vector2i(0, 0)], [57, Vector2i(13, 2)], [44, Vector2i(0, 0)], [57, Vector2i(14, 2)], [45, Vector2i(0, 0)], [57, Vector2i(0, 3)], [46, Vector2i(0, 0)], [57, Vector2i(1, 3)], [47, Vector2i(0, 0)], [57, Vector2i(2, 3)], [48, Vector2i(0, 0)], [57, Vector2i(3, 3)], [49, Vector2i(0, 0)], [57, Vector2i(4, 3)], [50, Vector2i(0, 0)], [57, Vector2i(5, 3)], [51, Vector2i(0, 0)], [57, Vector2i(6, 3)], [52, Vector2i(0, 0)], [57, Vector2i(7, 3)], [53, Vector2i(0, 0)], [57, Vector2i(8, 3)], [54, Vector2i(0, 0)], [57, Vector2i(9, 3)], [55, Vector2i(0, 0)], [57, Vector2i(10, 3)], [56, Vector2i(0, 0)], [57, Vector2i(11, 3)]]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_lvm3e"]
+load_path = "res://.godot/imported/grass.png-c071e97c7a48eab5d5946768c0bc8946.ctex"
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_22a85"]
+texture = SubResource("CompressedTexture2D_lvm3e")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+0:0/0/terrain_set = 0
+0:0/0/terrain = 0
+0:0/0/terrains_peering_bit/bottom_right_side = 0
+0:0/0/terrains_peering_bit/bottom_side = 0
+0:0/0/terrains_peering_bit/bottom_left_side = 0
+0:0/0/terrains_peering_bit/top_left_side = 0
+0:0/0/terrains_peering_bit/top_side = 0
+0:0/0/terrains_peering_bit/top_right_side = 0
+1:0/0 = 0
+1:0/0/terrain_set = 0
+1:0/0/terrain = 0
+1:0/0/terrains_peering_bit/bottom_right_side = 0
+1:0/0/terrains_peering_bit/bottom_side = 0
+1:0/0/terrains_peering_bit/bottom_left_side = 0
+1:0/0/terrains_peering_bit/top_left_side = 0
+1:0/0/terrains_peering_bit/top_side = 0
+1:0/0/terrains_peering_bit/top_right_side = 0
+2:0/0 = 0
+2:0/0/terrain_set = 0
+2:0/0/terrain = 0
+2:0/0/terrains_peering_bit/bottom_right_side = 0
+2:0/0/terrains_peering_bit/bottom_side = 0
+2:0/0/terrains_peering_bit/bottom_left_side = 0
+2:0/0/terrains_peering_bit/top_left_side = 0
+2:0/0/terrains_peering_bit/top_side = 0
+2:0/0/terrains_peering_bit/top_right_side = 0
+3:0/0 = 0
+3:0/0/terrain_set = 0
+3:0/0/terrain = 0
+3:0/0/terrains_peering_bit/bottom_right_side = 0
+3:0/0/terrains_peering_bit/bottom_side = 0
+3:0/0/terrains_peering_bit/bottom_left_side = 0
+3:0/0/terrains_peering_bit/top_left_side = 0
+3:0/0/terrains_peering_bit/top_side = 0
+3:0/0/terrains_peering_bit/top_right_side = 0
+4:0/0 = 0
+4:0/0/terrain_set = 0
+4:0/0/terrain = 0
+4:0/0/terrains_peering_bit/bottom_right_side = 0
+4:0/0/terrains_peering_bit/bottom_side = 0
+4:0/0/terrains_peering_bit/bottom_left_side = 0
+4:0/0/terrains_peering_bit/top_left_side = 0
+4:0/0/terrains_peering_bit/top_side = 0
+4:0/0/terrains_peering_bit/top_right_side = 0
+5:0/0 = 0
+5:0/0/terrain_set = 0
+5:0/0/terrain = 0
+5:0/0/terrains_peering_bit/bottom_right_side = 0
+5:0/0/terrains_peering_bit/bottom_side = 0
+5:0/0/terrains_peering_bit/bottom_left_side = 0
+5:0/0/terrains_peering_bit/top_left_side = 0
+5:0/0/terrains_peering_bit/top_side = 0
+5:0/0/terrains_peering_bit/top_right_side = 0
+6:0/0 = 0
+6:0/0/terrain_set = 0
+6:0/0/terrain = 0
+6:0/0/terrains_peering_bit/bottom_right_side = 0
+6:0/0/terrains_peering_bit/bottom_side = 0
+6:0/0/terrains_peering_bit/bottom_left_side = 0
+6:0/0/terrains_peering_bit/top_left_side = 0
+6:0/0/terrains_peering_bit/top_side = 0
+6:0/0/terrains_peering_bit/top_right_side = 0
+8:0/0 = 0
+8:0/0/terrain_set = 0
+8:0/0/terrains_peering_bit/top_right_side = 0
+9:0/0 = 0
+9:0/0/terrain_set = 0
+9:0/0/terrains_peering_bit/top_side = 0
+10:0/0 = 0
+10:0/0/terrain_set = 0
+10:0/0/terrains_peering_bit/top_left_side = 0
+11:0/0 = 0
+11:0/0/terrain_set = 0
+11:0/0/terrains_peering_bit/bottom_left_side = 0
+12:0/0 = 0
+12:0/0/terrain_set = 0
+12:0/0/terrains_peering_bit/bottom_side = 0
+13:0/0 = 0
+13:0/0/terrain_set = 0
+13:0/0/terrains_peering_bit/bottom_right_side = 0
+14:0/0 = 0
+14:0/0/terrain_set = 0
+14:0/0/terrains_peering_bit/top_side = 0
+14:0/0/terrains_peering_bit/top_right_side = 0
+0:1/0 = 0
+0:1/0/terrain_set = 0
+0:1/0/terrains_peering_bit/top_left_side = 0
+0:1/0/terrains_peering_bit/top_right_side = 0
+1:1/0 = 0
+1:1/0/terrain_set = 0
+1:1/0/terrains_peering_bit/bottom_left_side = 0
+1:1/0/terrains_peering_bit/top_right_side = 0
+2:1/0 = 0
+2:1/0/terrain_set = 0
+2:1/0/terrains_peering_bit/bottom_side = 0
+2:1/0/terrains_peering_bit/top_right_side = 0
+3:1/0 = 0
+3:1/0/terrain_set = 0
+3:1/0/terrains_peering_bit/bottom_right_side = 0
+3:1/0/terrains_peering_bit/top_right_side = 0
+4:1/0 = 0
+4:1/0/terrain_set = 0
+4:1/0/terrains_peering_bit/top_left_side = 0
+4:1/0/terrains_peering_bit/top_side = 0
+5:1/0 = 0
+5:1/0/terrain_set = 0
+5:1/0/terrains_peering_bit/bottom_left_side = 0
+5:1/0/terrains_peering_bit/top_side = 0
+6:1/0 = 0
+6:1/0/terrain_set = 0
+6:1/0/terrains_peering_bit/bottom_side = 0
+6:1/0/terrains_peering_bit/top_side = 0
+7:1/0 = 0
+7:1/0/terrain_set = 0
+7:1/0/terrains_peering_bit/bottom_right_side = 0
+7:1/0/terrains_peering_bit/top_side = 0
+8:1/0 = 0
+8:1/0/terrain_set = 0
+8:1/0/terrains_peering_bit/bottom_left_side = 0
+8:1/0/terrains_peering_bit/top_left_side = 0
+9:1/0 = 0
+9:1/0/terrain_set = 0
+9:1/0/terrains_peering_bit/bottom_side = 0
+9:1/0/terrains_peering_bit/top_left_side = 0
+10:1/0 = 0
+10:1/0/terrain_set = 0
+10:1/0/terrains_peering_bit/bottom_right_side = 0
+10:1/0/terrains_peering_bit/top_left_side = 0
+11:1/0 = 0
+11:1/0/terrain_set = 0
+11:1/0/terrains_peering_bit/bottom_side = 0
+11:1/0/terrains_peering_bit/bottom_left_side = 0
+12:1/0 = 0
+12:1/0/terrain_set = 0
+12:1/0/terrains_peering_bit/bottom_right_side = 0
+12:1/0/terrains_peering_bit/bottom_left_side = 0
+13:1/0 = 0
+13:1/0/terrain_set = 0
+13:1/0/terrains_peering_bit/bottom_right_side = 0
+13:1/0/terrains_peering_bit/bottom_side = 0
+14:1/0 = 0
+14:1/0/terrain_set = 0
+14:1/0/terrains_peering_bit/top_left_side = 0
+14:1/0/terrains_peering_bit/top_side = 0
+14:1/0/terrains_peering_bit/top_right_side = 0
+0:2/0 = 0
+0:2/0/terrain_set = 0
+0:2/0/terrains_peering_bit/bottom_left_side = 0
+0:2/0/terrains_peering_bit/top_side = 0
+0:2/0/terrains_peering_bit/top_right_side = 0
+1:2/0 = 0
+1:2/0/terrain_set = 0
+1:2/0/terrains_peering_bit/bottom_side = 0
+1:2/0/terrains_peering_bit/top_side = 0
+1:2/0/terrains_peering_bit/top_right_side = 0
+2:2/0 = 0
+2:2/0/terrain_set = 0
+2:2/0/terrains_peering_bit/bottom_right_side = 0
+2:2/0/terrains_peering_bit/top_side = 0
+2:2/0/terrains_peering_bit/top_right_side = 0
+3:2/0 = 0
+3:2/0/terrain_set = 0
+3:2/0/terrains_peering_bit/bottom_left_side = 0
+3:2/0/terrains_peering_bit/top_left_side = 0
+3:2/0/terrains_peering_bit/top_right_side = 0
+4:2/0 = 0
+4:2/0/terrain_set = 0
+4:2/0/terrains_peering_bit/bottom_side = 0
+4:2/0/terrains_peering_bit/top_left_side = 0
+4:2/0/terrains_peering_bit/top_right_side = 0
+5:2/0 = 0
+5:2/0/terrain_set = 0
+5:2/0/terrains_peering_bit/bottom_right_side = 0
+5:2/0/terrains_peering_bit/top_left_side = 0
+5:2/0/terrains_peering_bit/top_right_side = 0
+6:2/0 = 0
+6:2/0/terrain_set = 0
+6:2/0/terrains_peering_bit/bottom_side = 0
+6:2/0/terrains_peering_bit/bottom_left_side = 0
+6:2/0/terrains_peering_bit/top_right_side = 0
+7:2/0 = 0
+7:2/0/terrain_set = 0
+7:2/0/terrains_peering_bit/bottom_right_side = 0
+7:2/0/terrains_peering_bit/bottom_left_side = 0
+7:2/0/terrains_peering_bit/top_right_side = 0
+8:2/0 = 0
+8:2/0/terrain_set = 0
+8:2/0/terrains_peering_bit/bottom_right_side = 0
+8:2/0/terrains_peering_bit/bottom_side = 0
+8:2/0/terrains_peering_bit/top_right_side = 0
+9:2/0 = 0
+9:2/0/terrain_set = 0
+9:2/0/terrains_peering_bit/bottom_left_side = 0
+9:2/0/terrains_peering_bit/top_left_side = 0
+9:2/0/terrains_peering_bit/top_side = 0
+10:2/0 = 0
+10:2/0/terrain_set = 0
+10:2/0/terrains_peering_bit/bottom_side = 0
+10:2/0/terrains_peering_bit/top_left_side = 0
+10:2/0/terrains_peering_bit/top_side = 0
+11:2/0 = 0
+11:2/0/terrain_set = 0
+11:2/0/terrains_peering_bit/bottom_right_side = 0
+11:2/0/terrains_peering_bit/top_left_side = 0
+11:2/0/terrains_peering_bit/top_side = 0
+12:2/0 = 0
+12:2/0/terrain_set = 0
+12:2/0/terrains_peering_bit/bottom_side = 0
+12:2/0/terrains_peering_bit/bottom_left_side = 0
+12:2/0/terrains_peering_bit/top_side = 0
+13:2/0 = 0
+13:2/0/terrain_set = 0
+13:2/0/terrains_peering_bit/bottom_right_side = 0
+13:2/0/terrains_peering_bit/bottom_left_side = 0
+13:2/0/terrains_peering_bit/top_side = 0
+14:2/0 = 0
+14:2/0/terrain_set = 0
+14:2/0/terrains_peering_bit/bottom_right_side = 0
+14:2/0/terrains_peering_bit/bottom_side = 0
+14:2/0/terrains_peering_bit/top_side = 0
+0:3/0 = 0
+0:3/0/terrain_set = 0
+0:3/0/terrains_peering_bit/bottom_side = 0
+0:3/0/terrains_peering_bit/bottom_left_side = 0
+0:3/0/terrains_peering_bit/top_left_side = 0
+1:3/0 = 0
+1:3/0/terrain_set = 0
+1:3/0/terrains_peering_bit/bottom_right_side = 0
+1:3/0/terrains_peering_bit/bottom_left_side = 0
+1:3/0/terrains_peering_bit/top_left_side = 0
+2:3/0 = 0
+2:3/0/terrain_set = 0
+2:3/0/terrains_peering_bit/bottom_right_side = 0
+2:3/0/terrains_peering_bit/bottom_side = 0
+2:3/0/terrains_peering_bit/top_left_side = 0
+3:3/0 = 0
+3:3/0/terrain_set = 0
+3:3/0/terrains_peering_bit/bottom_right_side = 0
+3:3/0/terrains_peering_bit/bottom_side = 0
+3:3/0/terrains_peering_bit/bottom_left_side = 0
+4:3/0 = 0
+4:3/0/terrain_set = 0
+4:3/0/terrains_peering_bit/bottom_left_side = 0
+4:3/0/terrains_peering_bit/top_left_side = 0
+4:3/0/terrains_peering_bit/top_side = 0
+4:3/0/terrains_peering_bit/top_right_side = 0
+5:3/0 = 0
+5:3/0/terrain_set = 0
+5:3/0/terrains_peering_bit/bottom_side = 0
+5:3/0/terrains_peering_bit/top_left_side = 0
+5:3/0/terrains_peering_bit/top_side = 0
+5:3/0/terrains_peering_bit/top_right_side = 0
+6:3/0 = 0
+6:3/0/terrain_set = 0
+6:3/0/terrains_peering_bit/bottom_right_side = 0
+6:3/0/terrains_peering_bit/top_left_side = 0
+6:3/0/terrains_peering_bit/top_side = 0
+6:3/0/terrains_peering_bit/top_right_side = 0
+7:3/0 = 0
+7:3/0/terrain_set = 0
+7:3/0/terrains_peering_bit/bottom_side = 0
+7:3/0/terrains_peering_bit/bottom_left_side = 0
+7:3/0/terrains_peering_bit/top_side = 0
+7:3/0/terrains_peering_bit/top_right_side = 0
+8:3/0 = 0
+8:3/0/terrain_set = 0
+8:3/0/terrains_peering_bit/bottom_right_side = 0
+8:3/0/terrains_peering_bit/bottom_left_side = 0
+8:3/0/terrains_peering_bit/top_side = 0
+8:3/0/terrains_peering_bit/top_right_side = 0
+9:3/0 = 0
+9:3/0/terrain_set = 0
+9:3/0/terrains_peering_bit/bottom_right_side = 0
+9:3/0/terrains_peering_bit/bottom_side = 0
+9:3/0/terrains_peering_bit/top_side = 0
+9:3/0/terrains_peering_bit/top_right_side = 0
+10:3/0 = 0
+10:3/0/terrain_set = 0
+10:3/0/terrains_peering_bit/bottom_side = 0
+10:3/0/terrains_peering_bit/bottom_left_side = 0
+10:3/0/terrains_peering_bit/top_left_side = 0
+10:3/0/terrains_peering_bit/top_right_side = 0
+11:3/0 = 0
+11:3/0/terrain_set = 0
+11:3/0/terrains_peering_bit/bottom_right_side = 0
+11:3/0/terrains_peering_bit/bottom_left_side = 0
+11:3/0/terrains_peering_bit/top_left_side = 0
+11:3/0/terrains_peering_bit/top_right_side = 0
+12:3/0 = 0
+12:3/0/terrain_set = 0
+12:3/0/terrains_peering_bit/bottom_right_side = 0
+12:3/0/terrains_peering_bit/bottom_side = 0
+12:3/0/terrains_peering_bit/top_left_side = 0
+12:3/0/terrains_peering_bit/top_right_side = 0
+13:3/0 = 0
+13:3/0/terrain_set = 0
+13:3/0/terrains_peering_bit/bottom_right_side = 0
+13:3/0/terrains_peering_bit/bottom_side = 0
+13:3/0/terrains_peering_bit/bottom_left_side = 0
+13:3/0/terrains_peering_bit/top_right_side = 0
+14:3/0 = 0
+14:3/0/terrain_set = 0
+14:3/0/terrains_peering_bit/bottom_side = 0
+14:3/0/terrains_peering_bit/bottom_left_side = 0
+14:3/0/terrains_peering_bit/top_left_side = 0
+14:3/0/terrains_peering_bit/top_side = 0
+0:4/0 = 0
+0:4/0/terrain_set = 0
+0:4/0/terrains_peering_bit/bottom_right_side = 0
+0:4/0/terrains_peering_bit/bottom_left_side = 0
+0:4/0/terrains_peering_bit/top_left_side = 0
+0:4/0/terrains_peering_bit/top_side = 0
+1:4/0 = 0
+1:4/0/terrain_set = 0
+1:4/0/terrains_peering_bit/bottom_right_side = 0
+1:4/0/terrains_peering_bit/bottom_side = 0
+1:4/0/terrains_peering_bit/top_left_side = 0
+1:4/0/terrains_peering_bit/top_side = 0
+2:4/0 = 0
+2:4/0/terrain_set = 0
+2:4/0/terrains_peering_bit/bottom_right_side = 0
+2:4/0/terrains_peering_bit/bottom_side = 0
+2:4/0/terrains_peering_bit/bottom_left_side = 0
+2:4/0/terrains_peering_bit/top_side = 0
+3:4/0 = 0
+3:4/0/terrain_set = 0
+3:4/0/terrains_peering_bit/bottom_right_side = 0
+3:4/0/terrains_peering_bit/bottom_side = 0
+3:4/0/terrains_peering_bit/bottom_left_side = 0
+3:4/0/terrains_peering_bit/top_left_side = 0
+4:4/0 = 0
+4:4/0/terrain_set = 0
+4:4/0/terrains_peering_bit/bottom_side = 0
+4:4/0/terrains_peering_bit/bottom_left_side = 0
+4:4/0/terrains_peering_bit/top_left_side = 0
+4:4/0/terrains_peering_bit/top_side = 0
+4:4/0/terrains_peering_bit/top_right_side = 0
+5:4/0 = 0
+5:4/0/terrain_set = 0
+5:4/0/terrains_peering_bit/bottom_right_side = 0
+5:4/0/terrains_peering_bit/bottom_left_side = 0
+5:4/0/terrains_peering_bit/top_left_side = 0
+5:4/0/terrains_peering_bit/top_side = 0
+5:4/0/terrains_peering_bit/top_right_side = 0
+6:4/0 = 0
+6:4/0/terrain_set = 0
+6:4/0/terrains_peering_bit/bottom_right_side = 0
+6:4/0/terrains_peering_bit/bottom_side = 0
+6:4/0/terrains_peering_bit/top_left_side = 0
+6:4/0/terrains_peering_bit/top_side = 0
+6:4/0/terrains_peering_bit/top_right_side = 0
+7:4/0 = 0
+7:4/0/terrain_set = 0
+7:4/0/terrains_peering_bit/bottom_right_side = 0
+7:4/0/terrains_peering_bit/bottom_side = 0
+7:4/0/terrains_peering_bit/bottom_left_side = 0
+7:4/0/terrains_peering_bit/top_side = 0
+7:4/0/terrains_peering_bit/top_right_side = 0
+8:4/0 = 0
+8:4/0/terrain_set = 0
+8:4/0/terrains_peering_bit/bottom_right_side = 0
+8:4/0/terrains_peering_bit/bottom_side = 0
+8:4/0/terrains_peering_bit/bottom_left_side = 0
+8:4/0/terrains_peering_bit/top_left_side = 0
+8:4/0/terrains_peering_bit/top_right_side = 0
+9:4/0 = 0
+9:4/0/terrain_set = 0
+9:4/0/terrains_peering_bit/bottom_right_side = 0
+9:4/0/terrains_peering_bit/bottom_side = 0
+9:4/0/terrains_peering_bit/bottom_left_side = 0
+9:4/0/terrains_peering_bit/top_left_side = 0
+9:4/0/terrains_peering_bit/top_side = 0
+7:0/0 = 0
+7:0/0/terrain_set = 0
+7:0/0/terrains_peering_bit/bottom_right_side = 0
+7:0/0/terrains_peering_bit/bottom_side = 0
+7:0/0/terrains_peering_bit/bottom_left_side = 0
+7:0/0/terrains_peering_bit/top_left_side = 0
+7:0/0/terrains_peering_bit/top_side = 0
+7:0/0/terrains_peering_bit/top_right_side = 0
+
+[sub_resource type="TileSet" id="TileSet_irr6i"]
+tile_shape = 3
+tile_offset_axis = 1
+tile_size = Vector2i(72, 72)
+terrain_set_0/mode = 2
+terrain_set_0/terrain_0/name = "grass"
+terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
+sources/1 = SubResource("TileSetAtlasSource_22a85")
+tile_proxies/coords_level = [[0, Vector2i(0, 0)], [70, Vector2i(0, 0)], [1, Vector2i(0, 0)], [70, Vector2i(1, 0)], [2, Vector2i(0, 0)], [70, Vector2i(2, 0)], [3, Vector2i(0, 0)], [70, Vector2i(3, 0)], [4, Vector2i(0, 0)], [70, Vector2i(4, 0)], [5, Vector2i(0, 0)], [70, Vector2i(5, 0)], [6, Vector2i(0, 0)], [70, Vector2i(6, 0)], [7, Vector2i(0, 0)], [70, Vector2i(7, 0)], [8, Vector2i(0, 0)], [70, Vector2i(8, 0)], [9, Vector2i(0, 0)], [70, Vector2i(9, 0)], [10, Vector2i(0, 0)], [70, Vector2i(10, 0)], [11, Vector2i(0, 0)], [70, Vector2i(11, 0)], [12, Vector2i(0, 0)], [70, Vector2i(12, 0)], [13, Vector2i(0, 0)], [70, Vector2i(13, 0)], [14, Vector2i(0, 0)], [70, Vector2i(14, 0)], [15, Vector2i(0, 0)], [70, Vector2i(0, 1)], [16, Vector2i(0, 0)], [70, Vector2i(1, 1)], [17, Vector2i(0, 0)], [70, Vector2i(2, 1)], [18, Vector2i(0, 0)], [70, Vector2i(3, 1)], [19, Vector2i(0, 0)], [70, Vector2i(4, 1)], [20, Vector2i(0, 0)], [70, Vector2i(5, 1)], [21, Vector2i(0, 0)], [70, Vector2i(6, 1)], [22, Vector2i(0, 0)], [70, Vector2i(7, 1)], [23, Vector2i(0, 0)], [70, Vector2i(8, 1)], [24, Vector2i(0, 0)], [70, Vector2i(9, 1)], [25, Vector2i(0, 0)], [70, Vector2i(10, 1)], [26, Vector2i(0, 0)], [70, Vector2i(11, 1)], [27, Vector2i(0, 0)], [70, Vector2i(12, 1)], [28, Vector2i(0, 0)], [70, Vector2i(13, 1)], [29, Vector2i(0, 0)], [70, Vector2i(14, 1)], [30, Vector2i(0, 0)], [70, Vector2i(0, 2)], [31, Vector2i(0, 0)], [70, Vector2i(1, 2)], [32, Vector2i(0, 0)], [70, Vector2i(2, 2)], [33, Vector2i(0, 0)], [70, Vector2i(3, 2)], [34, Vector2i(0, 0)], [70, Vector2i(4, 2)], [35, Vector2i(0, 0)], [70, Vector2i(5, 2)], [36, Vector2i(0, 0)], [70, Vector2i(6, 2)], [37, Vector2i(0, 0)], [70, Vector2i(7, 2)], [38, Vector2i(0, 0)], [70, Vector2i(8, 2)], [39, Vector2i(0, 0)], [70, Vector2i(9, 2)], [40, Vector2i(0, 0)], [70, Vector2i(10, 2)], [41, Vector2i(0, 0)], [70, Vector2i(11, 2)], [42, Vector2i(0, 0)], [70, Vector2i(12, 2)], [43, Vector2i(0, 0)], [70, Vector2i(13, 2)], [44, Vector2i(0, 0)], [70, Vector2i(14, 2)], [45, Vector2i(0, 0)], [70, Vector2i(0, 3)], [46, Vector2i(0, 0)], [70, Vector2i(1, 3)], [47, Vector2i(0, 0)], [70, Vector2i(2, 3)], [48, Vector2i(0, 0)], [70, Vector2i(3, 3)], [49, Vector2i(0, 0)], [70, Vector2i(4, 3)], [50, Vector2i(0, 0)], [70, Vector2i(5, 3)], [51, Vector2i(0, 0)], [70, Vector2i(6, 3)], [52, Vector2i(0, 0)], [70, Vector2i(7, 3)], [53, Vector2i(0, 0)], [70, Vector2i(8, 3)], [54, Vector2i(0, 0)], [70, Vector2i(9, 3)], [55, Vector2i(0, 0)], [70, Vector2i(10, 3)], [56, Vector2i(0, 0)], [70, Vector2i(11, 3)], [57, Vector2i(0, 0)], [70, Vector2i(12, 3)], [58, Vector2i(0, 0)], [70, Vector2i(13, 3)], [59, Vector2i(0, 0)], [70, Vector2i(14, 3)], [60, Vector2i(0, 0)], [70, Vector2i(0, 4)], [61, Vector2i(0, 0)], [70, Vector2i(1, 4)], [62, Vector2i(0, 0)], [70, Vector2i(2, 4)], [63, Vector2i(0, 0)], [70, Vector2i(3, 4)], [64, Vector2i(0, 0)], [70, Vector2i(4, 4)], [65, Vector2i(0, 0)], [70, Vector2i(5, 4)], [66, Vector2i(0, 0)], [70, Vector2i(6, 4)], [67, Vector2i(0, 0)], [70, Vector2i(7, 4)], [68, Vector2i(0, 0)], [70, Vector2i(8, 4)], [69, Vector2i(0, 0)], [70, Vector2i(9, 4)], [71, Vector2i(0, 0)], [86, Vector2i(0, 0)], [72, Vector2i(0, 0)], [86, Vector2i(1, 0)], [73, Vector2i(0, 0)], [86, Vector2i(2, 0)], [74, Vector2i(0, 0)], [86, Vector2i(3, 0)], [75, Vector2i(0, 0)], [86, Vector2i(4, 0)], [76, Vector2i(0, 0)], [86, Vector2i(5, 0)], [77, Vector2i(0, 0)], [86, Vector2i(6, 0)], [78, Vector2i(0, 0)], [86, Vector2i(7, 0)], [79, Vector2i(0, 0)], [86, Vector2i(8, 0)], [80, Vector2i(0, 0)], [86, Vector2i(9, 0)], [81, Vector2i(0, 0)], [86, Vector2i(10, 0)], [82, Vector2i(0, 0)], [86, Vector2i(11, 0)], [83, Vector2i(0, 0)], [86, Vector2i(12, 0)], [84, Vector2i(0, 0)], [86, Vector2i(13, 0)], [85, Vector2i(0, 0)], [86, Vector2i(14, 0)]]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3v6rf"]
+texture = ExtResource("6_sp1jv")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+1:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_osupp"]
+texture = ExtResource("8_a8jms")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+0:0/0/terrain_set = 0
+0:0/0/terrain = 0
+0:0/0/terrains_peering_bit/right_corner = 0
+0:0/0/terrains_peering_bit/bottom_right_side = 0
+0:0/0/terrains_peering_bit/bottom_right_corner = 0
+0:0/0/terrains_peering_bit/bottom_side = 0
+0:0/0/terrains_peering_bit/bottom_left_side = 0
+0:0/0/terrains_peering_bit/bottom_left_corner = 0
+0:0/0/terrains_peering_bit/left_corner = 0
+0:0/0/terrains_peering_bit/top_left_side = 0
+0:0/0/terrains_peering_bit/top_left_corner = 0
+0:0/0/terrains_peering_bit/top_side = 0
+0:0/0/terrains_peering_bit/top_right_side = 0
+0:0/0/terrains_peering_bit/top_right_corner = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fshdh"]
+texture = ExtResource("7_4k7gj")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+1:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6teky"]
+texture = ExtResource("9_0c5id")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pa5u7"]
+texture = ExtResource("9_sc0sq")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_o5seo"]
+texture = ExtResource("20_4psrw")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_i5kic"]
+texture = ExtResource("13_8hsuk")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e1hnc"]
+texture = ExtResource("19_gyhxx")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_w2b4k"]
+texture = ExtResource("12_a0gw1")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_n8rtg"]
+texture = ExtResource("13_xiaoc")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_vtls1"]
+texture = ExtResource("11_bbrdv")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ve74t"]
+texture = ExtResource("15_nmmxp")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_dux7s"]
+texture = ExtResource("16_7s0b2")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_aot6c"]
+texture = ExtResource("17_hn8yq")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kvp2f"]
+texture = ExtResource("9_nrnpe")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+1:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7rnq4"]
+texture = ExtResource("10_g4xdr")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+1:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_t16sj"]
+texture = ExtResource("11_2lycn")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+1:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jawgy"]
+texture = ExtResource("12_miumm")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+1:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hgs6y"]
+texture = ExtResource("13_3r6pn")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+1:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cd2gh"]
+texture = ExtResource("14_fhkq1")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+1:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yy3rp"]
+texture = ExtResource("15_gyhfu")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+1:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sloiq"]
+texture = ExtResource("16_ds4sq")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+1:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_66pab"]
+texture = ExtResource("17_05g2u")
+texture_region_size = Vector2i(72, 72)
+0:0/0 = 0
+1:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_1akas"]
+tile_shape = 3
+tile_offset_axis = 1
+tile_size = Vector2i(72, 72)
+terrain_set_0/mode = 0
+terrain_set_0/terrain_0/name = "forest"
+terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
+sources/0 = SubResource("TileSetAtlasSource_3v6rf")
+sources/2 = SubResource("TileSetAtlasSource_7rnq4")
+sources/3 = SubResource("TileSetAtlasSource_t16sj")
+sources/4 = SubResource("TileSetAtlasSource_jawgy")
+sources/5 = SubResource("TileSetAtlasSource_hgs6y")
+sources/6 = SubResource("TileSetAtlasSource_cd2gh")
+sources/7 = SubResource("TileSetAtlasSource_yy3rp")
+sources/8 = SubResource("TileSetAtlasSource_sloiq")
+sources/9 = SubResource("TileSetAtlasSource_66pab")
+sources/11 = SubResource("TileSetAtlasSource_kvp2f")
+sources/1001 = SubResource("TileSetAtlasSource_pa5u7")
+sources/1000 = SubResource("TileSetAtlasSource_6teky")
+sources/1005 = SubResource("TileSetAtlasSource_w2b4k")
+sources/1006 = SubResource("TileSetAtlasSource_n8rtg")
+sources/1007 = SubResource("TileSetAtlasSource_vtls1")
+sources/1008 = SubResource("TileSetAtlasSource_ve74t")
+sources/1009 = SubResource("TileSetAtlasSource_dux7s")
+sources/1010 = SubResource("TileSetAtlasSource_aot6c")
+sources/100 = SubResource("TileSetAtlasSource_fshdh")
+sources/1 = SubResource("TileSetAtlasSource_osupp")
+sources/1003 = SubResource("TileSetAtlasSource_i5kic")
+sources/1002 = SubResource("TileSetAtlasSource_o5seo")
+sources/1004 = SubResource("TileSetAtlasSource_e1hnc")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1o22b"]
+bg_color = Color(0, 0, 0, 0.498039)
+border_width_left = 4
+border_width_top = 7
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.0689876, 0.475707, 1, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4dlfb"]
+bg_color = Color(0, 0, 0, 0.498039)
+draw_center = false
+border_width_left = 4
+border_width_top = 7
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.343195, 0.52414, 0.256238, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_qr3r5"]
+viewport_path = NodePath("Scene")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vjgar"]
+bg_color = Color(0, 0, 0, 0.498039)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.845903, 0.211643, 0.4597, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="Curve" id="Curve_ndre5"]
+_data = [Vector2(0, 0), 0.0, 1.96287, 0, 0, Vector2(0.501062, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -1.96286, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_lyp13"]
+_data = [Vector2(0, 0), 0.0, 1.74823, 0, 0, Vector2(0.498938, 0.504369), 0.0, 0.0, 0, 0, Vector2(1, 1), 1.78801, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_er4am"]
+bg_color = Color(0.363689, 0.218873, 0.00781615, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 0.843137)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hb8gg"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8ga47"]
+texture = ExtResource("43_ppjy5")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vopu6"]
+texture = ExtResource("43_awvt5")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tcbju"]
+texture = ExtResource("43_ppjy5")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j0bg4"]
+texture = ExtResource("46_s1gky")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ynwu3"]
+texture = ExtResource("47_a0wv4")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rvu6d"]
+texture = ExtResource("46_s1gky")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_iqx1i"]
+texture = ExtResource("48_r1mru")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_r1mio"]
+texture = ExtResource("49_keriu")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j2mci"]
+texture = ExtResource("48_r1mru")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j7v0a"]
+texture = ExtResource("50_523rm")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2bx6g"]
+texture = ExtResource("51_3vt0g")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5qv0n"]
+texture = ExtResource("50_523rm")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2davj"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tpm8k"]
+bg_color = Color(0.682419, 0.200757, 0.333077, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pmv7x"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qk14p"]
+bg_color = Color(0.282152, 0.317194, 0.691287, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3am1k"]
+texture = ExtResource("47_fdenu")
+texture_margin_left = 10.0
+texture_margin_top = 12.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ottlk"]
+shader = ExtResource("62_yll2j")
+shader_parameter/resolution = Vector2(1280, 720)
+shader_parameter/scan_line_amount = 0.1
+shader_parameter/warp_amount = 0.05
+shader_parameter/noise_amount = 0.03
+shader_parameter/interference_amount = 0.2
+shader_parameter/grille_amount = 0.1
+shader_parameter/grille_size = 1.5
+shader_parameter/vignette_amount = 0.3
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/aberation_amount = 1.0
+shader_parameter/roll_line_amount = 0.05
+shader_parameter/roll_speed = -0.5
+shader_parameter/scan_line_strength = -4.616
+shader_parameter/pixel_strength = -2.0
+
+[node name="Root" type="Node2D"]
+script = ExtResource("1_gjuda")
+
+[node name="Sound" type="Node" parent="."]
+
+[node name="Hover" type="AudioStreamPlayer" parent="Sound"]
+stream = ExtResource("3_d772w")
+max_polyphony = 3
+
+[node name="Error" type="AudioStreamPlayer" parent="Sound"]
+stream = ExtResource("4_21ips")
+volume_db = -15.808
+
+[node name="Draw" type="AudioStreamPlayer" parent="Sound"]
+stream = ExtResource("5_fpkw4")
+
+[node name="Buy" type="AudioStreamPlayer" parent="Sound"]
+stream = ExtResource("6_4trc6")
+
+[node name="Open" type="AudioStreamPlayer" parent="Sound"]
+stream = ExtResource("7_4aunk")
+
+[node name="Close" type="AudioStreamPlayer" parent="Sound"]
+stream = ExtResource("7_4aunk")
+
+[node name="Build" type="AudioStreamPlayer" parent="Sound"]
+stream = ExtResource("9_wxubv")
+
+[node name="Shuffle" type="AudioStreamPlayer" parent="Sound"]
+stream = ExtResource("10_4skwy")
+
+[node name="Music" type="AudioStreamPlayer" parent="Sound"]
+stream = ExtResource("10_dr3hb")
+volume_db = -15.407
+pitch_scale = 0.85
+parameters/looping = false
+
+[node name="Scene" type="SubViewport" parent="."]
+disable_3d = true
+size = Vector2i(1068, 542)
+
+[node name="Camera2D" type="Camera2D" parent="Scene"]
+script = ExtResource("167_gjjxa")
+
+[node name="TileMapLayerWater" type="TileMapLayer" parent="Scene"]
+tile_set = SubResource("TileSet_8cjdc")
+
+[node name="TileMapLayerDirt" type="TileMapLayer" parent="Scene"]
+tile_set = SubResource("TileSet_y6g88")
+
+[node name="TileMapLayerMain" type="TileMapLayer" parent="Scene"]
+tile_set = SubResource("TileSet_irr6i")
+script = ExtResource("167_rj17h")
+
+[node name="TileMapLayerObject" type="TileMapLayer" parent="Scene"]
+tile_set = SubResource("TileSet_1akas")
+
+[node name="TileMapOverlay" type="Node2D" parent="Scene"]
+script = ExtResource("170_j5vcd")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="UI/HBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1o22b")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/HBoxContainer/Panel"]
+layout_mode = 2
+
+[node name="ResourcePanel" type="HBoxContainer" parent="UI/HBoxContainer/Panel/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/HBoxContainer/Panel/VBoxContainer/ResourcePanel"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Production" type="Label" parent="UI/HBoxContainer/Panel/VBoxContainer/ResourcePanel/HBoxContainer"]
+layout_mode = 2
+text = "100"
+
+[node name="TextureRect" type="TextureRect" parent="UI/HBoxContainer/Panel/VBoxContainer/ResourcePanel/HBoxContainer"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+texture = ExtResource("23_i85pf")
+expand_mode = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="UI/HBoxContainer/Panel/VBoxContainer/ResourcePanel"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="TextureRect" type="TextureRect" parent="UI/HBoxContainer/Panel/VBoxContainer/ResourcePanel/HBoxContainer2"]
+custom_minimum_size = Vector2(36, 0)
+layout_mode = 2
+texture = ExtResource("24_m6jih")
+expand_mode = 1
+
+[node name="Gold" type="Label" parent="UI/HBoxContainer/Panel/VBoxContainer/ResourcePanel/HBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "0"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="UI/HBoxContainer/Panel/VBoxContainer/ResourcePanel"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Science" type="Label" parent="UI/HBoxContainer/Panel/VBoxContainer/ResourcePanel/HBoxContainer3"]
+layout_mode = 2
+text = "0"
+
+[node name="TextureRect" type="TextureRect" parent="UI/HBoxContainer/Panel/VBoxContainer/ResourcePanel/HBoxContainer3"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+texture = ExtResource("25_kxr5m")
+expand_mode = 1
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="UI/HBoxContainer/Panel/VBoxContainer/ResourcePanel"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Food" type="Label" parent="UI/HBoxContainer/Panel/VBoxContainer/ResourcePanel/HBoxContainer4"]
+layout_mode = 2
+text = "0"
+
+[node name="TextureRect" type="TextureRect" parent="UI/HBoxContainer/Panel/VBoxContainer/ResourcePanel/HBoxContainer4"]
+custom_minimum_size = Vector2(24, 0)
+layout_mode = 2
+texture = ExtResource("26_o7f4c")
+expand_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Panel" type="PanelContainer" parent="UI/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 550)
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4dlfb")
+
+[node name="TextureRect" type="TextureRect" parent="UI/HBoxContainer/VBoxContainer/Panel"]
+custom_minimum_size = Vector2(1068, 542)
+layout_mode = 2
+mouse_filter = 2
+texture = SubResource("ViewportTexture_qr3r5")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="UI/HBoxContainer/VBoxContainer/Panel"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_fonts/font = ExtResource("44_gt8ma")
+theme_override_font_sizes/font_size = 48
+text = "3/3"
+
+[node name="Button" type="Button" parent="UI/HBoxContainer/VBoxContainer/Panel"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+text = "←"
+
+[node name="Button2" type="Button" parent="UI/HBoxContainer/VBoxContainer/Panel"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+text = "↑"
+
+[node name="Button3" type="Button" parent="UI/HBoxContainer/VBoxContainer/Panel"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+text = "→"
+
+[node name="Button4" type="Button" parent="UI/HBoxContainer/VBoxContainer/Panel"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+text = "↓"
+
+[node name="Panel2" type="PanelContainer" parent="UI/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 163)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vjgar")
+
+[node name="Hand" type="Control" parent="UI/HBoxContainer/VBoxContainer/Panel2"]
+custom_minimum_size = Vector2(950, 144)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+mouse_filter = 1
+script = ExtResource("44_lxs0f")
+y_curve = SubResource("Curve_ndre5")
+angle_curve = SubResource("Curve_lyp13")
+
+[node name="Card" parent="UI/HBoxContainer/VBoxContainer/Panel2/Hand" instance=ExtResource("171_62cl8")]
+layout_mode = 2
+offset_left = 137.0
+offset_right = 257.0
+
+[node name="Card2" parent="UI/HBoxContainer/VBoxContainer/Panel2/Hand" instance=ExtResource("171_62cl8")]
+layout_mode = 2
+offset_left = 259.0
+offset_right = 379.0
+
+[node name="Card3" parent="UI/HBoxContainer/VBoxContainer/Panel2/Hand" instance=ExtResource("171_62cl8")]
+layout_mode = 2
+offset_left = 386.0
+offset_right = 506.0
+
+[node name="Deck" type="Control" parent="UI/HBoxContainer/VBoxContainer/Panel2"]
+custom_minimum_size = Vector2(100, 150)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+mouse_filter = 1
+script = ExtResource("46_lnc8i")
+
+[node name="Polygon2D" type="Polygon2D" parent="UI/HBoxContainer/VBoxContainer/Panel2/Deck"]
+color = Color(0.0674538, 0.0300858, 0.00185691, 1)
+polygon = PackedVector2Array(33, 13, 19, 16, 19, 93, 86, 93, 87, 79, 32, 79)
+
+[node name="Rect" type="Panel" parent="UI/HBoxContainer/VBoxContainer/Panel2/Deck"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -72.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = 84.0
+grow_horizontal = 0
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_er4am")
+
+[node name="StateTip" type="PanelContainer" parent="UI"]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -32.0
+offset_right = 32.0
+offset_bottom = 23.0
+grow_horizontal = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/StateTip"]
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/StateTip/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="UI/StateTip/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 18
+
+[node name="Button" type="Button" parent="UI/StateTip/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+text = "提示"
+
+[node name="Label2" type="Label" parent="UI/StateTip/VBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="RoundTip" type="PanelContainer" parent="UI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/RoundTip"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 8
+
+[node name="Label" type="Label" parent="UI/RoundTip/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "回合1"
+
+[node name="Alert" type="MarginContainer" parent="UI"]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -58.0
+offset_right = 58.0
+offset_bottom = 33.0
+grow_horizontal = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_constants/margin_top = 50
+
+[node name="Panel" type="PanelContainer" parent="UI/Alert"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hb8gg")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Alert/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="Label" type="Label" parent="UI/Alert/Panel/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+text = "不能干嘛干嘛"
+
+[node name="Panels" type="MarginContainer" parent="UI"]
+visible = false
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -72.0
+offset_top = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/Panels"]
+layout_mode = 2
+
+[node name="Deconstruct" parent="UI/Panels/HBoxContainer" instance=ExtResource("174_0axfu")]
+layout_mode = 2
+text = "拆除"
+
+[node name="Control" type="Control" parent="UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -40.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="UI/Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -500.0
+offset_top = -500.0
+offset_right = 500.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+texture = ExtResource("48_ou8o5")
+
+[node name="ComfireButton" type="Button" parent="UI/Control"]
+layout_mode = 0
+offset_left = 462.0
+offset_top = -28.0
+offset_right = 502.0
+offset_bottom = 14.0
+theme_override_constants/icon_max_width = 16
+theme_override_font_sizes/font_size = 2
+theme_override_styles/hover = SubResource("StyleBoxTexture_8ga47")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_vopu6")
+theme_override_styles/normal = SubResource("StyleBoxTexture_tcbju")
+icon = ExtResource("48_lgbnk")
+icon_alignment = 1
+
+[node name="CancelButton" type="Button" parent="UI/Control"]
+layout_mode = 0
+offset_left = 496.0
+offset_top = 9.0
+offset_right = 518.0
+offset_bottom = 31.0
+theme_override_constants/icon_max_width = 16
+theme_override_styles/hover = SubResource("StyleBoxTexture_j0bg4")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_ynwu3")
+theme_override_styles/normal = SubResource("StyleBoxTexture_rvu6d")
+icon = ExtResource("51_d6gyw")
+icon_alignment = 1
+
+[node name="ShopButton" type="Button" parent="UI/Control"]
+layout_mode = 0
+offset_left = 529.0
+offset_top = 11.0
+offset_right = 581.0
+offset_bottom = 33.0
+theme_override_styles/hover = SubResource("StyleBoxTexture_iqx1i")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_r1mio")
+theme_override_styles/normal = SubResource("StyleBoxTexture_j2mci")
+
+[node name="TechButton" type="Button" parent="UI/Control"]
+layout_mode = 0
+offset_left = 587.0
+offset_top = 11.0
+offset_right = 639.0
+offset_bottom = 33.0
+theme_override_styles/hover = SubResource("StyleBoxTexture_j7v0a")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_2bx6g")
+theme_override_styles/normal = SubResource("StyleBoxTexture_5qv0n")
+
+[node name="Label" type="Label" parent="UI/Control"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_top = -68.0
+offset_right = 20.0
+offset_bottom = -45.0
+grow_horizontal = 2
+
+[node name="Shop" type="PanelContainer" parent="UI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -117.5
+offset_right = 160.0
+offset_bottom = 141.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2davj")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Shop"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/Shop/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_tpm8k")
+text = "商店"
+
+[node name="TabBar" type="TabBar" parent="UI/Shop/VBoxContainer"]
+layout_mode = 2
+current_tab = 0
+tab_count = 3
+tab_0/title = "建筑"
+tab_0/icon = ExtResource("23_i85pf")
+tab_1/title = "建筑"
+tab_1/icon = ExtResource("24_m6jih")
+tab_2/title = "单位"
+
+[node name="GridContainer" type="GridContainer" parent="UI/Shop/VBoxContainer"]
+layout_mode = 2
+columns = 5
+
+[node name="Card" parent="UI/Shop/VBoxContainer/GridContainer" instance=ExtResource("172_ve8xk")]
+layout_mode = 2
+
+[node name="Card2" parent="UI/Shop/VBoxContainer/GridContainer" instance=ExtResource("172_ve8xk")]
+layout_mode = 2
+
+[node name="Card3" parent="UI/Shop/VBoxContainer/GridContainer" instance=ExtResource("172_ve8xk")]
+layout_mode = 2
+
+[node name="Card4" parent="UI/Shop/VBoxContainer/GridContainer" instance=ExtResource("172_ve8xk")]
+layout_mode = 2
+
+[node name="Card5" parent="UI/Shop/VBoxContainer/GridContainer" instance=ExtResource("172_ve8xk")]
+layout_mode = 2
+
+[node name="Card6" parent="UI/Shop/VBoxContainer/GridContainer" instance=ExtResource("172_ve8xk")]
+layout_mode = 2
+
+[node name="Card7" parent="UI/Shop/VBoxContainer/GridContainer" instance=ExtResource("172_ve8xk")]
+layout_mode = 2
+
+[node name="Card8" parent="UI/Shop/VBoxContainer/GridContainer" instance=ExtResource("172_ve8xk")]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="UI/Shop"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+text = "X
+"
+
+[node name="Battle" type="Panel" parent="UI"]
+visible = false
+custom_minimum_size = Vector2(212, 200)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -500.0
+offset_top = -100.0
+offset_right = 500.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="UI/Battle"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -16.0
+offset_right = 16.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "战斗"
+
+[node name="Side1" type="HBoxContainer" parent="UI/Battle"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -500.0
+offset_top = 21.0
+offset_right = 500.0
+offset_bottom = 93.0
+grow_horizontal = 2
+alignment = 1
+
+[node name="BattleUnit" parent="UI/Battle/Side1" instance=ExtResource("32_l554o")]
+layout_mode = 2
+
+[node name="BattleUnit2" parent="UI/Battle/Side1" instance=ExtResource("32_l554o")]
+layout_mode = 2
+
+[node name="BattleUnit3" parent="UI/Battle/Side1" instance=ExtResource("32_l554o")]
+layout_mode = 2
+
+[node name="BattleUnit4" parent="UI/Battle/Side1" instance=ExtResource("32_l554o")]
+layout_mode = 2
+
+[node name="Side2" type="HBoxContainer" parent="UI/Battle"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -500.0
+offset_top = -72.0
+offset_right = 500.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+
+[node name="BattleUnit" parent="UI/Battle/Side2" instance=ExtResource("32_l554o")]
+layout_mode = 2
+
+[node name="BattleUnit2" parent="UI/Battle/Side2" instance=ExtResource("32_l554o")]
+layout_mode = 2
+
+[node name="BattleUnit3" parent="UI/Battle/Side2" instance=ExtResource("32_l554o")]
+layout_mode = 2
+
+[node name="BattleUnit4" parent="UI/Battle/Side2" instance=ExtResource("32_l554o")]
+layout_mode = 2
+
+[node name="TechTree" type="Panel" parent="UI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -250.0
+offset_right = 400.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pmv7x")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/TechTree"]
+layout_mode = 1
+offset_right = 800.0
+offset_bottom = 482.0
+
+[node name="Label" type="Label" parent="UI/TechTree/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_qk14p")
+text = "科技树"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/TechTree/VBoxContainer"]
+custom_minimum_size = Vector2(800, 450)
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="UI/TechTree/VBoxContainer/ScrollContainer"]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 2
+
+[node name="Button" type="Button" parent="UI/TechTree"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -18.0
+offset_bottom = 31.0
+grow_horizontal = 0
+text = "X"
+
+[node name="GameMenuButton" type="Button" parent="UI"]
+visible = false
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+icon = ExtResource("46_co2o0")
+
+[node name="ToolTip" type="PanelContainer" parent="UI"]
+visible = false
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -160.0
+offset_bottom = 40.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxTexture_3am1k")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/ToolTip"]
+layout_mode = 2
+
+[node name="Text" type="RichTextLabel" parent="UI/ToolTip/VBoxContainer"]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.286823, 0.178105, 0.0542015, 1)
+theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
+text = "AAA BBB
+CCC"
+fit_content = true
+autowrap_mode = 2
+
+[node name="GameMenu" type="Panel" parent="UI"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="UI/GameMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -52.0
+offset_top = -85.5
+offset_right = 52.0
+offset_bottom = 85.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Resume" type="Button" parent="UI/GameMenu/VBox"]
+layout_mode = 2
+text = "回到游戏"
+
+[node name="SaveGame" type="Button" parent="UI/GameMenu/VBox"]
+layout_mode = 2
+text = "保存游戏"
+
+[node name="LoadGame" type="Button" parent="UI/GameMenu/VBox"]
+layout_mode = 2
+text = "载入游戏"
+
+[node name="Options" type="Button" parent="UI/GameMenu/VBox"]
+layout_mode = 2
+text = "选项"
+
+[node name="BackToTitle" type="Button" parent="UI/GameMenu/VBox"]
+layout_mode = 2
+text = "返回标题界面"
+
+[node name="QuitToDesktop" type="Button" parent="UI/GameMenu/VBox"]
+layout_mode = 2
+text = "退出到桌面"
+
+[node name="PostProcessing" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="PostProcessing"]
+material = SubResource("ShaderMaterial_ottlk")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[connection signal="pressed" from="UI/HBoxContainer/VBoxContainer/Panel/Button" to="." method="on_camera_left"]
+[connection signal="pressed" from="UI/HBoxContainer/VBoxContainer/Panel/Button2" to="." method="on_camera_up"]
+[connection signal="pressed" from="UI/HBoxContainer/VBoxContainer/Panel/Button3" to="." method="on_camera_right"]
+[connection signal="pressed" from="UI/HBoxContainer/VBoxContainer/Panel/Button4" to="." method="on_camera_down"]
+[connection signal="clicked" from="UI/HBoxContainer/VBoxContainer/Panel2/Deck" to="." method="on_deck_clicked"]
+[connection signal="pressed" from="UI/StateTip/VBoxContainer/HBoxContainer/Button" to="." method="on_show_tip_button"]
+[connection signal="mode_changed" from="UI/Panels/HBoxContainer/Deconstruct" to="." method="on_deconstruct_button"]
+[connection signal="pressed" from="UI/Control/ComfireButton" to="." method="on_comfire_button"]
+[connection signal="pressed" from="UI/Control/CancelButton" to="." method="on_cancel_button"]
+[connection signal="pressed" from="UI/Control/ShopButton" to="." method="on_shop_button"]
+[connection signal="pressed" from="UI/Control/TechButton" to="." method="on_tech_button"]
+[connection signal="tab_changed" from="UI/Shop/VBoxContainer/TabBar" to="." method="on_shop_tab_changed"]
+[connection signal="pressed" from="UI/Shop/Button" to="." method="on_shop_close_button"]
+[connection signal="pressed" from="UI/TechTree/Button" to="." method="on_tech_close_button"]
+[connection signal="pressed" from="UI/GameMenuButton" to="." method="on_game_menu"]
+[connection signal="pressed" from="UI/GameMenu/VBox/Resume" to="." method="on_resume"]
+[connection signal="pressed" from="UI/GameMenu/VBox/SaveGame" to="." method="on_save_game"]
+[connection signal="pressed" from="UI/GameMenu/VBox/LoadGame" to="." method="on_load_game"]
+[connection signal="pressed" from="UI/GameMenu/VBox/BackToTitle" to="." method="on_back_to_title"]
+[connection signal="pressed" from="UI/GameMenu/VBox/QuitToDesktop" to="." method="on_quit"]

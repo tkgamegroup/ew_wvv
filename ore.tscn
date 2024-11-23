@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=3 uid="uid://cyavjst01e0sd"]
+
+[ext_resource type="Script" path="res://ore.gd" id="1_1nxq7"]
+[ext_resource type="Shader" path="res://ore.gdshader" id="2_55kjy"]
+[ext_resource type="Texture2D" uid="uid://cnh7etmcjy181" path="res://fx/crack2.png" id="3_wa81f"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_q40n3"]
+resource_local_to_scene = true
+shader = ExtResource("2_55kjy")
+shader_parameter/crack_texture = ExtResource("3_wa81f")
+shader_parameter/fragile_value = 0.0
+shader_parameter/shininess_offset = null
+
+[node name="Ore" type="Node2D"]
+script = ExtResource("1_1nxq7")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_q40n3")

@@ -1,0 +1,44 @@
+[gd_scene load_steps=5 format=3 uid="uid://gjgjdy0ygcma"]
+
+[ext_resource type="Script" path="res://unit.gd" id="1_2siyj"]
+[ext_resource type="Texture2D" uid="uid://cvkhmtueudc67" path="res://units/monster.png" id="2_nr1ak"]
+[ext_resource type="Texture2D" uid="uid://lob0yd3hxyp7" path="res://ui/health_bar_seg.png" id="3_3segc"]
+[ext_resource type="Texture2D" uid="uid://cvf07ct2q5iy8" path="res://ui/health_bar1.png" id="4_gsnqc"]
+
+[node name="Unit" type="Node2D"]
+script = ExtResource("1_2siyj")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_nr1ak")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -6.0
+offset_top = -32.0
+offset_right = 6.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = -1
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
+custom_minimum_size = Vector2(12, 8)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+texture = ExtResource("3_3segc")
+expand_mode = 1
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/TextureRect"]
+layout_mode = 0
+offset_right = 12.0
+offset_bottom = 8.0
+mouse_filter = 2
+texture = ExtResource("4_gsnqc")
+expand_mode = 1
