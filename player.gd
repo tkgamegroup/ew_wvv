@@ -30,9 +30,6 @@ signal ruby_changed
 signal emerald_changed
 signal sapphire_changed
 signal amethyst_changed
-signal production_changed
-signal science_changed
-signal food_changed
 
 var modifiers : Dictionary
 
@@ -57,27 +54,6 @@ func get_resource(type : int):
 			return sapphire_amount
 		Game.Amethyst:
 			return amethyst_amount
-
-func add_production(v : int):
-	if v == 0:
-		return
-	var old_value = production
-	production += v
-	production_changed.emit(old_value, production)
-
-func add_science(v : int):
-	if v == 0:
-		return
-	var old_value = science
-	science += v
-	science_changed.emit(old_value, science)
-
-func add_food(v : int):
-	if v == 0:
-		return
-	var old_value = food
-	food += v
-	food_changed.emit(old_value, food)
 
 func add_gold(v : int):
 	if v == 0:

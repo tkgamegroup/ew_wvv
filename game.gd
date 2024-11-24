@@ -58,10 +58,15 @@ const explosion_frames = preload("res://fx/explosion.tres")
 @onready var alert_panel = $UI/HBoxContainer/VBoxContainer/Panel/Alert
 @onready var alert_text = $UI/HBoxContainer/VBoxContainer/Panel/Alert/Panel/MarginContainer/Label
 @onready var resource_panel = $UI/HBoxContainer/Panel/VBoxContainer/ResourcePanel
-@onready var production_text = $UI/HBoxContainer/Panel/VBoxContainer/ResourcePanel/HBoxContainer/Production
-@onready var gold_text = $UI/HBoxContainer/Panel/VBoxContainer/ResourcePanel/HBoxContainer2/Gold
-@onready var science_text = $UI/HBoxContainer/Panel/VBoxContainer/ResourcePanel/HBoxContainer3/Science
-@onready var food_text = $UI/HBoxContainer/Panel/VBoxContainer/ResourcePanel/HBoxContainer4/Food
+@onready var gold_text = $UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer/Gold
+@onready var ruby_amount_text = $UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer1/Label
+@onready var ruby_value_text = $UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer1/TextureRect/Label
+@onready var emerald_amount_text = $UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer2/Label
+@onready var emerald_value_text = $UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer2/TextureRect/Label
+@onready var sapphire_amount_text = $UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer3/Label
+@onready var sapphire_value_text = $UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer3/TextureRect/Label
+@onready var amethyst_amount_text = $UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer4/Label
+@onready var amethyst_value_text = $UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer4/TextureRect/Label
 @onready var energy_text = $UI/HBoxContainer/VBoxContainer/Panel/Mine/EnergyText
 @onready var state_text = $UI/HBoxContainer/Panel/VBoxContainer/State
 @onready var collapse_turn_text = $UI/HBoxContainer/Panel/VBoxContainer/CollapseTurn
@@ -122,10 +127,11 @@ static var ui_root : CanvasLayer = null
 const scene_off = Vector2(208, 7)
 
 var turn_tip_tween : Tween = null
-var production_text_tween : Tween = null
 var gold_text_tween : Tween = null
-var science_text_tween : Tween = null
-var food_text_tween : Tween = null
+var ruby_value_text_tween : Tween = null
+var emerald_value_text_tween : Tween = null
+var sapphire_value_text_tween : Tween = null
+var amethyst_value_text_tween : Tween = null
 static var dragging_card : Card = null
 var drag_offset : Vector2
 var can_activate = false
@@ -305,7 +311,7 @@ static func get_resource_icon(type : int):
 		Amethyst:
 			"res://icons/amethyst.png"
 		
-static func add_resource(type : int, v : int, pos : Vector2, parent_node : Node = ui_root):
+static func add_resource(type : int, v : int, pos : Vector2):
 	match type:
 		Gold:
 			player.add_gold(v)
@@ -331,7 +337,7 @@ static func add_resource(type : int, v : int, pos : Vector2, parent_node : Node 
 	text += "[img=20]%s[/img]" % get_resource_icon(type)
 	label.text = text
 	label.position = Vector2(0, -100)
-	parent_node.add_child(label)
+	ui_root.add_child(label)
 	var tween = tree.create_tween()
 	tween.tween_method(func(v : int):
 		label.position = pos - Vector2(label.size.x * 0.5, v)
@@ -355,14 +361,14 @@ func update_gold_text(o, n):
 	if shop_ui.visible:
 		update_shop_list()
 
+func update_ruby_value_text(o, n):
+	pass
+
 func update_energy_text():
 	energy_text.text = "%d/%d" % [player.energy, player.max_energy]
 
 func update_turn_text():
 	collapse_turn_text.text = "倒塌回合：%d/%d" % [turn, cave.collapse_turn]
-
-func update_ruby_value_text():
-	pass
 
 func create_card() -> Card:
 	var card = CardPrefab.instantiate()
@@ -519,6 +525,7 @@ static func dig(tile : Tile, damage : int = 4, use_animation = true):
 	reveal(tile)
 	
 	var pos = tilemap.to_global(tilemap.map_to_local(tile.coord))
+	pos += tilemap.get_canvas_transform().origin
 	if use_animation:
 		var tween = tree.create_tween()
 		var crack_sprite = Sprite2D.new()
@@ -533,14 +540,14 @@ static func dig(tile : Tile, damage : int = 4, use_animation = true):
 		)
 		tween.tween_interval(0.5)
 		tween.parallel().tween_callback(func():
-			add_resource(Gold, gold, pos - Vector2(0, 20), scene_root)
+			add_resource(Gold, gold, pos - Vector2(0, 20))
 		)
 		tween.parallel().tween_property(crack_sprite, "modulate:a", 0.0, 1.0).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CUBIC)
 		tween.tween_callback(func():
 			crack_sprite.queue_free()
 		)
 	else:
-		add_resource(Gold, gold, pos - Vector2(0, 20), scene_root)
+		add_resource(Gold, gold, pos - Vector2(0, 20))
 
 static func attack(tile : Tile, damage : int = 4, use_animation = true):
 	var _monsters = tile.monsters

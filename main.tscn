@@ -2194,21 +2194,17 @@ theme_override_font_sizes/normal_font_size = 24
 bbcode_enabled = true
 fit_content = true
 
-[node name="ResourcePanel" type="HBoxContainer" parent="UI/HBoxContainer/Panel/VBoxContainer"]
-layout_mode = 2
-mouse_filter = 0
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="UI/HBoxContainer/Panel/VBoxContainer/ResourcePanel"]
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/HBoxContainer/Panel/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="TextureRect" type="TextureRect" parent="UI/HBoxContainer/Panel/VBoxContainer/ResourcePanel/HBoxContainer2"]
+[node name="TextureRect" type="TextureRect" parent="UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(36, 0)
 layout_mode = 2
 texture = ExtResource("24_m6jih")
 expand_mode = 1
 
-[node name="Gold" type="Label" parent="UI/HBoxContainer/Panel/VBoxContainer/ResourcePanel/HBoxContainer2"]
+[node name="Gold" type="Label" parent="UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "0$"
@@ -2221,14 +2217,14 @@ text = "-----"
 layout_mode = 2
 text = "-----"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="UI/HBoxContainer/Panel/VBoxContainer"]
+[node name="HBoxContainer1" type="HBoxContainer" parent="UI/HBoxContainer/Panel/VBoxContainer"]
 layout_mode = 2
 
-[node name="TextureRect" type="TextureRect" parent="UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer1"]
 layout_mode = 2
 texture = ExtResource("148_bbrpv")
 
-[node name="Label" type="Label" parent="UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer/TextureRect"]
+[node name="Label" type="Label" parent="UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer1/TextureRect"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -2244,12 +2240,12 @@ theme_override_constants/outline_size = 5
 theme_override_constants/shadow_outline_size = 4
 text = "$100"
 
-[node name="Label" type="Label" parent="UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer1"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "000"
 
-[node name="Button" type="Button" parent="UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer"]
+[node name="Button" type="Button" parent="UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer1"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "卖"
@@ -2859,6 +2855,7 @@ text = "退出到桌面"
 [node name="PostProcessing" type="CanvasLayer" parent="."]
 
 [node name="ColorRect" type="ColorRect" parent="PostProcessing"]
+visible = false
 material = SubResource("ShaderMaterial_ottlk")
 anchors_preset = 15
 anchor_right = 1.0
