@@ -12,15 +12,6 @@ enum
 
 enum
 {
-	NoneResource,
-	ProductionResource,
-	GoldResource,
-	ScienceResource,
-	FoodResource
-}
-
-enum
-{
 	Gold,
 	Ruby,
 	Emerald,
@@ -124,7 +115,8 @@ static var tilemap_water : TileMapLayer = null
 static var tilemap_convex : TileMapLayer = null
 static var tilemap_floor2 : TileMapLayer = null
 static var tilemap_convex2 : TileMapLayer = null
-static var tilemap_object : TileMapLayer = null
+static var ore_root : Node2D = null
+static var unit_root : Node2D = null
 static var tilemap_overlay : Node2D = null
 static var ui_root : CanvasLayer = null
 const scene_off = Vector2(208, 7)
@@ -314,14 +306,17 @@ static func get_resource_icon(type : int):
 			"res://icons/amethyst.png"
 		
 static func add_resource(type : int, v : int, pos : Vector2, parent_node : Node = ui_root):
-	if type == ProductionResource:
-		player.add_production(v)
-	elif type == GoldResource:
-		player.add_gold(v)
-	elif type == ScienceResource:
-		player.add_science(v)
-	elif type == FoodResource:
-		player.add_food(v)
+	match type:
+		Gold:
+			player.add_gold(v)
+		Ruby:
+			player.add_ruby(v)
+		Emerald:
+			player.add_emerald(v)
+		Sapphire:
+			player.add_sapphire(v)
+		Amethyst:
+			player.add_amethyst(v)
 			
 	var label = RichTextLabel.new()
 	label.bbcode_enabled = true
@@ -333,14 +328,7 @@ static func add_resource(type : int, v : int, pos : Vector2, parent_node : Node 
 		text = "[color=green]+%d[/color]" % v
 	else:
 		text = "[color=red]%d[/color]" % v
-	if type == ProductionResource:
-		text += "[img=20]res://icons/production.png[/img]"
-	elif type == GoldResource:
-		text += "[img=20]res://icons/gold.png[/img]"
-	elif type == ScienceResource:
-		text += "[img=20]res://icons/science.png[/img]"
-	elif type == FoodResource:
-		text += "[img=20]res://icons/food.png[/img]"
+	text += "[img=20]%s[/img]" % get_resource_icon(type)
 	label.text = text
 	label.position = Vector2(0, -100)
 	parent_node.add_child(label)
@@ -487,7 +475,7 @@ static func add_unit(name : String, coord : Vector2i, is_enemy : bool):
 		tile.player_units.append(unit)
 		for u in tile.player_units:
 			u.update_pos()
-	scene_root.add_child(unit)
+	unit_root.add_child(unit)
 	return unit
 
 static func add_ore(tile : Tile, type : int):
@@ -495,7 +483,7 @@ static func add_ore(tile : Tile, type : int):
 		var ore : Ore = OrePrefab.instantiate()
 		ore.setup(type, tile.coord)
 		tile.ore = ore
-		scene_root.add_child(ore)
+		ore_root.add_child(ore)
 		return ore
 	return null
 
@@ -511,14 +499,13 @@ static func reveal(tile : Tile, range : int = 1):
 			reveal(t, range - 1)
 
 static func dig(tile : Tile, damage : int = 4, use_animation = true):
-	if tile.mineral_fragile:
-		damage *= 2
-	var prev_hp = tile.mineral_hp
-	tile.mineral_hp = max(0, tile.mineral_hp - damage)
-	var minerals = (prev_hp - tile.mineral_hp) / 4
-	
 	var gold = 0
 	if tile.ore:
+		if tile.ore.fragile:
+			damage *= 2
+		var prev_hp = tile.ore.hp
+		tile.ore.hp = max(0, tile.ore.hp - damage)
+		var minerals = (prev_hp - tile.ore.hp) / 4
 		if tile.ore.type == Gold:
 			gold = 100 * minerals
 		elif tile.ore.type == Ruby:
@@ -546,14 +533,14 @@ static func dig(tile : Tile, damage : int = 4, use_animation = true):
 		)
 		tween.tween_interval(0.5)
 		tween.parallel().tween_callback(func():
-			add_resource(GoldResource, gold, pos - Vector2(0, 20), scene_root)
+			add_resource(Gold, gold, pos - Vector2(0, 20), scene_root)
 		)
 		tween.parallel().tween_property(crack_sprite, "modulate:a", 0.0, 1.0).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CUBIC)
 		tween.tween_callback(func():
 			crack_sprite.queue_free()
 		)
 	else:
-		add_resource(GoldResource, gold, pos - Vector2(0, 20), scene_root)
+		add_resource(Gold, gold, pos - Vector2(0, 20), scene_root)
 
 static func attack(tile : Tile, damage : int = 4, use_animation = true):
 	var _monsters = tile.monsters
@@ -703,12 +690,6 @@ func new_turn():
 				elif type == "auto_digging":
 					tween2.tween_callback(func():
 						dig(tile)
-					)
-			if building.effect.has("production"):
-				var production = building.ext["production"]
-				if production > 0:
-					tween2.tween_callback(func():
-						add_resource(ProductionResource, production, pos, scene_root)
 					)
 			if building.effect.has("train_unit_name"):
 				var unit_name = building.effect["train_unit_name"]
@@ -952,9 +933,6 @@ func on_select_cave3() -> void:
 
 func add_shop_item(card_type : int, name : String, use_resource : int, cost : int, amount : int):
 	var shop_item = ShopItemPrefab.instantiate()
-	#if card_type == Card.TerritoryCard:
-	#	shop_item.card.setup("territory")
-	#	shop_item.setup(use_resource, cost)
 	if card_type == Card.NormalCard:
 		shop_item.find_child("Card").setup(name)
 		shop_item.setup(use_resource, cost)
@@ -965,7 +943,7 @@ func add_shop_item(card_type : int, name : String, use_resource : int, cost : in
 	elif card_type == Card.UnitCard:
 		var info = Unit.get_info(name)
 		shop_item.card.setup_unit_card(name)
-		shop_item.setup(GoldResource, info.cost_gold, amount)
+		shop_item.setup(Gold, info.cost_gold, amount)
 	shop_item.mouse_entered.connect(func():
 		tooltip_using = true
 		var text = shop_item.card.display_name
@@ -999,10 +977,10 @@ func update_shop_list():
 	for n in shop_list.get_children():
 		shop_list.remove_child(n)
 		n.queue_free()
-	add_shop_item(Card.NormalCard, "ruby_value_upgrade", GoldResource, 100, -1)
-	add_shop_item(Card.NormalCard, "emerald_value_upgrade", GoldResource, 100, -1)
-	add_shop_item(Card.NormalCard, "sapphire_value_upgrade", GoldResource, 100, -1)
-	add_shop_item(Card.NormalCard, "amethyst_value_upgrade", GoldResource, 100, -1)
+	add_shop_item(Card.NormalCard, "ruby_value_upgrade", Gold, 100, -1)
+	add_shop_item(Card.NormalCard, "emerald_value_upgrade", Gold, 100, -1)
+	add_shop_item(Card.NormalCard, "sapphire_value_upgrade", Gold, 100, -1)
+	add_shop_item(Card.NormalCard, "amethyst_value_upgrade", Gold, 100, -1)
 
 func on_camera_left() -> void:
 	sfx_click.play()
@@ -1080,7 +1058,6 @@ static func update_tiles():
 			tilemap_convex.set_cell(coord, -1)
 			tilemap_floor2.set_cell(coord, -1)
 			tilemap_convex2.set_cell(coord, -1)
-			tilemap_object.set_cell(coord, -1)
 
 	for x in range(-1, cx / 4 + 1):
 		for y in range(-1, cy / 3 + 1):
@@ -1128,19 +1105,35 @@ func new_game():
 	for c in deck.discard_pile:
 		c.queue_free()
 	deck.discard_pile.clear()
-	#for i in 10:
-	#	var card = create_card()
-	#	card.setup("dig")
-	#	deck.add_card(card)
-	#for i in 5:
-	#	var card = create_card()
-	#	card.setup("attack")
-	#	deck.add_card(card)
+	for i in 1:
+		var card = create_card()
+		card.setup("dig")
+		deck.add_card(card)
+	for i in 1:
+		var card = create_card()
+		card.setup("attack")
+		deck.add_card(card)
 	#for i in 5:
 	#	var card = create_card()
 	#	card.setup_building_card("auto_digging_machine")
 	#	deck.add_card(card)
-	for i in 5:
+	for i in 1:
+		var card = create_card()
+		card.setup("drone_reinforcements")
+		deck.add_card(card)
+	for i in 1:
+		var card = create_card()
+		card.setup("rocket_box")
+		deck.add_card(card)
+	for i in 1:
+		var card = create_card()
+		card.setup("discharge")
+		deck.add_card(card)
+	for i in 1:
+		var card = create_card()
+		card.setup("release_water")
+		deck.add_card(card)
+	for i in 1:
 		var card = create_card()
 		card.setup("acidic_agent")
 		deck.add_card(card)
@@ -1159,7 +1152,8 @@ func _ready() -> void:
 	tilemap_convex = $Scene/TileMapLayerConvex
 	tilemap_floor2 = $Scene/TileMapLayerFloor2
 	tilemap_convex2 = $Scene/TileMapLayerConvex2
-	tilemap_object = $Scene/TileMapLayerObject
+	ore_root = $Scene/OreRoot
+	unit_root = $Scene/UnitRoot
 	tilemap_overlay = $Scene/TileMapOverlay
 	ui_root = $UI
 	

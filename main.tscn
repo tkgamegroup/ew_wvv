@@ -1,4 +1,4 @@
-[gd_scene load_steps=316 format=3 uid="uid://bs1rpkum5d02r"]
+[gd_scene load_steps=312 format=3 uid="uid://bs1rpkum5d02r"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_gjuda"]
 [ext_resource type="AudioStream" uid="uid://c0smhpksmknwe" path="res://sfx/Click.wav" id="2_purw3"]
@@ -23,7 +23,6 @@
 [ext_resource type="Texture2D" uid="uid://cbanjh2vsdq4q" path="res://tiles/convex/l.png" id="21_p58g4"]
 [ext_resource type="Texture2D" uid="uid://7la23hsx73uf" path="res://tiles/convex/r.png" id="22_dy7oe"]
 [ext_resource type="Texture2D" uid="uid://dl6m15drbo0ol" path="res://tiles/convex/bl_br.png" id="22_i1plx"]
-[ext_resource type="Texture2D" path="res://icons/production.png" id="23_i85pf"]
 [ext_resource type="Texture2D" uid="uid://ot5i2bhm5s1f" path="res://tiles/convex/tl.png" id="23_irsxt"]
 [ext_resource type="Texture2D" uid="uid://c6sefqggmj2bf" path="res://tiles/convex/bl_br_r.png" id="23_smerd"]
 [ext_resource type="Texture2D" uid="uid://cwakdc1ikt1ft" path="res://tiles/convex/bl_br_r_tl.png" id="24_horqm"]
@@ -37,7 +36,6 @@
 [ext_resource type="Texture2D" uid="uid://bufstom73otah" path="res://tiles/convex/bl_l.png" id="30_yyn2u"]
 [ext_resource type="Texture2D" uid="uid://dom320e57v2kk" path="res://tiles/convex/bl_l_r.png" id="31_ssqfl"]
 [ext_resource type="Texture2D" uid="uid://bk0hh47l05yar" path="res://tiles/convex/bl_l_r_tl.png" id="32_rpjwn"]
-[ext_resource type="Texture2D" uid="uid://cay2h4h3usiys" path="res://ui/gradient-frame.png" id="32_sm2id"]
 [ext_resource type="Texture2D" uid="uid://b7a74r3tnje16" path="res://tiles/convex/bl_br_l.png" id="33_auest"]
 [ext_resource type="Texture2D" uid="uid://k0rxjk5a6guh" path="res://tiles/convex/bl_l_r_tl_tr.png" id="34_bsxur"]
 [ext_resource type="Texture2D" uid="uid://ioty8x5uqdt8" path="res://tiles/convex/bl_l_r_tr.png" id="35_jwjie"]
@@ -55,7 +53,6 @@
 [ext_resource type="Texture2D" uid="uid://df5ytm1b6doij" path="res://tiles/convex/bl_br_l_r.png" id="44_wq4vm"]
 [ext_resource type="Texture2D" uid="uid://8hiffh2gfw2p" path="res://tiles/convex/bl_tl_tr.png" id="45_x8yp3"]
 [ext_resource type="Texture2D" uid="uid://de4f6rxqabkqc" path="res://tiles/convex/bl_tr.png" id="46_5exh6"]
-[ext_resource type="Texture2D" path="res://icons/gear.png" id="46_co2o0"]
 [ext_resource type="Script" path="res://deck.gd" id="46_lnc8i"]
 [ext_resource type="Texture2D" uid="uid://d01ne13t0mruc" path="res://ui/frame.png" id="47_fdenu"]
 [ext_resource type="Texture2D" uid="uid://bnr0p6lt8cgpm" path="res://tiles/convex/br_l.png" id="48_ukatb"]
@@ -1950,14 +1947,6 @@ sources/60 = SubResource("TileSetAtlasSource_8ntrq")
 sources/61 = SubResource("TileSetAtlasSource_1kg7a")
 sources/62 = SubResource("TileSetAtlasSource_2jorg")
 
-[sub_resource type="TileSet" id="TileSet_1akas"]
-tile_shape = 3
-tile_offset_axis = 1
-tile_size = Vector2i(72, 72)
-terrain_set_0/mode = 0
-terrain_set_0/terrain_0/name = "forest"
-terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1o22b"]
 bg_color = Color(0, 0, 0, 0.498039)
 border_width_left = 4
@@ -2123,6 +2112,7 @@ stream = ExtResource("10_4skwy")
 stream = ExtResource("10_dr3hb")
 volume_db = -15.407
 pitch_scale = 0.85
+autoplay = true
 parameters/looping = false
 
 [node name="Sword" type="AudioStreamPlayer" parent="Sound"]
@@ -2174,8 +2164,9 @@ tile_set = SubResource("TileSet_3jy4h")
 [node name="TileMapLayerConvex2" type="TileMapLayer" parent="Scene"]
 tile_set = SubResource("TileSet_mqu5i")
 
-[node name="TileMapLayerObject" type="TileMapLayer" parent="Scene"]
-tile_set = SubResource("TileSet_1akas")
+[node name="OreRoot" type="Node2D" parent="Scene"]
+
+[node name="UnitRoot" type="Node2D" parent="Scene"]
 
 [node name="TileMapOverlay" type="Node2D" parent="Scene"]
 script = ExtResource("170_j5vcd")
@@ -2508,7 +2499,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("32_sm2id")
 expand_mode = 1
 
 [node name="Shop" type="PanelContainer" parent="UI/HBoxContainer/VBoxContainer/Panel"]
@@ -2712,7 +2702,6 @@ layout_mode = 2
 current_tab = 0
 tab_count = 3
 tab_0/title = "建筑"
-tab_0/icon = ExtResource("23_i85pf")
 tab_1/title = "建筑"
 tab_1/icon = ExtResource("24_m6jih")
 tab_2/title = "单位"
@@ -2820,7 +2809,6 @@ anchor_right = 1.0
 offset_left = -54.0
 offset_bottom = 62.0
 grow_horizontal = 0
-icon = ExtResource("46_co2o0")
 
 [node name="GameMenu" type="Panel" parent="UI"]
 visible = false
@@ -2871,7 +2859,6 @@ text = "退出到桌面"
 [node name="PostProcessing" type="CanvasLayer" parent="."]
 
 [node name="ColorRect" type="ColorRect" parent="PostProcessing"]
-visible = false
 material = SubResource("ShaderMaterial_ottlk")
 anchors_preset = 15
 anchor_right = 1.0

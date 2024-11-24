@@ -30,12 +30,8 @@ func buy(result : Dictionary):
 			result.card_data = inst_to_dict(card)
 		return true
 	else:
-		if use_resource == Game.ProductionResource:
-			result.message = "生产力不足"
-		elif use_resource == Game.GoldResource:
+		if use_resource == Game.Gold:
 			result.message = "金币不足"
-		elif use_resource == Game.FoodResource:
-			result.message = "食物不足"
 	return false
 
 func _gui_input(event: InputEvent):

@@ -46,14 +46,17 @@ func _init(_id : int) -> void:
 	modifiers["ACADEMY_PRODUCTION_BOUNS_PERCENTAGE"] = 0
 
 func get_resource(type : int):
-	if type == Game.GoldResource:
-		return gold
-	if type == Game.ProductionResource:
-		return production
-	if type == Game.ScienceResource:
-		return science
-	if type == Game.FoodResource:
-		return food
+	match type:
+		Game.Gold:
+			return gold
+		Game.Ruby:
+			return ruby_amount
+		Game.Emerald:
+			return emerald_amount
+		Game.Sapphire:
+			return sapphire_amount
+		Game.Amethyst:
+			return amethyst_amount
 
 func add_production(v : int):
 	if v == 0:
@@ -61,13 +64,6 @@ func add_production(v : int):
 	var old_value = production
 	production += v
 	production_changed.emit(old_value, production)
-
-func add_gold(v : int):
-	if v == 0:
-		return
-	var old_value = gold
-	gold += v
-	gold_changed.emit(old_value, gold)
 
 func add_science(v : int):
 	if v == 0:
@@ -82,6 +78,41 @@ func add_food(v : int):
 	var old_value = food
 	food += v
 	food_changed.emit(old_value, food)
+
+func add_gold(v : int):
+	if v == 0:
+		return
+	var old_value = gold
+	gold += v
+	gold_changed.emit(old_value, gold)
+
+func add_ruby(v : int):
+	if v == 0:
+		return
+	var old_value = ruby_amount
+	ruby_amount += v
+	ruby_changed.emit(old_value, ruby_amount)
+
+func add_emerald(v : int):
+	if v == 0:
+		return
+	var old_value = emerald_amount
+	emerald_amount += v
+	emerald_changed.emit(old_value, emerald_amount)
+
+func add_sapphire(v : int):
+	if v == 0:
+		return
+	var old_value = sapphire_amount
+	sapphire_amount += v
+	sapphire_changed.emit(old_value, sapphire_amount)
+
+func add_amethyst(v : int):
+	if v == 0:
+		return
+	var old_value = amethyst_amount
+	amethyst_amount += v
+	amethyst_changed.emit(old_value, amethyst_amount)
 
 func add_building(coord : Vector2i, name : String):
 	var tile = Game.map[coord]

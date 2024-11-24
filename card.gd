@@ -27,7 +27,7 @@ var last_parent : Control
 var display_name : String
 var description : String
 var icon : String
-var cost_resource_type : int = Game.NoneResource
+var cost_resource_type : int = Game.Gold
 var cost_resource : int = 0
 var effect : Dictionary
 
@@ -83,12 +83,10 @@ func setup_from_data(data : Dictionary):
 	$SubViewport/Front/Name.text = display_name
 	$SubViewport/Front/TextureRect.texture = load(icon)
 	if data.has("cost_resource"):
-		if data.cost_resource_type != Game.NoneResource:
+		if data.cost_resource > 0:
 			$SubViewport/Front/Cost.visible = true
 			$SubViewport/Front/Cost/Polygon2D/CostText.text = "%d" % data.cost_resource
 			var icon_path = ""
-			if data.cost_resource_type == Game.FoodResource:
-				icon_path = "res://icons/food.png"
 			$SubViewport/Front/Cost/Polygon2D/CostIcon.texture = load(icon_path)
 			
 	init_matrix()
