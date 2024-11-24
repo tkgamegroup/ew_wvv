@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dvdopagc7iiet"
-path="res://.godot/imported/gear.png-13c96c724e10fbb4e0a0d240b0262d41.ctex"
+uid="uid://bee8738s81f4t"
+path="res://.godot/imported/emerald.png-5f2bb0bd240e70eb7568c33a41598fa1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://icons/gear.png"
-dest_files=["res://.godot/imported/gear.png-13c96c724e10fbb4e0a0d240b0262d41.ctex"]
+source_file="res://icons/emerald.png"
+dest_files=["res://.godot/imported/emerald.png-5f2bb0bd240e70eb7568c33a41598fa1.ctex"]
 
 [params]
 

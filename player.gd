@@ -16,17 +16,23 @@ var energy : int = 0
 var max_energy : int = 0
 var science : int = 100
 var food : int = 3
-var gear : int = 0
+var ruby_amount : int = 0
 var ruby_value : int = 100
+var emerald_amount : int = 0
 var emerald_value : int = 100
+var sapphire_amount : int = 0
 var sapphire_value : int = 100
+var amethyst_amount : int = 0
 var amethyst_value : int = 100
 signal energy_changed
-signal production_changed
 signal gold_changed
+signal ruby_changed
+signal emerald_changed
+signal sapphire_changed
+signal amethyst_changed
+signal production_changed
 signal science_changed
 signal food_changed
-signal geer_changed
 
 var modifiers : Dictionary
 
@@ -40,16 +46,14 @@ func _init(_id : int) -> void:
 	modifiers["ACADEMY_PRODUCTION_BOUNS_PERCENTAGE"] = 0
 
 func get_resource(type : int):
-	if type == Game.ProductionResource:
-		return production
 	if type == Game.GoldResource:
 		return gold
+	if type == Game.ProductionResource:
+		return production
 	if type == Game.ScienceResource:
 		return science
 	if type == Game.FoodResource:
 		return food
-	if type == Game.GearResource:
-		return gear
 
 func add_production(v : int):
 	if v == 0:

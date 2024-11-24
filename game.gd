@@ -16,8 +16,16 @@ enum
 	ProductionResource,
 	GoldResource,
 	ScienceResource,
-	FoodResource,
-	GearResource
+	FoodResource
+}
+
+enum
+{
+	Gold,
+	Ruby,
+	Emerald,
+	Sapphire,
+	Amethyst
 }
 
 const card_width = 120
@@ -31,8 +39,8 @@ static var cy = 0
 
 static var map : Dictionary[Vector2i, Tile]
 static var player : Player
-static var techs : Dictionary
 static var turn : int = 0
+static var water_level : int = 0
 static var state : int = SelectCaveState
 static var gameover : bool = false
 static var cave : Cave = null
@@ -48,7 +56,6 @@ const CardPrefab = preload("res://card.tscn")
 const UnitPrefab = preload("res://unit.tscn")
 const OrePrefab = preload("res://ore.tscn")
 const ShopItemPrefab = preload("res://shop_item.tscn")
-const TechItemPrefab = preload("res://tech_item.tscn")
 const explosion_frames = preload("res://fx/explosion.tres")
 
 @onready var camera = $Scene/Camera2D
@@ -111,9 +118,9 @@ static var sfx_explosion : AudioStreamPlayer
 
 static var tree : SceneTree = null
 static var scene_root : SubViewport = null
-static var tilemap_water : TileMapLayer = null
-static var tilemap_bank : TileMapLayer = null
+static var fx_electric_node : Node2D = null
 static var tilemap : TileMapLayer = null
+static var tilemap_water : TileMapLayer = null
 static var tilemap_convex : TileMapLayer = null
 static var tilemap_floor2 : TileMapLayer = null
 static var tilemap_convex2 : TileMapLayer = null
@@ -127,7 +134,7 @@ var production_text_tween : Tween = null
 var gold_text_tween : Tween = null
 var science_text_tween : Tween = null
 var food_text_tween : Tween = null
-var dragging_card : Card = null
+static var dragging_card : Card = null
 var drag_offset : Vector2
 var can_activate = false
 var tooltip_using = false
@@ -158,26 +165,6 @@ static func get_shuffled_indices(n : int):
 		ret.append(i)
 	ret.shuffle()
 	return ret
-
-static func get_resource_name(type : int):
-	if type == ProductionResource:
-		return "production"
-	if type == GoldResource:
-		return "gold"
-	if type == ScienceResource:
-		return "science"
-	if type == FoodResource:
-		return "food"
-
-static func get_resource_icon(type : int):
-	if type == ProductionResource:
-		return "res://icons/production.png"
-	if type == GoldResource:
-		return "res://icons/gold.png"
-	if type == ScienceResource:
-		return "res://icons/science.png"
-	if type == FoodResource:
-		return "res://icons/food.png"
 
 static func get_surrounding_tiles(tile : Tile) -> Array[Tile] :
 	var ret : Array[Tile] = []
@@ -312,6 +299,19 @@ func yes_no_dialog(text : String, callback : Callable):
 	)
 	ui_root.add_child(dialog)
 	dialog.popup_centered()
+
+static func get_resource_icon(type : int):
+	match type:
+		Gold:
+			"res://icons/gold.png"
+		Ruby:
+			"res://icons/ruby.png"
+		Emerald:
+			"res://icons/emerald.png"
+		Sapphire:
+			"res://icons/sapphire.png"
+		Amethyst:
+			"res://icons/amethyst.png"
 		
 static func add_resource(type : int, v : int, pos : Vector2, parent_node : Node = ui_root):
 	if type == ProductionResource:
@@ -357,7 +357,7 @@ func update_gold_text(o, n):
 		gold_text_tween.kill()
 	gold_text_tween = tree.create_tween()
 	gold_text_tween.tween_method(func(v):
-			gold_text.text = "%d" % v,
+			gold_text.text = "%d$" % v,
 		o, n, 0.5
 	)
 	gold_text_tween.tween_callback(func():
@@ -503,7 +503,7 @@ static func reveal(tile : Tile, range : int = 1):
 	if tile.terrain == Tile.TerrainFloor2:
 		if tile.coord != player.coord:
 			if randf() > 0.3:
-				add_ore(tile, randi_range(Ore.GoldOre, Ore.AmethystOre))
+				add_ore(tile, randi_range(Gold, Amethyst))
 		tile.terrain = Tile.TerrainFloor
 		tile.passable = true
 	if range > 0:
@@ -519,15 +519,15 @@ static func dig(tile : Tile, damage : int = 4, use_animation = true):
 	
 	var gold = 0
 	if tile.ore:
-		if tile.ore.type == Ore.GoldOre:
+		if tile.ore.type == Gold:
 			gold = 100 * minerals
-		elif tile.ore.type == Ore.RubyOre:
+		elif tile.ore.type == Ruby:
 			gold = 100 * minerals
-		elif tile.ore.type == Ore.EmeraldOre:
+		elif tile.ore.type == Emerald:
 			gold = 100 * minerals
-		elif tile.ore.type == Ore.SapphireOre:
+		elif tile.ore.type == Sapphire:
 			gold = 100 * minerals
-		elif tile.ore.type == Ore.AmethystOre:
+		elif tile.ore.type == Amethyst:
 			gold = 100 * minerals
 	reveal(tile)
 	
@@ -539,7 +539,7 @@ static func dig(tile : Tile, damage : int = 4, use_animation = true):
 			sfx_pickaxe.play(0.33)
 			crack_sprite.texture = load("res://fx/crack.png")
 			crack_sprite.position = pos
-			Game.scene_root.add_child(crack_sprite)
+			scene_root.add_child(crack_sprite)
 			
 			reveal(tile)
 			update_tiles()
@@ -566,7 +566,7 @@ static func attack(tile : Tile, damage : int = 4, use_animation = true):
 			slash_sprite.texture = load("res://fx/slash.png")
 			slash_sprite.scale = Vector2(0.8, 0.8)
 			slash_sprite.position = pos
-			Game.scene_root.add_child(slash_sprite)
+			scene_root.add_child(slash_sprite)
 			
 			for m in _monsters:
 				m.take_damage(damage)
@@ -764,7 +764,7 @@ func change_state(new_state : int, data : Dictionary) :
 		cave_candidates.append(cand3)
 		var update_cand_ui = func(ui : Control, cand : Cave):
 			ui.find_child("Name").text = cand.name
-			ui.find_child("TargetScore").text = "目标：%d" % cand.target_score
+			ui.find_child("TargetScore").text = "目标：%d$" % cand.target_score
 		update_cand_ui.call(cave_candidate1_ui, cand1)
 		update_cand_ui.call(cave_candidate2_ui, cand2)
 		update_cand_ui.call(cave_candidate3_ui, cand3)
@@ -805,9 +805,7 @@ func change_state(new_state : int, data : Dictionary) :
 		update_gold_text(0, player.gold)
 	
 		state_text.text = cave.name
-		collapse_turn_text.show()
-		target_score_text.text = "目标：%d" % cave.target_score
-		target_score_text.show()
+		target_score_text.text = "目标：%d$" % cave.target_score
 		cave_select_ui.hide()
 		mine_ui.show()
 		hand.show()
@@ -922,8 +920,6 @@ func load_game(path : String):
 		var c = u["coord"]
 		var unit = add_unit(u["name"], str_to_var("Vector2i" + c), false)
 	
-	techs.clear()
-	
 	var _hand = json["hand"]
 	for c in _hand:
 		if c.type == Card.NormalCard:
@@ -1007,56 +1003,6 @@ func update_shop_list():
 	add_shop_item(Card.NormalCard, "emerald_value_upgrade", GoldResource, 100, -1)
 	add_shop_item(Card.NormalCard, "sapphire_value_upgrade", GoldResource, 100, -1)
 	add_shop_item(Card.NormalCard, "amethyst_value_upgrade", GoldResource, 100, -1)
-	#add_shop_item(Card.TerritoryCard, "", ProductionResource, 20 + (1) * 2, -1)
-
-func update_tech_tree():
-	for n in techs:
-		var t = techs[n]
-		var tech_item = TechItemPrefab.instantiate()
-		tech_item.get_node("Label").text = "%d/%d" % [t.level, t.max_level]
-		tech_item.position = t.coord
-		tech_item.mouse_entered.connect(func():
-			tooltip_using = true
-			var info = Technology.get_info(n)
-			var text = info.display_name
-			text += "\n需要: %d点科技值" % info.cost_science
-			var values = info.values.duplicate()
-			for i in info.max_level:
-				values["c%d" % (i + 1)] = "white" if i + 1 == t.level else "gray"
-			text += "\n%s" % info.description.format(values)
-			tooltip_text.text = text
-			tooltip.show()
-			
-			#sfx_hover.play()
-		)
-		tech_item.mouse_exited.connect(func():
-			tooltip_using = true
-			tooltip.hide()
-		)
-		tech_item.clicked.connect(func():
-			if player.science >= t.cost_science && t.level < t.max_level:
-				add_resource(ScienceResource, -t.cost_science, tech_item.global_position)
-				
-				t.acquired(player)
-				
-				tech_item.get_node("Label").text = "%d/%d" % [t.level, t.max_level]
-				tech_item.hide()
-				tech_item.show()
-		)
-		tech_tree.add_child(tech_item)
-
-func on_tech_close_button() -> void:
-	tech_ui.hide()
-	sfx_close.play()
-
-func on_tech_button() -> void:
-	if tech_ui.visible:
-		tech_ui.hide()
-		sfx_close.play()
-	else:
-		shop_ui.hide()
-		tech_ui.show()
-		sfx_open.play()
 
 func on_camera_left() -> void:
 	sfx_click.play()
@@ -1129,13 +1075,17 @@ static func update_tiles():
 	for x in range(-1, cx + 1):
 		for y in range(-1, cy + 1):
 			var coord = Vector2i(x, y)
-			tilemap_water.set_cell(coord, -1)
-			tilemap_bank.set_cell(coord, -1)
 			tilemap.set_cell(coord, -1)
+			tilemap_water.set_cell(coord, -1)
 			tilemap_convex.set_cell(coord, -1)
 			tilemap_floor2.set_cell(coord, -1)
 			tilemap_convex2.set_cell(coord, -1)
 			tilemap_object.set_cell(coord, -1)
+
+	for x in range(-1, cx / 4 + 1):
+		for y in range(-1, cy / 3 + 1):
+			var coord = Vector2i(x, y)
+			tilemap_water.set_cell(coord, 0, Vector2i(0, 0))
 	
 	var floor_tiles = {}
 	var floor2_tiles = {}
@@ -1161,7 +1111,7 @@ static func update_tiles():
 		tilemap_convex2.set_cells_terrain_connect(floor_tiles.keys(), 0, 0, false)
 	if !floor2_tiles.is_empty():
 		for c in floor2_tiles:
-			tilemap_floor2.set_cell(c, 0, Vector2i(rns[c.x * cx + c.y], 0))
+			tilemap_floor2.set_cell(c, 0, Vector2i(rns[c.y * cx + c.x], 0))
 	
 	map_rng.state = rng_state
 
@@ -1192,7 +1142,7 @@ func new_game():
 	#	deck.add_card(card)
 	for i in 5:
 		var card = create_card()
-		card.setup("discharge")
+		card.setup("acidic_agent")
 		deck.add_card(card)
 	deck.shuffle()
 	
@@ -1203,9 +1153,9 @@ func _ready() -> void:
 	
 	tree = get_tree()
 	scene_root = $Scene
-	tilemap_water = $Scene/TileMapLayerWater
-	tilemap_bank = $Scene/TileMapLayerBank
+	fx_electric_node = $Scene/FxElectric
 	tilemap = $Scene/TileMapLayerMain
+	tilemap_water = $Scene/TileMapLayerWater
 	tilemap_convex = $Scene/TileMapLayerConvex
 	tilemap_floor2 = $Scene/TileMapLayerFloor2
 	tilemap_convex2 = $Scene/TileMapLayerConvex2
@@ -1277,6 +1227,11 @@ func process_card_drop():
 								hand.add_child(new_card)
 							)
 							tween.tween_interval(0.2)
+					elif effect_type == "release_water":
+						tween.tween_property(tilemap_water, "modulate:a", 0.5, 0.85)
+						tween.tween_callback(func():
+							water_level = min(water_level + 1, 3)
+						)
 			else:
 				error_message = "能量不足"
 	elif dragging_card.target_type == Card.TargetTile || dragging_card.target_type == Card.TargetBuilding:
@@ -1323,7 +1278,7 @@ func process_card_drop():
 									rocket_sprite.scale = Vector2(0.5, 0.5)
 									rocket_sprite.rotation = (pos - player_pos).angle() + PI * 0.5
 									rocket_sprite.position = player_pos
-									Game.scene_root.add_child(rocket_sprite)
+									scene_root.add_child(rocket_sprite)
 									sfx_rocket_loop.play()
 								)
 								tween.tween_property(rocket_sprite, "position", pos, t)
@@ -1332,7 +1287,7 @@ func process_card_drop():
 									explosion_sprite.play("default")
 									explosion_sprite.scale = Vector2(0.2, 0.2)
 									explosion_sprite.position = pos
-									Game.scene_root.add_child(explosion_sprite)
+									scene_root.add_child(explosion_sprite)
 									rocket_sprite.queue_free()
 									sfx_rocket_loop.stop()
 									sfx_explosion.play()
@@ -1375,9 +1330,10 @@ func process_card_drop():
 											var induction_sprite = AnimatedSprite2D.new()
 											induction_sprite.sprite_frames = load("res://fx/induction.tres")
 											induction_sprite.modulate = Color(1.0, 1.0, 0.2, 1.0)
+											induction_sprite.scale = Vector2(2.0, 2.0)
 											induction_sprite.play("default")
 											induction_sprite.position = tilemap.to_global(tilemap.map_to_local(t.coord))
-											Game.scene_root.add_child(induction_sprite)
+											fx_electric_node.add_child(induction_sprite)
 											var tween2 = tree.create_tween()
 											tween2.tween_interval(0.35)
 											tween2.tween_callback(func():
@@ -1390,10 +1346,19 @@ func process_card_drop():
 										var charge = charged_tiles[t]
 										if charge > 0:
 											for tt in get_surrounding_tiles(t):
-												if !discharged_tiles.has(tt):
+												if !discharged_tiles.has(tt) && tt.terrain != Tile.TerrainFloor2:
 													newly_charge_tiles[tt] = charge - 1
 									charged_tiles.clear()
 									tween.tween_interval(0.3)
+							else:
+								error_message = "能量不足"
+						elif effect_type == "acid":
+							if player.get_energy(1):
+								card_applied(card, tween)
+								card_used = true
+								
+								if tile.ore:
+									tile.ore.add_acid(2)
 							else:
 								error_message = "能量不足"
 				elif card.type == Card.BuildingCard:
@@ -1433,6 +1398,7 @@ func release_dragging_card():
 	if dragging_card == null:
 		return
 	gradient_frame.hide()
+	tilemap_overlay.queue_redraw()
 	dragging_card.release_drag()
 	dragging_card = null
 
@@ -1499,5 +1465,3 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.pressed:
 			if event.keycode == KEY_H:
 				camera.move_to(tilemap.to_global(tilemap.map_to_local(player.coord)))
-			elif event.keycode == KEY_T:
-				on_tech_button()

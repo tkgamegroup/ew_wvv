@@ -5,7 +5,7 @@ uniform mat4 projection;
 uniform mat4 holographic_rotation;
 uniform sampler2D rainbow_texture;
 uniform sampler2D dissolve_texture : source_color;
-uniform float dissolve_value : hint_range(0,1);
+uniform float dissolve : hint_range(0,1);
 uniform float burn_size: hint_range(0.0, 1.0, 0.01);
 uniform vec4 burn_color: source_color;
 
@@ -40,7 +40,7 @@ vec2 twirl(vec2 uv, vec2 center, float strength)
     return vec2(x + center.x, y + center.y);
 }
 
-vec4 holographic(vec4 color)
+vec4 holographic_effect(vec4 color)
 {
 	vec3 _view = mat3(rotation) * mat3(holographic_rotation) * view;
 	vec2 uv = fract(twirl(_view.xy * 2.0 - 1.0, vec2(0.5, 0.5), 2.0));
@@ -48,18 +48,18 @@ vec4 holographic(vec4 color)
 	return vec4(color.rgb + rainbow.rgb * 0.4, color.a);
 }
 
-vec4 dissolve(vec4 color, vec2 uv)
+vec4 dissolve_effect(vec4 color, vec2 uv)
 {
     vec4 noise_texture = texture(dissolve_texture, uv);
-	float burn_size_step = burn_size * step(0.001, dissolve_value) * step(dissolve_value, 0.999);
-	float threshold = smoothstep(noise_texture.x-burn_size_step, noise_texture.x, dissolve_value);
-	float border = smoothstep(noise_texture.x, noise_texture.x + burn_size_step, dissolve_value);
+	float burn_size_step = burn_size * step(0.001, dissolve) * step(dissolve, 0.999);
+	float threshold = smoothstep(noise_texture.x-burn_size_step, noise_texture.x, dissolve);
+	float border = smoothstep(noise_texture.x, noise_texture.x + burn_size_step, dissolve);
 	return vec4(mix(burn_color.rgb, color.rgb, border), color.a * threshold);
 }
 
 void fragment()
 {
 	vec4 card = texture(TEXTURE, UV);
-	COLOR = holographic(card);
-	COLOR = dissolve(COLOR, UV);
+	COLOR = holographic_effect(card);
+	COLOR = dissolve_effect(COLOR, UV);
 }

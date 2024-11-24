@@ -2,27 +2,27 @@ extends Node2D
 
 class_name Ore
 
-enum
-{
-	GoldOre,
-	RubyOre,
-	EmeraldOre,
-	SapphireOre,
-	AmethystOre
-}
-
 var type : int
 var hp : int
 var max_hp : int
-var fragile = false
+var fragile : bool = false
+var acid : int = 0
 var coord : Vector2i
 
 @onready var sprite : Sprite2D = $Sprite2D
 
 func set_fragile():
+	if fragile:
+		return
 	fragile = true
 	var mat : ShaderMaterial = $Sprite2D.material
-	mat.set_shader_parameter("fragile_value", 1.0)
+	mat.set_shader_parameter("fragile", 1.0)
+
+func add_acid(v : int):
+	acid += v
+	if acid > 0:
+		var mat : ShaderMaterial = $Sprite2D.material
+		mat.set_shader_parameter("acid", 1.0)
 
 func setup(_type : int, _coord : Vector2i):
 	type = _type
@@ -35,19 +35,19 @@ func setup(_type : int, _coord : Vector2i):
 	
 func _ready() -> void:
 	var mat : ShaderMaterial = $Sprite2D.material
-	if type == GoldOre:
+	if type == Game.Gold:
 		sprite.texture = load("res://icons/gold_ore.png")
 		mat.set_shader_parameter("shininess_mask_texture", load("res://icons/gold_ore_shininess_mask.png"))
-	elif type == RubyOre:
+	elif type == Game.Ruby:
 		sprite.texture = load("res://icons/ruby_ore.png")
 		mat.set_shader_parameter("shininess_mask_texture", load("res://icons/ruby_ore_shininess_mask.png"))
-	elif type == EmeraldOre:
+	elif type == Game.Emerald:
 		sprite.texture = load("res://icons/emerald_ore.png")
 		mat.set_shader_parameter("shininess_mask_texture", load("res://icons/emerald_ore_shininess_mask.png"))
-	elif type == SapphireOre:
+	elif type == Game.Sapphire:
 		sprite.texture = load("res://icons/sapphire_ore.png")
 		mat.set_shader_parameter("shininess_mask_texture", load("res://icons/sapphire_ore_shininess_mask.png"))
-	elif type == AmethystOre:
+	elif type == Game.Amethyst:
 		sprite.texture = load("res://icons/amethyst_ore.png")
 		mat.set_shader_parameter("shininess_mask_texture", load("res://icons/amethyst_ore_shininess_mask.png"))
 	mat.set_shader_parameter("shininess_offset", randf())

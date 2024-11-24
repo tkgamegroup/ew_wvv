@@ -134,14 +134,14 @@ func init_matrix():
 	mat.set_shader_parameter("holographic_rotation", holo_rot)
 
 func update_rotation():
-	var mat = $Rendered.material as ShaderMaterial
+	var mat : ShaderMaterial = $Rendered.material
 	var rot = Transform3D()
 	rot.basis = Basis(xy_quat)
 	mat.set_shader_parameter("rotation", rot)
 
 func update_dissolve(v : float):
-	var mat = $Rendered.material as ShaderMaterial
-	mat.set_shader_parameter("dissolve_value", v)
+	var mat : ShaderMaterial = $Rendered.material
+	mat.set_shader_parameter("dissolve", v)
 
 func select():
 	outline.show()

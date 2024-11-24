@@ -1,14 +1,13 @@
 extends Node2D
 
 const Player = preload("res://player.gd")
-const img_neutral_camp = preload("res://icons/neutral_camp.png")
 
 @onready var tilemap = $"../TileMapLayerMain"
 var border_lines : Array
 var drawer : Callable
 		
 func get_tile_points(coord : Vector2i):
-	var radius = tilemap.tile_set.tile_size.x / 2
+	var radius = tilemap.tile_set.tile_size.x / 2.0
 	var o = tilemap.map_to_local(coord)
 	var points = []
 	for i in 6:
@@ -57,7 +56,6 @@ func _draw() -> void:
 			var coord = Vector2i(x, y)
 			var tile = Game.map[coord] as Tile
 			var pos = tilemap.map_to_local(tile.coord)
-			#draw_string(ThemeDB.fallback_font, tilemap.map_to_local(coord), "%d,%d" % [tile.coord.x, tile.coord.y])
 			
 	if Game.hovering_tile.x != -1 && Game.hovering_tile.y != -1:
 		var points = get_tile_points(Game.hovering_tile)
@@ -68,3 +66,10 @@ func _draw() -> void:
 		draw_line(points[3], points[4], color, 4.0)
 		draw_line(points[4], points[5], color, 4.0)
 		draw_line(points[5], points[0], color, 4.0)
+		var o = tilemap.map_to_local(Game.hovering_tile)
+		var r = tilemap.tile_set.tile_size.x / 2.0
+		if Game.dragging_card:
+			draw_circle(o, r / 2.0, color, false, 4.0)
+			draw_line(o - Vector2(0.0, r / 4.0), o + Vector2(0.0, r / 4.0), color, 4.0)
+			draw_line(o + Vector2(-2.0, r / 4.0), o - Vector2(+r / 4.0, r / 10.0), color, 4.0)
+			draw_line(o + Vector2(+2.0, r / 4.0), o - Vector2(-r / 4.0, r / 10.0), color, 4.0)

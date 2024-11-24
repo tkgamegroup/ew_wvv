@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://yi5p8yirwy43"
-path="res://.godot/imported/production.png-00f74c24e56ac76bba5b08ba411a1050.ctex"
+uid="uid://5banaax8vv47"
+path="res://.godot/imported/amethyst.png-c0f5ca59ccab7cc430b97b73da0c34a6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://icons/production.png"
-dest_files=["res://.godot/imported/production.png-00f74c24e56ac76bba5b08ba411a1050.ctex"]
+source_file="res://icons/amethyst.png"
+dest_files=["res://.godot/imported/amethyst.png-c0f5ca59ccab7cc430b97b73da0c34a6.ctex"]
 
 [params]
 
