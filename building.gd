@@ -11,6 +11,7 @@ var description : String
 var icon : String
 var effect : Dictionary
 var coord : Vector2i
+var shield : bool = false
 
 @onready var sprite : Sprite2D = $Sprite2D
 
@@ -19,7 +20,7 @@ static func get_need_terrain_text(need_terrain : Array):
 	for t in need_terrain:
 		if !need_terrain_text.is_empty():
 			need_terrain_text += ", "
-		need_terrain_text += Tile.get_terrain_text(t)
+		#need_terrain_text += Tile.get_terrain_text(t)
 	return need_terrain_text
 
 static func get_info(name : String):
@@ -27,7 +28,6 @@ static func get_info(name : String):
 		config = ConfigFile.new()
 		config.load("res://buildings.ini")
 	var ret = {}
-	var vars = config.get_section_keys(name)
 	ret.cost_production = config.get_value(name, "cost_production")
 	ret.cost_gold = config.get_value(name, "cost_gold")
 	ret.need_terrain = config.get_value(name, "need_terrain")

@@ -10,7 +10,6 @@ var coord : Vector2i
 var buildings : Dictionary[Vector2i, Building]
 var color : Color
 
-var production : int = 150
 var gold : int = 200
 var energy : int = 0
 var max_energy : int = 0
@@ -19,17 +18,21 @@ var food : int = 3
 var ruby_amount : int = 0
 var ruby_value : int = 100
 var emerald_amount : int = 0
-var emerald_value : int = 100
+var emerald_value : int = 200
 var sapphire_amount : int = 0
-var sapphire_value : int = 100
+var sapphire_value : int = 500
 var amethyst_amount : int = 0
-var amethyst_value : int = 100
+var amethyst_value : int = 1000
 signal energy_changed
 signal gold_changed
 signal ruby_changed
+signal ruby_value_changed
 signal emerald_changed
+signal emerald_value_changed
 signal sapphire_changed
+signal sapphire_value_changed
 signal amethyst_changed
+signal amethyst_value_changed
 
 var modifiers : Dictionary
 
@@ -69,12 +72,26 @@ func add_ruby(v : int):
 	ruby_amount += v
 	ruby_changed.emit(old_value, ruby_amount)
 
+func add_ruby_value(v : int):
+	if v == 0:
+		return
+	var old_value = ruby_value
+	ruby_value += v
+	ruby_value_changed.emit(old_value, ruby_value)
+
 func add_emerald(v : int):
 	if v == 0:
 		return
 	var old_value = emerald_amount
 	emerald_amount += v
 	emerald_changed.emit(old_value, emerald_amount)
+
+func add_emerald_value(v : int):
+	if v == 0:
+		return
+	var old_value = emerald_value
+	emerald_value += v
+	emerald_value_changed.emit(old_value, emerald_value)
 
 func add_sapphire(v : int):
 	if v == 0:
@@ -83,12 +100,26 @@ func add_sapphire(v : int):
 	sapphire_amount += v
 	sapphire_changed.emit(old_value, sapphire_amount)
 
+func add_sapphire_value(v : int):
+	if v == 0:
+		return
+	var old_value = sapphire_value
+	sapphire_value += v
+	sapphire_value_changed.emit(old_value, sapphire_value)
+
 func add_amethyst(v : int):
 	if v == 0:
 		return
 	var old_value = amethyst_amount
 	amethyst_amount += v
 	amethyst_changed.emit(old_value, amethyst_amount)
+
+func add_amethyst_value(v : int):
+	if v == 0:
+		return
+	var old_value = amethyst_value
+	amethyst_value += v
+	amethyst_value_changed.emit(old_value, amethyst_value)
 
 func add_building(coord : Vector2i, name : String):
 	var tile = Game.map[coord]
@@ -126,6 +157,8 @@ func change_modifier(name : String, v : int):
 				building.ext["science_production"] = production * (100 + modifiers["ACADEMY_PRODUCTION_BOUNS_PERCENTAGE"]) / 100
 
 func get_energy(v : int):
+	if v == 0:
+		return true
 	if energy >= v:
 		energy -= v
 		energy_changed.emit()

@@ -60,6 +60,6 @@ vec4 dissolve_effect(vec4 color, vec2 uv)
 void fragment()
 {
 	vec4 card = texture(TEXTURE, UV);
-	COLOR = holographic_effect(card);
-	COLOR = dissolve_effect(COLOR, UV);
+	//COLOR = holographic_effect(card);
+	COLOR = dissolve_effect(card, UV);
 }

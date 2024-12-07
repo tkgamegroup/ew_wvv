@@ -1,20 +1,20 @@
 extends Camera2D
 
 var move_sp = Vector2(0, 0)
-var tween : Tween = null
+var move_tween : Tween = null
 
 func move_to(target : Vector2):
-	if tween:
-		tween.kill()
-		tween = null
-	tween = get_tree().create_tween()
-	tween.tween_property(self, "position", target, 0.15)
-	tween.tween_callback(func():
-		tween = null
+	if move_tween:
+		move_tween.kill()
+		move_tween = null
+	move_tween = get_tree().create_tween()
+	move_tween.tween_property(self, "position", target, 0.15)
+	move_tween.tween_callback(func():
+		move_tween = null
 	)
 
 func _process(delta: float) -> void:
-	if !tween:
+	if !move_tween:
 		if move_sp.x != 0 || move_sp.y != 0:
 			position += move_sp / zoom.x
 	

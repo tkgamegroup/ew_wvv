@@ -1,4 +1,4 @@
-[gd_scene load_steps=312 format=3 uid="uid://bs1rpkum5d02r"]
+[gd_scene load_steps=311 format=3 uid="uid://bs1rpkum5d02r"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_gjuda"]
 [ext_resource type="AudioStream" uid="uid://c0smhpksmknwe" path="res://sfx/Click.wav" id="2_purw3"]
@@ -9,6 +9,7 @@
 [ext_resource type="AudioStream" uid="uid://b7fyjyvdj8dn4" path="res://sfx/BigButtonClick.wav" id="7_4aunk"]
 [ext_resource type="AudioStream" uid="uid://d4gmd600ndxmv" path="res://sfx/building1.wav" id="9_wxubv"]
 [ext_resource type="AudioStream" uid="uid://bd2wtgfn6mb1p" path="res://sfx/shuffle.wav" id="10_4skwy"]
+[ext_resource type="AudioStream" uid="uid://dcxa3lhmrly7n" path="res://sfx/pick_up.mp3" id="10_8rn4p"]
 [ext_resource type="AudioStream" uid="uid://j8kge6s0il2p" path="res://music/music1.ogg" id="10_dr3hb"]
 [ext_resource type="AudioStream" uid="uid://v2w64xu8cd0e" path="res://sfx/sword.1.ogg" id="10_ohfrp"]
 [ext_resource type="AudioStream" uid="uid://bg3lxfqmcwc5u" path="res://sfx/slime-death.wav" id="10_oj1my"]
@@ -151,14 +152,15 @@
 [ext_resource type="Texture2D" uid="uid://bcoaggk4fkvjl" path="res://tiles/convex2/0_1_2_4.png" id="144_7itig"]
 [ext_resource type="Texture2D" uid="uid://c0sbe83i21sef" path="res://tiles/convex2/0_1_2_4_5.png" id="145_6v2ix"]
 [ext_resource type="Texture2D" uid="uid://yljglbjel3y4" path="res://tiles/convex2/0_1_2_5.png" id="146_68obw"]
+[ext_resource type="Script" path="res://shake.gd" id="148_785n1"]
 [ext_resource type="Texture2D" uid="uid://dfbi8dkjy533x" path="res://icons/ruby.png" id="148_bbrpv"]
 [ext_resource type="Texture2D" uid="uid://bee8738s81f4t" path="res://icons/emerald.png" id="149_hwtl0"]
 [ext_resource type="Texture2D" uid="uid://ckwpvhr3h86hv" path="res://icons/sapphire.png" id="150_bdki7"]
 [ext_resource type="Texture2D" uid="uid://5banaax8vv47" path="res://icons/amethyst.png" id="151_xhhna"]
+[ext_resource type="Texture2D" uid="uid://cay2h4h3usiys" path="res://ui/gradient-frame.png" id="155_jvu0m"]
 [ext_resource type="Script" path="res://camera.gd" id="167_gjjxa"]
 [ext_resource type="Script" path="res://tilemap_overlay.gd" id="170_j5vcd"]
 [ext_resource type="PackedScene" uid="uid://d0r0gk3l0ag1u" path="res://card.tscn" id="171_62cl8"]
-[ext_resource type="PackedScene" uid="uid://b8mhurhw77wkb" path="res://shop_item.tscn" id="172_ve8xk"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2u6yb"]
 texture = ExtResource("12_6hrlf")
@@ -1981,6 +1983,16 @@ bg_color = Color(0.852452, 0.546121, 0.831272, 0.207843)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hb8gg"]
 bg_color = Color(1, 1, 1, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k3tsv"]
+bg_color = Color(0.429658, 0.635437, 0.71494, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3am1k"]
+texture = ExtResource("47_fdenu")
+texture_margin_left = 10.0
+texture_margin_top = 12.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vjgar"]
 bg_color = Color(0, 0, 0, 0.498039)
 border_width_left = 4
@@ -2012,49 +2024,6 @@ corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2davj"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-expand_margin_left = 2.0
-expand_margin_top = 2.0
-expand_margin_right = 2.0
-expand_margin_bottom = 2.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tpm8k"]
-bg_color = Color(0.682419, 0.200757, 0.333077, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pmv7x"]
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-expand_margin_left = 2.0
-expand_margin_top = 2.0
-expand_margin_right = 2.0
-expand_margin_bottom = 2.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qk14p"]
-bg_color = Color(0.282152, 0.317194, 0.691287, 1)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3am1k"]
-texture = ExtResource("47_fdenu")
-texture_margin_left = 10.0
-texture_margin_top = 12.0
-texture_margin_right = 10.0
-texture_margin_bottom = 10.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ottlk"]
 shader = ExtResource("62_yll2j")
@@ -2108,11 +2077,18 @@ stream = ExtResource("9_wxubv")
 [node name="Shuffle" type="AudioStreamPlayer" parent="Sound"]
 stream = ExtResource("10_4skwy")
 
+[node name="PickUp" type="AudioStreamPlayer" parent="Sound"]
+stream = ExtResource("10_8rn4p")
+volume_db = -12.0
+
+[node name="Timer" type="Timer" parent="Sound/PickUp"]
+wait_time = 0.5
+autostart = true
+
 [node name="Music" type="AudioStreamPlayer" parent="Sound"]
 stream = ExtResource("10_dr3hb")
 volume_db = -15.407
 pitch_scale = 0.85
-autoplay = true
 parameters/looping = false
 
 [node name="Sword" type="AudioStreamPlayer" parent="Sound"]
@@ -2172,6 +2148,7 @@ tile_set = SubResource("TileSet_mqu5i")
 script = ExtResource("170_j5vcd")
 
 [node name="UI" type="CanvasLayer" parent="."]
+script = ExtResource("148_785n1")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="UI"]
 anchors_preset = 15
@@ -2194,6 +2171,22 @@ theme_override_font_sizes/normal_font_size = 24
 bbcode_enabled = true
 fit_content = true
 
+[node name="CaveDurability" type="Label" parent="UI/HBoxContainer/Panel/VBoxContainer"]
+layout_mode = 2
+text = "-----"
+
+[node name="TargetScore" type="Label" parent="UI/HBoxContainer/Panel/VBoxContainer"]
+layout_mode = 2
+text = "-----"
+
+[node name="Turn" type="Label" parent="UI/HBoxContainer/Panel/VBoxContainer"]
+layout_mode = 2
+text = "-----"
+
+[node name="Deep" type="Label" parent="UI/HBoxContainer/Panel/VBoxContainer"]
+layout_mode = 2
+text = "-----"
+
 [node name="HBoxContainer" type="HBoxContainer" parent="UI/HBoxContainer/Panel/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 0
@@ -2207,20 +2200,13 @@ expand_mode = 1
 [node name="Gold" type="Label" parent="UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
-text = "0$"
-
-[node name="CollapseTurn" type="Label" parent="UI/HBoxContainer/Panel/VBoxContainer"]
-layout_mode = 2
-text = "-----"
-
-[node name="TargetScore" type="Label" parent="UI/HBoxContainer/Panel/VBoxContainer"]
-layout_mode = 2
-text = "-----"
+text = "$0"
 
 [node name="HBoxContainer1" type="HBoxContainer" parent="UI/HBoxContainer/Panel/VBoxContainer"]
 layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer1"]
+modulate = Color(0.501407, 0.501406, 0.501406, 1)
 layout_mode = 2
 texture = ExtResource("148_bbrpv")
 
@@ -2247,6 +2233,7 @@ text = "000"
 
 [node name="Button" type="Button" parent="UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer1"]
 layout_mode = 2
+size_flags_vertical = 4
 theme_override_font_sizes/font_size = 24
 text = "卖"
 
@@ -2254,6 +2241,7 @@ text = "卖"
 layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer2"]
+modulate = Color(0.501407, 0.501406, 0.501406, 1)
 layout_mode = 2
 texture = ExtResource("149_hwtl0")
 
@@ -2280,6 +2268,7 @@ text = "000"
 
 [node name="Button" type="Button" parent="UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
+size_flags_vertical = 4
 theme_override_font_sizes/font_size = 24
 text = "卖"
 
@@ -2287,6 +2276,7 @@ text = "卖"
 layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer3"]
+modulate = Color(0.501407, 0.501406, 0.501406, 1)
 layout_mode = 2
 texture = ExtResource("150_bdki7")
 
@@ -2313,6 +2303,7 @@ text = "000"
 
 [node name="Button" type="Button" parent="UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
+size_flags_vertical = 4
 theme_override_font_sizes/font_size = 24
 text = "卖"
 
@@ -2320,6 +2311,7 @@ text = "卖"
 layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer4"]
+modulate = Color(0.501407, 0.501406, 0.501406, 1)
 layout_mode = 2
 texture = ExtResource("151_xhhna")
 
@@ -2346,6 +2338,7 @@ text = "000"
 
 [node name="Button" type="Button" parent="UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer4"]
 layout_mode = 2
+size_flags_vertical = 4
 theme_override_font_sizes/font_size = 24
 text = "卖"
 
@@ -2486,6 +2479,9 @@ size_flags_horizontal = 8
 size_flags_vertical = 8
 text = "结束回合"
 
+[node name="Timer" type="Timer" parent="UI/HBoxContainer/VBoxContainer/Panel/Mine/EndTurn"]
+one_shot = true
+
 [node name="TextureRect" type="TextureRect" parent="UI/HBoxContainer/VBoxContainer/Panel/Mine"]
 visible = false
 modulate = Color(1, 1, 1, 0.215686)
@@ -2495,21 +2491,29 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+texture = ExtResource("155_jvu0m")
 expand_mode = 1
 
 [node name="Shop" type="PanelContainer" parent="UI/HBoxContainer/VBoxContainer/Panel"]
 visible = false
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/HBoxContainer/VBoxContainer/Panel/Shop"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/HBoxContainer/VBoxContainer/Panel/Shop"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/HBoxContainer/VBoxContainer/Panel/Shop/MarginContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="UI/HBoxContainer/VBoxContainer/Panel/Shop/VBoxContainer"]
+[node name="Label" type="Label" parent="UI/HBoxContainer/VBoxContainer/Panel/Shop/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "商店"
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/HBoxContainer/VBoxContainer/Panel/Shop/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/HBoxContainer/VBoxContainer/Panel/Shop/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 16
@@ -2517,28 +2521,19 @@ theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 8
 
-[node name="GridContainer" type="GridContainer" parent="UI/HBoxContainer/VBoxContainer/Panel/Shop/VBoxContainer/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/HBoxContainer/VBoxContainer/Panel/Shop/MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="UI/HBoxContainer/VBoxContainer/Panel/Shop/MarginContainer/VBoxContainer/MarginContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 columns = 6
 
-[node name="ShopItem" parent="UI/HBoxContainer/VBoxContainer/Panel/Shop/VBoxContainer/MarginContainer/GridContainer" instance=ExtResource("172_ve8xk")]
+[node name="Button" type="Button" parent="UI/HBoxContainer/VBoxContainer/Panel/Shop/MarginContainer/VBoxContainer"]
 layout_mode = 2
-
-[node name="ShopItem2" parent="UI/HBoxContainer/VBoxContainer/Panel/Shop/VBoxContainer/MarginContainer/GridContainer" instance=ExtResource("172_ve8xk")]
-layout_mode = 2
-
-[node name="ShopItem3" parent="UI/HBoxContainer/VBoxContainer/Panel/Shop/VBoxContainer/MarginContainer/GridContainer" instance=ExtResource("172_ve8xk")]
-layout_mode = 2
-
-[node name="ShopItem4" parent="UI/HBoxContainer/VBoxContainer/Panel/Shop/VBoxContainer/MarginContainer/GridContainer" instance=ExtResource("172_ve8xk")]
-layout_mode = 2
-
-[node name="ShopItem5" parent="UI/HBoxContainer/VBoxContainer/Panel/Shop/VBoxContainer/MarginContainer/GridContainer" instance=ExtResource("172_ve8xk")]
-layout_mode = 2
-
-[node name="ShopItem6" parent="UI/HBoxContainer/VBoxContainer/Panel/Shop/VBoxContainer/MarginContainer/GridContainer" instance=ExtResource("172_ve8xk")]
-layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "继续"
 
 [node name="Result" type="PanelContainer" parent="UI/HBoxContainer/VBoxContainer/Panel"]
 visible = false
@@ -2558,21 +2553,23 @@ layout_mode = 2
 
 [node name="Button" type="Button" parent="UI/HBoxContainer/VBoxContainer/Panel/Result/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
+text = "继续"
 
-[node name="TurnTip" type="PanelContainer" parent="UI/HBoxContainer/VBoxContainer/Panel"]
+[node name="Info" type="PanelContainer" parent="UI/HBoxContainer/VBoxContainer/Panel"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/HBoxContainer/VBoxContainer/Panel/TurnTip"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/HBoxContainer/VBoxContainer/Panel/Info"]
 layout_mode = 2
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 8
 
-[node name="Label" type="Label" parent="UI/HBoxContainer/VBoxContainer/Panel/TurnTip/MarginContainer"]
+[node name="Label" type="Label" parent="UI/HBoxContainer/VBoxContainer/Panel/Info/MarginContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 22
 text = "回合1"
@@ -2608,9 +2605,79 @@ text = "不能干嘛干嘛"
 [node name="DeckBrowser" type="PanelContainer" parent="UI/HBoxContainer/VBoxContainer/Panel"]
 visible = false
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_k3tsv")
 
-[node name="GridContainer" type="GridContainer" parent="UI/HBoxContainer/VBoxContainer/Panel/DeckBrowser"]
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/HBoxContainer/VBoxContainer/Panel/DeckBrowser"]
 layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/HBoxContainer/VBoxContainer/Panel/DeckBrowser/ScrollContainer"]
+layout_mode = 2
+
+[node name="Label1" type="Label" parent="UI/HBoxContainer/VBoxContainer/Panel/DeckBrowser/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="GridContainer1" type="GridContainer" parent="UI/HBoxContainer/VBoxContainer/Panel/DeckBrowser/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+columns = 8
+
+[node name="Label2" type="Label" parent="UI/HBoxContainer/VBoxContainer/Panel/DeckBrowser/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="GridContainer2" type="GridContainer" parent="UI/HBoxContainer/VBoxContainer/Panel/DeckBrowser/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+columns = 8
+
+[node name="Button" type="Button" parent="UI/HBoxContainer/VBoxContainer/Panel/DeckBrowser"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+text = "关闭"
+
+[node name="SelectCard" type="MarginContainer" parent="UI/HBoxContainer/VBoxContainer/Panel"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 32
+
+[node name="PanelContainer" type="PanelContainer" parent="UI/HBoxContainer/VBoxContainer/Panel/SelectCard"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_3am1k")
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/HBoxContainer/VBoxContainer/Panel/SelectCard/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/HBoxContainer/VBoxContainer/Panel/SelectCard/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UI/HBoxContainer/VBoxContainer/Panel/SelectCard/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "请选择卡"
+
+[node name="GridContainer" type="GridContainer" parent="UI/HBoxContainer/VBoxContainer/Panel/SelectCard/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+columns = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/HBoxContainer/VBoxContainer/Panel/SelectCard/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Button" type="Button" parent="UI/HBoxContainer/VBoxContainer/Panel/SelectCard/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "选择1张卡（0已选择）"
+
+[node name="Button2" type="Button" parent="UI/HBoxContainer/VBoxContainer/Panel/SelectCard/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "取消"
 
 [node name="Panel2" type="PanelContainer" parent="UI/HBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 163)
@@ -2668,113 +2735,9 @@ grow_horizontal = 0
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_er4am")
 
-[node name="Shop" type="PanelContainer" parent="UI"]
-visible = false
-custom_minimum_size = Vector2(500, 500)
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -160.0
-offset_top = -117.5
-offset_right = 160.0
-offset_bottom = 141.5
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_2davj")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/Shop"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="UI/Shop/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-theme_override_styles/normal = SubResource("StyleBoxFlat_tpm8k")
-text = "商店"
-
-[node name="TabBar" type="TabBar" parent="UI/Shop/VBoxContainer"]
-layout_mode = 2
-current_tab = 0
-tab_count = 3
-tab_0/title = "建筑"
-tab_1/title = "建筑"
-tab_1/icon = ExtResource("24_m6jih")
-tab_2/title = "单位"
-
-[node name="GridContainer" type="GridContainer" parent="UI/Shop/VBoxContainer"]
-layout_mode = 2
-columns = 5
-
-[node name="Card" parent="UI/Shop/VBoxContainer/GridContainer" instance=ExtResource("172_ve8xk")]
-layout_mode = 2
-
-[node name="Card2" parent="UI/Shop/VBoxContainer/GridContainer" instance=ExtResource("172_ve8xk")]
-layout_mode = 2
-
-[node name="Card3" parent="UI/Shop/VBoxContainer/GridContainer" instance=ExtResource("172_ve8xk")]
-layout_mode = 2
-
-[node name="Card4" parent="UI/Shop/VBoxContainer/GridContainer" instance=ExtResource("172_ve8xk")]
-layout_mode = 2
-
-[node name="Card5" parent="UI/Shop/VBoxContainer/GridContainer" instance=ExtResource("172_ve8xk")]
-layout_mode = 2
-
-[node name="Card6" parent="UI/Shop/VBoxContainer/GridContainer" instance=ExtResource("172_ve8xk")]
-layout_mode = 2
-
-[node name="Card7" parent="UI/Shop/VBoxContainer/GridContainer" instance=ExtResource("172_ve8xk")]
-layout_mode = 2
-
-[node name="Card8" parent="UI/Shop/VBoxContainer/GridContainer" instance=ExtResource("172_ve8xk")]
-layout_mode = 2
-
-[node name="Button" type="Button" parent="UI/Shop"]
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 0
-text = "X
-"
-
-[node name="TechTree" type="PanelContainer" parent="UI"]
-visible = false
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -400.0
-offset_top = -250.0
-offset_right = 402.0
-offset_bottom = 250.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_pmv7x")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/TechTree"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="UI/TechTree/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 20
-theme_override_styles/normal = SubResource("StyleBoxFlat_qk14p")
-text = "科技树"
-
-[node name="ScrollContainer" type="ScrollContainer" parent="UI/TechTree/VBoxContainer"]
-custom_minimum_size = Vector2(800, 450)
-layout_mode = 2
-
-[node name="Panel" type="Panel" parent="UI/TechTree/VBoxContainer/ScrollContainer"]
-custom_minimum_size = Vector2(200, 100)
-layout_mode = 2
-
-[node name="Button" type="Button" parent="UI/TechTree"]
-layout_mode = 2
-text = "X"
-
 [node name="ToolTip" type="PanelContainer" parent="UI"]
 visible = false
+z_index = 3
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -2864,6 +2827,10 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
+[connection signal="pressed" from="UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer1/Button" to="." method="on_sell_ruby"]
+[connection signal="pressed" from="UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer2/Button" to="." method="on_sell_emerald"]
+[connection signal="pressed" from="UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer3/Button" to="." method="on_sell_sapphire"]
+[connection signal="pressed" from="UI/HBoxContainer/Panel/VBoxContainer/HBoxContainer4/Button" to="." method="on_sell_amethyst"]
 [connection signal="pressed" from="UI/HBoxContainer/VBoxContainer/Panel/CaveSelect/HBoxContainer/CaveCandidate1/VBoxContainer/Button" to="." method="on_select_cave1"]
 [connection signal="pressed" from="UI/HBoxContainer/VBoxContainer/Panel/CaveSelect/HBoxContainer/CaveCandidate2/VBoxContainer/Button" to="." method="on_select_cave2"]
 [connection signal="pressed" from="UI/HBoxContainer/VBoxContainer/Panel/CaveSelect/HBoxContainer/CaveCandidate3/VBoxContainer/Button" to="." method="on_select_cave3"]
@@ -2872,11 +2839,12 @@ mouse_filter = 2
 [connection signal="pressed" from="UI/HBoxContainer/VBoxContainer/Panel/Mine/CameraRightButton" to="." method="on_camera_right"]
 [connection signal="pressed" from="UI/HBoxContainer/VBoxContainer/Panel/Mine/CameraDownButton" to="." method="on_camera_down"]
 [connection signal="pressed" from="UI/HBoxContainer/VBoxContainer/Panel/Mine/EndTurn" to="." method="on_end_turn"]
+[connection signal="pressed" from="UI/HBoxContainer/VBoxContainer/Panel/Shop/MarginContainer/VBoxContainer/Button" to="." method="on_continue"]
 [connection signal="pressed" from="UI/HBoxContainer/VBoxContainer/Panel/Result/VBoxContainer/Button" to="." method="on_continue"]
+[connection signal="pressed" from="UI/HBoxContainer/VBoxContainer/Panel/DeckBrowser/Button" to="." method="on_deck_browser_close"]
+[connection signal="pressed" from="UI/HBoxContainer/VBoxContainer/Panel/SelectCard/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Button" to="." method="on_select_cards"]
+[connection signal="pressed" from="UI/HBoxContainer/VBoxContainer/Panel/SelectCard/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/Button2" to="." method="on_select_cards_cancel"]
 [connection signal="clicked" from="UI/HBoxContainer/VBoxContainer/Panel2/Deck" to="." method="on_deck_clicked"]
-[connection signal="tab_changed" from="UI/Shop/VBoxContainer/TabBar" to="." method="on_shop_tab_changed"]
-[connection signal="pressed" from="UI/Shop/Button" to="." method="on_shop_close_button"]
-[connection signal="pressed" from="UI/TechTree/Button" to="." method="on_tech_close_button"]
 [connection signal="pressed" from="UI/GameMenuButton" to="." method="on_game_menu"]
 [connection signal="pressed" from="UI/GameMenu/VBox/Resume" to="." method="on_resume"]
 [connection signal="pressed" from="UI/GameMenu/VBox/SaveGame" to="." method="on_save_game"]

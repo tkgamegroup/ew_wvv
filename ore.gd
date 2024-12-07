@@ -5,6 +5,7 @@ class_name Ore
 var type : int
 var hp : int
 var max_hp : int
+var last_minerals_hp : int
 var fragile : bool = false
 var acid : int = 0
 var coord : Vector2i
@@ -28,6 +29,7 @@ func setup(_type : int, _coord : Vector2i):
 	type = _type
 	max_hp = 6 * 4
 	hp = max_hp
+	last_minerals_hp = hp
 	
 	coord = _coord
 	position = Game.tilemap.to_global(Game.tilemap.map_to_local(coord))

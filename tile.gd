@@ -17,14 +17,25 @@ var tile_rt : Vector2i
 var tile_lb : Vector2i
 var tile_b : Vector2i
 var tile_rb : Vector2i
+var dist_to_center : int
 var building : Building = null
 var ore : Ore = null
 var monsters : Array[Unit]
 var player_units : Array[Unit]
 var wet : bool = false
 
-static func get_terrain_text(terrain : int):
+func get_terrain_text():
 	if terrain == TerrainFloor:
+		if ore:
+			match ore.type:
+				Game.Ruby:
+					return "红宝石矿"
+				Game.Emerald:
+					return "绿宝石矿"
+				Game.Sapphire:
+					return "蓝宝石矿"
+				Game.Amethyst:
+					return "紫水晶矿"
 		return "空地"
 	elif terrain == TerrainFloor2:
 		return "掩埋的"

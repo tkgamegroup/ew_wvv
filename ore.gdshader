@@ -33,12 +33,12 @@ vec4 shininess_effect(vec4 color, vec2 uv)
 	return vec4(mix(color.rgb, vec3(1.0, 1.0, 1.0), line), color.a);
 }
 
-void vertex() 
+void vertex()
 {
 	// Called for every vertex the material is visible on.
 }
 
-void fragment() 
+void fragment()
 {
 	vec4 tex = texture(TEXTURE, UV);
 	COLOR = shininess_effect(tex, UV);

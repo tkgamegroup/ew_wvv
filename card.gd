@@ -27,8 +27,7 @@ var last_parent : Control
 var display_name : String
 var description : String
 var icon : String
-var cost_resource_type : int = Game.Gold
-var cost_resource : int = 0
+var cost_energy : int = 1
 var effect : Dictionary
 
 var hovering = false
@@ -46,7 +45,7 @@ var tween_drag : Tween = null
 @onready var shadow = $Shadow
 @onready var front = $SubViewport/Front
 @onready var back = $SubViewport/Back
-@onready var outline = $SubViewport/Front/Outline
+@onready var outline = $Outline
 @onready var sub_viewport = $SubViewport
 
 static var config : ConfigFile = null
@@ -61,8 +60,7 @@ static func get_info(key : String):
 	ret.display_name = config.get_value(key, "display_name")
 	ret.description = config.get_value(key, "description")
 	ret.icon = config.get_value(key, "icon")
-	ret.cost_resource_type = config.get_value(key, "cost_resource_type", 0)
-	ret.cost_resource = config.get_value(key, "cost_resource", 0)
+	ret.cost_energy = config.get_value(key, "cost_energy", 1)
 	ret.effect = config.get_value(key, "effect", {})
 	return ret
 
@@ -74,20 +72,13 @@ func setup_from_data(data : Dictionary):
 	if data.has("description"):
 		description = data.description
 	icon = data.icon
-	if data.has("cost_resource"):
-		cost_resource_type = data.cost_resource_type
-		cost_resource = data.cost_resource
+	cost_energy = data.cost_energy
 	if data.has("effect"):
 		effect = data.effect
 		
 	$SubViewport/Front/Name.text = display_name
 	$SubViewport/Front/TextureRect.texture = load(icon)
-	if data.has("cost_resource"):
-		if data.cost_resource > 0:
-			$SubViewport/Front/Cost.visible = true
-			$SubViewport/Front/Cost/Polygon2D/CostText.text = "%d" % data.cost_resource
-			var icon_path = ""
-			$SubViewport/Front/Cost/Polygon2D/CostIcon.texture = load(icon_path)
+	$SubViewport/Front/Cost.text = "%d" % cost_energy
 			
 	init_matrix()
 	update_rotation()
@@ -107,6 +98,7 @@ func setup_building_card(_name : String):
 	data.description = info.description.format(info)
 	data.description = "地块需求：%s\n" % Building.get_need_terrain_text(info.need_terrain) + data.description
 	data.icon = info.icon
+	data.cost_energy = 1
 	setup_from_data(data)
 	
 func setup_unit_card(_name : String):

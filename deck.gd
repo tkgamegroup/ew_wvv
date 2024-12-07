@@ -1,5 +1,6 @@
 extends Control
 
+var cards : Array[Card]
 var draw_pile : Array[Card]
 var discard_pile : Array[Card]
 
@@ -8,7 +9,7 @@ signal clicked
 @onready var rect = $Rect
 
 func add_card(card : Card):
-	draw_pile.append(card)
+	cards.append(card)
 
 func draw() -> Card:
 	if draw_pile.is_empty():
@@ -16,13 +17,17 @@ func draw() -> Card:
 			return
 		for c in discard_pile:
 			draw_pile.append(c)
-		draw_pile.shuffle()
 		discard_pile.clear()
+		draw_pile.shuffle()
 	var card = draw_pile[0]
 	draw_pile.remove_at(0)
 	return card
 
-func shuffle():
+func reset():
+	draw_pile.clear()
+	discard_pile.clear()
+	for c in cards:
+		draw_pile.append(c)
 	draw_pile.shuffle()
 
 func _gui_input(event: InputEvent):
